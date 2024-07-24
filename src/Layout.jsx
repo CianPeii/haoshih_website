@@ -3,7 +3,6 @@ import styles from "./Layout.module.scss";
 // import Home from "./home/Home";
 // import News from "./news/News";
 import Shop from "./shopping/Shop";
-import SectionBtn from "./shopping/components/SectionBtn";
 
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
@@ -16,8 +15,7 @@ const Layout = () => {
         <div className={styles.background}>
           {/* <Home/> */}
           {/* <News/> */}
-          {/* <Shop /> */}
-          <SectionBtn />
+          <Shop />
         </div>
       </div>
     </div>
