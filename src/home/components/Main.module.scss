@@ -1,0 +1,27 @@
+.rectangle {
+  height: 700px;
+  width: 500px;
+}
+
+.rectangle1 {
+  background-color: #e8f6fe;
+  height: 630px;
+  width: 400px;
+}
+
+.rectangle2 {
+  position: absolute;
+  top: 30px;
+  left: 40px;
+  border: 5px solid #a1cae3;
+  height: 640px;
+  width: 400px;
+}
+
+.mainImg {
+  position: absolute;
+  height: 630px;
+  top: 70px;
+  right: 58px;
+  object-fit: cover;
+}
