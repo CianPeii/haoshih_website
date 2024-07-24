@@ -1,0 +1,17 @@
+.title {
+  width: 307px;
+  height: 98px;
+  padding: 12px 40px;
+  text-align-last: justify;
+  background-image: url(../../public/images/img/second-title-orange.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  vertical-align: middle;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+}
