@@ -2,6 +2,9 @@ import NavBarShop from "../components/NavBarShop";
 import styles from "./Vendor.module.scss";
 import { useEffect } from "react";
 import { Carousel } from "bootstrap";
+import VendorCard from "./components/VendorCard";
+import PageBtn from "../components/PageBtn";
+import Footer from "../components/Footer";
 
 function YourComponent() {
   useEffect(() => {
@@ -9,7 +12,7 @@ function YourComponent() {
       "#carouselExampleIndicators"
     );
     const carousel = new Carousel(carouselElement, {
-      interval: 3000, // 自動播放間格
+      interval: 3000, // 自動播放間隔
       wrap: true, // 是否循環播放
     });
 
@@ -30,21 +33,21 @@ const Vendor = () => {
         <div className="w-100 d-flex align-items-center d-grid gap-3">
           <div className=" w-25">
             <img
-              className={styles.vendorImg}
+              className="rounded-circle w-100 object-fit-contain "
               src="https://rhinoshield.tw/cdn/shop/collections/dttofriends-logo.jpg?v=1701837247"
             />
           </div>
           <div className=" w-75">
             <div className="d-flex align-items-center">
               <h3>攤販名稱</h3>
-              <i className="fs-5 bi bi-heart px-3"></i>
+              <i className=" fs-5 bi bi-heart px-3 text-black-50"></i>
             </div>
             <p>
               攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數
               攤販販介紹資料庫有限制字數
               攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數
             </p>
-            <div className=" d-flex justify-content-end fs-5 d-grid gap-3">
+            <div className=" d-flex justify-content-end fs-5 d-grid gap-3 text-black-50">
               <i className="bi bi-facebook"></i>
               <i className="bi bi-instagram "></i>
               <i className="bi bi-globe"></i>
@@ -52,8 +55,8 @@ const Vendor = () => {
           </div>
         </div>
 
-        {/* 輪播圖 */}
-        <div className={`w-100 ${styles.carousel}`}>
+        {/* carousel */}
+        <div className={`w-100 overflow-hidden ${styles.carousel}`}>
           <div
             id="carouselExampleIndicators"
             className="carousel slide w-100"
@@ -132,12 +135,11 @@ const Vendor = () => {
           </div>
         </div>
       </div>
-      {/* 下拉選單 */}
+      {/* dropdown */}
       <div className="dropdown text-end my-3 mx-5">
         <button
           className="btn btn-secondary dropdown-toggle"
           type="button"
-          id="dropdownMenuButton1"
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
@@ -164,6 +166,17 @@ const Vendor = () => {
           </li>
         </ul>
       </div>
+      {/* VendorCards */}
+      <div>
+        <div class="container">
+          <div className="row">
+            {/*  */}
+            <VendorCard />
+          </div>
+        </div>
+      </div>
+      <PageBtn />
+      <Footer />
     </>
   );
 };
