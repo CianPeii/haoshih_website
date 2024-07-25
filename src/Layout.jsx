@@ -4,6 +4,7 @@ import styles from "./Layout.module.scss";
 // import News from "./news/News";
 import AllVendors from "./allVendor/AllVendors";
 import Vendor from "./vendor/Vendor";
+import ChatBtn from "./components/ChatBtn";
 
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
@@ -16,8 +17,9 @@ const Layout = () => {
         <div className={styles.background}>
           {/* <Home /> */}
           {/* <News /> */}
-          <AllVendors />
+          {/* <AllVendors /> */}
           {/* <Vendor /> */}
+          <ChatBtn />
         </div>
       </div>
     </div>
