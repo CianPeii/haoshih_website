@@ -24,33 +24,40 @@ const Vendor = () => {
     <>
       <NavBarShop />
       <div
-        className={`p-5 d-flex justify-content-between align-items-center ${styles.head}`}
+        className={`p-3 d-flex justify-content-center align-items-center d-grid gap-4 ${styles.head}`}
       >
-        <div className="w-100 d-flex justify-content-between align-items-center">
-          <div className="w-25">
+        <div className="w-100 d-flex align-items-center d-grid gap-3">
+          <div className=" w-25">
             <img
               className={styles.vendorImg}
               src="https://rhinoshield.tw/cdn/shop/collections/dttofriends-logo.jpg?v=1701837247"
             />
           </div>
-          <div>
+          <div className=" w-75">
             <div className="d-flex align-items-center">
               <h3>攤販名稱</h3>
               <i className="fs-5 bi bi-heart px-3"></i>
             </div>
-            <h6>攤販販介紹資料庫有限制字數</h6>
-            <div>icon</div>
+            <p>
+              攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數
+              攤販販介紹資料庫有限制字數
+              攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數
+            </p>
+            <div className=" d-flex justify-content-end fs-5 d-grid gap-3">
+              <i className="bi bi-facebook"></i>
+              <i className="bi bi-instagram "></i>
+              <i className="bi bi-globe"></i>
+            </div>
           </div>
         </div>
 
-        {/* 幻燈片 */}
-        {/* <div className="w-25">
-          幻燈片
+        {/* 輪播圖 */}
+        <div className={`w-100 ${styles.carousel}`}>
           <div
             id="carouselExampleIndicators"
-            className="carousel slide w-25"
+            className="carousel slide w-100"
             data-bs-ride="carousel"
-            data-bs-interval="3000"
+            data-bs-interval="3000" //控制播放
           >
             <div className="carousel-indicators">
               <button
@@ -74,25 +81,25 @@ const Vendor = () => {
                 aria-label="Slide 3"
               ></button>
             </div>
-            <div className="carousel-inner">
+            <div className="carousel-inner ">
               <div className="carousel-item active">
                 <img
-                  src="https://shoplineimg.com/63ea08419b3adf00d260f645/66389a4bc2d49c001418fdc9/3860x.jpg?"
+                  src="https://img.shoplineapp.com/media/image_clips/65d469e5d9c0de4d368479df/original.jpg?1708419556"
                   className="d-block w-100"
                   alt="..."
                 />
               </div>
               <div className="carousel-item">
                 <img
-                  src="https://shoplineimg.com/63ea08419b3adf00d260f645/6420f9e1f1e53400204d75a1/750x.jpg?"
+                  src="https://img.shoplineapp.com/media/image_clips/65d4540c2d35da001728d489/original.jpg?1708413963"
                   className="d-block w-100"
                   alt="..."
                 />
               </div>
               <div className="carousel-item">
                 <img
-                  src="https://shoplineimg.com/63ea08419b3adf00d260f645/6420f9e1f1e53400204d75a1/750x.jpg?"
-                  className="d-block w-100"
+                  src="https://shoplineimg.com/63ea08419b3adf00d260f645/66389b952935cb00147d9b78/1296x.webp?source_format=jpg"
+                  className="d-block w-100 "
                   alt="..."
                 />
               </div>
@@ -122,7 +129,7 @@ const Vendor = () => {
               <span className="visually-hidden">Next</span>
             </button>
           </div>
-        </div> */}
+        </div>
       </div>
     </>
   );
