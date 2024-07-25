@@ -23,6 +23,7 @@ const Vendor = () => {
   return (
     <>
       <NavBarShop />
+      {/* vendorHead */}
       <div
         className={`p-3 d-flex justify-content-center align-items-center d-grid gap-4 ${styles.head}`}
       >
@@ -130,6 +131,38 @@ const Vendor = () => {
             </button>
           </div>
         </div>
+      </div>
+      {/* 下拉選單 */}
+      <div className="dropdown text-end my-3 mx-5">
+        <button
+          className="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          最新上架
+        </button>
+        <ul
+          className="dropdown-menu  text-center"
+          aria-labelledby="dropdownMenuButton1"
+        >
+          <li>
+            <a className="dropdown-item" href="#">
+              最新上架
+            </a>
+          </li>
+          <li>
+            <a className="dropdown-item" href="#">
+              價格高 → 低
+            </a>
+          </li>
+          <li>
+            <a className="dropdown-item" href="#">
+              價格高 → 低
+            </a>
+          </li>
+        </ul>
       </div>
     </>
   );
