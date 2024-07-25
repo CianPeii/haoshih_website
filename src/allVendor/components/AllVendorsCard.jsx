@@ -1,6 +1,5 @@
-import styles from "./AllVendorCard.module.scss";
-
-const AllVendorCard = () => {
+import styles from "./AllVendorsCard.module.scss";
+const AllVendorsCard = () => {
   return (
     <>
       <div className="col-3">
@@ -24,4 +23,4 @@ const AllVendorCard = () => {
     </>
   );
 };
-export default AllVendorCard;
+export default AllVendorsCard;
