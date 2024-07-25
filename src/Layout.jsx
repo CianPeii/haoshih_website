@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Layout.module.scss";
 // import Home from "./home/Home";
 // import News from "./news/News";
-// import AllVendor from "./allVendor/AllVendor";
+import AllVendors from "./allVendor/AllVendors";
 import Vendor from "./vendor/Vendor";
 
 // TODO:
@@ -16,8 +16,8 @@ const Layout = () => {
         <div className={styles.background}>
           {/* <Home /> */}
           {/* <News /> */}
-          {/* <AllVendor /> */}
-          <Vendor />
+          <AllVendors />
+          {/* <Vendor /> */}
         </div>
       </div>
     </div>
