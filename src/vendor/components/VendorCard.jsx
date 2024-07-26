@@ -11,7 +11,7 @@ const VendorCard = () => {
           />
           <div className="card-body">
             <h6 className={`card-title ${styles.cardTitle}`}>
-              商品名稱最多兩行 商品名稱最多兩行
+              商品名稱最多兩行 商品名稱最多兩行 商品名稱最多兩行
             </h6>
             <p className="card-text text-center text-danger">NT$240</p>
           </div>

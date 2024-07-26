@@ -14,20 +14,20 @@ const NavBar = () => {
         <nav className="navbar navbar-expand p-3">
           <div className="container-fluid">
             <a href="https://首頁">
-              <img
-                className={styles.logo}
-                src="images/img/logo.png"
-                alt="logo"
-              />
+              <img className="pe-auto" src="images/img/logo.png" alt="logo" />
             </a>
             <div className="d-flex flex-row">
               {data.map((item) => (
-                <a key={item.id} className={styles.navItem} href="https">
+                <a
+                  key={item.id}
+                  className={`text-decoration-none text-black fs-5 px-3 py-2 ${styles.navItem}`}
+                  href="https"
+                >
                   {item.text}
                 </a>
               ))}
             </div>
-            <div className={styles.mallBtn}>
+            <div className={`rounded-pill fs-5  px-3  py-2 ${styles.mallBtn} `}>
               <a className="link-light text-decoration-none" href="https:">
                 市集商城
               </a>

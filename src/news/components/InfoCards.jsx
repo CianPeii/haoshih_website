@@ -1,13 +1,10 @@
 import InfoCard from "./InfoCard";
-import styles from "./InfoCards.module.scss";
 
 const InfoCards = () => {
   return (
     <>
       <div className="container my-5">
-        <div
-          className={`row  row-cols-4 justify-content-around overflow-y-hidden ${styles.infoCardsSize} `}
-        >
+        <div className="row  row-cols-4 justify-content-around overflow-y-hidden">
           <InfoCard /> <InfoCard />
           <InfoCard /> <InfoCard />
           <InfoCard /> <InfoCard />

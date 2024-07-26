@@ -4,7 +4,9 @@ const InfoCard = () => {
   return (
     <>
       <div className={`mb-5 ${styles.cardSize}`}>
-        <div className={`col-4  overflow-hidden w-100 ${styles.cardStyle}`}>
+        <div
+          className={`col-4  overflow-hidden w-100 rounded-4 border border-secondary-subtle bg-white  ${styles.cardStyle}`}
+        >
           <div className={styles.infoImg}>
             <img src="images/img/news.png" alt="infoImg" />
           </div>
