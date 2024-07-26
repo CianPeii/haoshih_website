@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./Layout.module.scss";
 // import Home from "./home/Home";
-import News from "./news/News";
+// import News from "./news/News";
 // import AllVendors from "./allVendor/AllVendors";
-// import Vendor from "./vendor/Vendor";
-// import ChatBtn from "./components/ChatBtn";
+import Vendor from "./vendor/Vendor";
+import Type from "./type/Type";
 
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
@@ -16,9 +16,10 @@ const Layout = () => {
       <div className="position-relative">
         <div className={styles.background}>
           {/* <Home /> */}
-          <News />
+          {/* <News /> */}
           {/* <AllVendors /> */}
           {/* <Vendor /> */}
+          <Type />
         </div>
       </div>
     </div>
