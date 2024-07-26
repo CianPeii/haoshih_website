@@ -180,7 +180,17 @@ const Vendor = () => {
       {/* VendorCards */}
       <div className="mb-5">
         <div class="container">
-          <div className="row">
+          <div className="row row-gap-4">
+            <VendorCard />
+            <VendorCard />
+            <VendorCard />
+            <VendorCard />
+            <VendorCard />
+            <VendorCard />
+            <VendorCard />
+            <VendorCard />
+            <VendorCard />
+            <VendorCard />
             <VendorCard />
             <VendorCard />
           </div>
