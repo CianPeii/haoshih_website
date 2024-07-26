@@ -26,11 +26,12 @@ const Vendor = () => {
   return (
     <>
       <NavBarShop />
-      {/* vendorHead */}
+      {/* vendorHeader */}
       <div
-        className={`p-3 d-flex justify-content-center align-items-center d-grid gap-4 ${styles.head}`}
+        className={`p-3 d-flex justify-content-center align-items-center d-grid gap-4 ${styles.header}`}
       >
         <div className="w-100 d-flex align-items-center d-grid gap-3">
+          {/* 攤販圖Logo */}
           <div className=" w-25">
             <img
               className="rounded-circle w-100 object-fit-contain "
@@ -38,25 +39,33 @@ const Vendor = () => {
             />
           </div>
           <div className=" w-75">
+            {/*攤販資訊} */}
             <div className="d-flex align-items-center">
               <h3>攤販名稱</h3>
               <i className=" fs-5 bi bi-heart px-3 text-black-50"></i>
             </div>
-            <p>
+            <p className={`${styles.headerText} overflow-hidden`}>
               攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數
-              攤販販介紹資料庫有限制字數
-              攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數
+              攤販販介紹資料庫有限制字數攤販販攤販販介紹資料庫有限制字數介紹資料庫有限制字數
+              攤販販介紹資料！！這最後！！
             </p>
-            <div className=" d-flex justify-content-end fs-5 d-grid gap-3 text-black-50">
-              <i className="bi bi-facebook"></i>
-              <i className="bi bi-instagram "></i>
-              <i className="bi bi-globe"></i>
+            {/* 攤販link */}
+            <div className=" d-flex justify-content-end fs-5 d-grid gap-3 ">
+              <a className="text-black-50" href="">
+                <i className="bi bi-facebook"></i>
+              </a>
+              <a className="text-black-50" href="">
+                <i className="bi bi-instagram "></i>
+              </a>
+              <a className="text-black-50" href="">
+                <i className="bi bi-globe"></i>
+              </a>
             </div>
           </div>
         </div>
 
         {/* carousel */}
-        <div className={`w-100 overflow-hidden ${styles.carousel}`}>
+        <div className={`w-100 overflow-hidden rounded-4 ${styles.carousel}`}>
           <div
             id="carouselExampleIndicators"
             className="carousel slide w-100"
@@ -84,7 +93,8 @@ const Vendor = () => {
                 data-bs-slide-to="2"
                 aria-label="Slide 3"
               ></button>
-            </div>
+            </div>{" "}
+            {/* 輪播圖片 */}
             <div className="carousel-inner ">
               <div className="carousel-item active">
                 <img
@@ -108,6 +118,7 @@ const Vendor = () => {
                 />
               </div>
             </div>
+            {/*  */}
             <button
               className="carousel-control-prev"
               type="button"
@@ -136,9 +147,9 @@ const Vendor = () => {
         </div>
       </div>
       {/* dropdown */}
-      <div className="dropdown text-end my-3 mx-5">
+      <div className="dropdown text-end my-3 mx-5 ">
         <button
-          className="btn btn-secondary dropdown-toggle"
+          className="btn btn-secondary dropdown-toggle rounded-4"
           type="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
@@ -146,7 +157,7 @@ const Vendor = () => {
           最新上架
         </button>
         <ul
-          className="dropdown-menu  text-center"
+          className={`dropdown-menu  text-center ${styles.ulPostion}`}
           aria-labelledby="dropdownMenuButton1"
         >
           <li>
@@ -167,10 +178,10 @@ const Vendor = () => {
         </ul>
       </div>
       {/* VendorCards */}
-      <div>
+      <div className="mb-5">
         <div class="container">
           <div className="row">
-            {/*  */}
+            <VendorCard />
             <VendorCard />
           </div>
         </div>

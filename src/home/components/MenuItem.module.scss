@@ -1,15 +1,6 @@
 .menuItems {
   background-color: #a1cae3;
-  border-radius: 20px;
   box-sizing: content-box;
   width: 20%;
   cursor: pointer;
-
-  .title ::after {
-    content: "";
-    width: 100%;
-    display: inline-block;
-    overflow: hidden;
-    height: 0;
-  }
 }
