@@ -1,13 +1,12 @@
 .cardSize {
   height: 450px;
-
+  .cardImg {
+    translate: -6% 10%;
+  }
   .cardBg {
-    // 透明藍色
-    // background: rgba(232, 246, 254, 0.5);
-    // 透明黃色
     background: rgba(247, 234, 87, 0.3);
-    translate: -10% 10%;
     z-index: 1;
+
     .cardText {
       text-align: justify;
     }
