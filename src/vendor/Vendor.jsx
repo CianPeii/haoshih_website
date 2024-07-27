@@ -51,13 +51,13 @@ const Vendor = () => {
             </p>
             {/* 攤販link */}
             <div className=" d-flex justify-content-end fs-5 d-grid gap-3 ">
-              <a className="text-black-50" href="">
+              <a className="text-black-50" href="#">
                 <i className="bi bi-facebook"></i>
               </a>
-              <a className="text-black-50" href="">
+              <a className="text-black-50" href="#">
                 <i className="bi bi-instagram "></i>
               </a>
-              <a className="text-black-50" href="">
+              <a className="text-black-50" href="#">
                 <i className="bi bi-globe"></i>
               </a>
             </div>
