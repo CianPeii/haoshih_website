@@ -18,7 +18,7 @@ const Map = () => {
               <div className="d-flex justify-content-between align-items-center">
                 <ThirdTitle title="市集平面地圖" />
                 <select
-                  class="form-select  w-25 "
+                  className="form-select  w-25 "
                   aria-label="Default select example"
                 >
                   <option selected>2024.07-2024.09</option>

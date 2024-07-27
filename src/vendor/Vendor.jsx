@@ -179,7 +179,7 @@ const Vendor = () => {
       </div>
       {/* VendorCards */}
       <div className="mb-5">
-        <div class="container">
+        <div className="container">
           <div className="row row-gap-4">
             <VendorCard />
             <VendorCard />
