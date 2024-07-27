@@ -2,6 +2,8 @@ import NavBar from "../components/NavBar";
 import MainBg from "../components/MainBg";
 import TypeCardBlue from "./components/TypeCardBlue";
 import TypeCardYellow from "./components/TypeCardYellow";
+import Footer from "../components/Footer";
+
 const vendorTypeList = [
   {
     id: 1,
@@ -60,6 +62,7 @@ const Type = () => {
           )
         )}
       </div>
+      <Footer />
     </>
   );
 };
