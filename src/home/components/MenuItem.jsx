@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "./MenuItem.module.scss";
 import { openLink } from "../../utils/link.js";
 

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "./MainBg.module.scss";
 
 const MainBg = ({ title, page }) => {

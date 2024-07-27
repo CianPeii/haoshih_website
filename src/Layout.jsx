@@ -3,7 +3,7 @@ import styles from "./Layout.module.scss";
 // import Home from "./home/Home";
 // import News from "./news/News";
 // import AllVendors from "./allVendor/AllVendors";
-import Vendor from "./vendor/Vendor";
+// import Vendor from "./vendor/Vendor";
 import Type from "./type/Type";
 
 // TODO:

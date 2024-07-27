@@ -2,11 +2,11 @@ import NavBarShop from "../components/NavBarShop";
 import styles from "./Vendor.module.scss";
 import { useEffect } from "react";
 import { Carousel } from "bootstrap";
-import VendorCard from "./components/VendorCard";
+import VendorCard from "./components/VendorCardYellow";
 import PageBtn from "../components/PageBtn";
 import Footer from "../components/Footer";
 
-function YourComponent() {
+function VendorCarousel() {
   useEffect(() => {
     const carouselElement = document.querySelector(
       "#carouselExampleIndicators"
@@ -93,7 +93,7 @@ const Vendor = () => {
                 data-bs-slide-to="2"
                 aria-label="Slide 3"
               ></button>
-            </div>{" "}
+            </div>
             {/* 輪播圖片 */}
             <div className="carousel-inner ">
               <div className="carousel-item active">
