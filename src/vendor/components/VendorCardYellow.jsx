@@ -1,4 +1,4 @@
-import styles from "./VenderCard.module.scss";
+import styles from "./VendorCard.module.scss";
 const VendorCard = () => {
   return (
     <>
