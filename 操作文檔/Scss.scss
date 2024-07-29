@@ -6,7 +6,17 @@
 // ＊注意第一個字母要大寫！！！
 // ————————————————————————————————
 // 4.變數宣告取用
-// https://hackmd.io/@Heidi-Liu/sass-css-preprocessor
+// 參考資料＝> https://hackmd.io/@Heidi-Liu/sass-css-preprocessor
+
+// className命名以該功能設定命名 ex:homeBg
+// 取用在JSX 檔案使用 PageName.module.scss
+
+// PageName.module.scss
+.homeBg {
+  background-color: yellow;
+}
+// PageName.jsx
+// ex:<div className="style.homeBg"/>
 
 // 範例
 $font-stack: Helvetica, sans-serif;
