@@ -1,7 +1,7 @@
 import NavBarShop from "../components/NavBarShop";
 import MemberSideBar from "./MemberSideBar";
 import SubTitleYellow from "../components/SubTitleYellow";
-import MemberForm from "./MemberForm";
+import MemberForm from "../components/MemberForm";
 import ChatBtn from "../components/ChatBtn";
 const MemberIndexNromal = () => {
   return (
