@@ -1,9 +1,7 @@
 const ChatBtn = () => {
   return (
     <>
-      <div className="rounded-circle p-2 mt-5  bg-dark-subtle d-inline">
-        <i className="bi bi-chat-dots"></i>
-      </div>
+      <i className="rounded-circle position-absolute  bottom-0 end-0 me-5 p-3 c-white  bg-blueGray d-inline bi bi-chat-dots fs-2"></i>
     </>
   );
 };

@@ -128,14 +128,14 @@ function MemberForm() {
           <div className="d-flex justify-content-center">
             <Button
               className="me-5"
-              variant="bg-white border border-2 rounded-pill px-4 py-2"
+              variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
               type="submit"
             >
               取消變更
             </Button>
             <Button
               className="ms-5"
-              variant=" bg-secondary text-white rounded-pill px-4 py-2"
+              variant=" bg-blueGray text-white rounded-pill px-4 py-2"
               type="submit"
             >
               儲存變更

@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <>
       <div
-        className={`W-100 p-5 m-5 d-flex justify-content-between ${styles.footerDiv}`}
+        className={`W-100 p-5 m-5 d-flex justify-content-between bg-blueGray c-white ${styles.footerDiv} `}
       >
         <div className="d-flex justify-content-around align-items-center w-50 border-end border-1 border-white">
           <div>
