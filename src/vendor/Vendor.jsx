@@ -28,7 +28,7 @@ const Vendor = () => {
       <NavBarShop />
       {/* vendorHeader */}
       <div
-        className={`p-3 d-flex justify-content-center align-items-center d-grid gap-4 ${styles.header}`}
+        className={`p-4 d-flex justify-content-center align-items-center d-grid gap-4 ${styles.header}`}
       >
         <div className="w-100 d-flex align-items-center d-grid gap-3">
           {/* 攤販圖Logo */}
@@ -50,7 +50,7 @@ const Vendor = () => {
               攤販販介紹資料！！這最後！！
             </p>
             {/* 攤販link */}
-            <div className=" d-flex justify-content-end fs-5 d-grid gap-3 ">
+            <div className=" d-flex justify-content-end fs-3 d-grid gap-3 ">
               <a className="text-black-50" href="#">
                 <i className="bi bi-facebook"></i>
               </a>
@@ -149,7 +149,7 @@ const Vendor = () => {
       {/* dropdown */}
       <div className="dropdown text-end my-3 mx-5 ">
         <button
-          className="btn btn-secondary dropdown-toggle rounded-4"
+          className="bg-white px-4 py-1 dropdown-toggle rounded-4"
           type="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
@@ -157,7 +157,7 @@ const Vendor = () => {
           最新上架
         </button>
         <ul
-          className={`dropdown-menu  text-center ${styles.ulPostion}`}
+          className="dropdown-menu  text-center"
           aria-labelledby="dropdownMenuButton1"
         >
           <li>
