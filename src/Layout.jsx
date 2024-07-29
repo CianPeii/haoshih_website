@@ -5,7 +5,8 @@ import styles from "./Layout.module.scss";
 // import AllVendors from "./allVendor/AllVendors";
 // import Vendor from "./vendor/Vendor";
 // import Type from "./type/Type";
-import Map from "./map/Map";
+// import Map from "./map/Map";
+import MemberIndexNromal from "./memberIndexNromal/MemberIndexNromal";
 
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
@@ -21,7 +22,8 @@ const Layout = () => {
           {/* <AllVendors /> */}
           {/* <Vendor /> */}
           {/* <Type /> */}
-          <Map />
+          {/* <Map /> */}
+          <MemberIndexNromal />
         </div>
       </div>
     </div>
