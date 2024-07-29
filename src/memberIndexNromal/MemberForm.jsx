@@ -26,10 +26,10 @@ function MemberForm() {
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit} className="">
       <Row className=" my-5">
-        <Col xl="2" className="text-end">
+        <Col sm="2" className="text-end">
           <p className="c-gray">一般會員</p>
         </Col>
-        <Col xl="6">
+        <Col sm="6">
           <div className="f-start">
             <h2 className="me-2">王</h2>
             <h2 className="me-3">小明</h2>
@@ -38,22 +38,22 @@ function MemberForm() {
         </Col>
       </Row>
       <Row>
-        <Col xl="2" className="text-end">
+        <Col sm="2" className="text-end">
           <p>身份字號</p>
         </Col>
-        <Col xl="6">A123***789</Col>
+        <Col sm="6">A123***789</Col>
       </Row>
       <Row>
-        <Col xl="2" className="text-end">
+        <Col sm="2" className="text-end">
           <p>會員帳號</p>
         </Col>
-        <Col xl="6">sming1234</Col>
+        <Col sm="6">sming1234</Col>
       </Row>
       <Form.Group as={Row} controlId="validationCustom01" className="mb-3">
-        <Form.Label column xl="2" className="text-end">
+        <Form.Label column sm="2" className="text-end">
           會員暱稱
         </Form.Label>
-        <Col xl="6">
+        <Col sm="6">
           <Form.Control type="text" placeholder="煞氣a明" required />
           <Form.Control.Feedback type="invalid">
             請輸入正確暱稱
@@ -61,10 +61,10 @@ function MemberForm() {
         </Col>
       </Form.Group>
       <Form.Group as={Row} controlId="validationCustom02" className="mb-3">
-        <Form.Label column xl="2" className="text-end">
+        <Form.Label column sm="2" className="text-end">
           手機號碼
         </Form.Label>
-        <Col xl="6">
+        <Col sm="6">
           <Form.Control type="tel" placeholder="0912***123" required />
           <Form.Control.Feedback type="invalid">
             請輸入正確手機號碼
@@ -72,10 +72,10 @@ function MemberForm() {
         </Col>
       </Form.Group>
       <Form.Group as={Row} controlId="validationCustom03" className="mb-3">
-        <Form.Label column xl="2" className="text-end">
+        <Form.Label column sm="2" className="text-end">
           電子信箱
         </Form.Label>
-        <Col xl="6">
+        <Col sm="6">
           <Form.Control type="email" placeholder="demo123@gmail.com" required />
           <Form.Control.Feedback type="invalid">
             請輸入正確電子信箱
@@ -84,10 +84,10 @@ function MemberForm() {
       </Form.Group>
 
       <Form.Group as={Row} controlId="validationCustom04" className="mb-5">
-        <Form.Label column xl="2" className="text-end">
+        <Form.Label column sm="2" className="text-end">
           通訊地址
         </Form.Label>
-        <Col xl="6">
+        <Col sm="6">
           <Form.Control
             type="address"
             placeholder="台中市南屯區公益路123號18樓之2"
@@ -100,10 +100,10 @@ function MemberForm() {
       </Form.Group>
 
       <Form.Group as={Row} controlId="validationCustom05" className="mb-3">
-        <Form.Label column xl="2" className="text-end">
+        <Form.Label column sm="2" className="text-end">
           修改密碼
         </Form.Label>
-        <Col xl="6">
+        <Col sm="6">
           <Form.Control type="password" placeholder="" required />
           <Form.Control.Feedback type="invalid">
             請輸入密碼
@@ -112,10 +112,10 @@ function MemberForm() {
       </Form.Group>
 
       <Form.Group as={Row} controlId="validationCustom06" className="mb-5">
-        <Form.Label column xl="2" className="text-end">
+        <Form.Label column sm="2" className="text-end">
           確認密碼
         </Form.Label>
-        <Col xl="6">
+        <Col sm="6">
           <Form.Control type="password" placeholder="" required />
           <Form.Control.Feedback type="invalid">
             請輸入密碼
@@ -124,7 +124,7 @@ function MemberForm() {
       </Form.Group>
 
       <Row>
-        <Col xl="8">
+        <Col sm="8">
           <div className="d-flex justify-content-center">
             <Button
               className="me-5"
