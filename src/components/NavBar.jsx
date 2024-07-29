@@ -1,5 +1,3 @@
-import styles from "./NavBar.module.scss";
-
 const data = [
   {
     id: 1,
@@ -44,14 +42,14 @@ const NavBar = () => {
               {data.map((item) => (
                 <a
                   key={item.id}
-                  className={`text-decoration-none c-black fs-5 px-3 py-2 ${styles.navItem}`}
+                  className={`text-decoration-none c-black fs-5 px-3 py-2 hover-bg-secondary rounded-pill`}
                   href="https"
                 >
                   {item.text}
                 </a>
               ))}
             </div>
-            <div className="rounded-pill fs-5 px-3 py-2  bg-primary c-white hover-bg-blueGrey ">
+            <div className="rounded-pill fs-5 px-3 py-2  bg-primary c-white hover-bg-blueGray cursor-point ">
               <a className="link-light text-decoration-none" href="https:">
                 市集商城
               </a>

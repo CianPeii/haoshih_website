@@ -1,27 +1,5 @@
-.logo {
-  cursor: pointer;
-}
-.navTitle {
-  h2 {
-    &:nth-child(1) {
-      color: #a1cae3;
-    }
-    &:nth-child(2) {
-      color: yellow;
-    }
-    &:nth-child(3) {
-      color: #b7efe0;
-    }
-    &:nth-child(4) {
-      color: #f8e7e5;
-    }
-  }
-}
-
-.ShoppQuantity {
-  border-radius: 50px;
+.ShopQuantity {
   padding: 0 8px;
-  background-color: gray;
   position: absolute;
   top: -10px;
   right: -15px;
@@ -33,6 +11,5 @@
   border-radius: 45px;
   border: 3px solid #a1cae3;
   padding: 10px 20px;
-  cursor: pointer;
   color: black;
 }

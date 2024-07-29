@@ -14,21 +14,21 @@ const NavBarShop = () => {
                 alt="logo"
               />
             </a>
-            <div className={`d-flex flex-row ${styles.navTitle}`}>
-              <h2>市</h2>
-              <h2>集</h2>
-              <h2>商</h2>
-              <h2>城</h2>
+            <div className="d-flex flex-row bg-white">
+              <h2 className="c-primary">市</h2>
+              <h2 className="c-secondary">集</h2>
+              <h2 className="c-lake">商</h2>
+              <h2 className="c-pink">城</h2>
             </div>
 
             {/* 未登入 ---------------*/}
-            <div className={styles.mallBtn}>
+            {/* <div className={styles.mallBtn}>
               <a className="link-dark text-decoration-none" href="https:">
                 登入
               </a>
-            </div>
+            </div> */}
             {/* 已登入------------------*/}
-            {/* <div
+            <div
               className={`d-flex flex-row  justify-content-between align-items-center ${styles.loginItem}`}
             >
               <div>
@@ -38,15 +38,18 @@ const NavBarShop = () => {
                     href="#"
                   >
                     <div className="bi bi-cart fs-2"></div>
-                    <span className={`text-white  ${styles.ShoppQuantity}`}>
+                    <span
+                      className={`c-white rounded-circle  bg-gray c-black fw-bolder cursor-pointer;
+ ${styles.ShopQuantity}`}
+                    >
                       0
                     </span>
                   </a>
                 </div>
               </div>
-              <div>煞氣a明</div>
+              <div className="mx-2">煞氣a明</div>
               <div>登出</div>
-            </div> */}
+            </div>
           </div>
         </nav>
       </div>
