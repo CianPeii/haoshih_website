@@ -5,7 +5,7 @@ const NavBarShop = () => {
   return (
     <>
       <div className="navBarShop">
-        <nav className="navbar navbar-expand p-3 bg-light">
+        <nav className="navbar navbar-expand p-3 bg-white">
           <div className="container-fluid">
             <a href="https://首頁">
               <img
