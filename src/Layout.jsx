@@ -1,13 +1,13 @@
 import React from "react";
 import styles from "./Layout.module.scss";
 // import Home from "./home/Home";
-import News from "./news/News";
+// import News from "./news/News";
 // import AllVendors from "./allVendor/AllVendors";
-import Vendor from "./vendor/Vendor";
+// import Vendor from "./vendor/Vendor";
 // import Type from "./type/Type";
 // import Map from "./map/Map";
 // import MemberIndexNromal from "./memberIndexNromal/MemberIndexNromal";
-
+import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
 // 2. 加上背景
@@ -20,10 +20,11 @@ const Layout = () => {
           {/* <Home /> */}
           {/* <News /> */}
           {/* <AllVendors /> */}
-          <Vendor />
+          {/* <Vendor /> */}
           {/* <Type /> */}
           {/* <Map /> */}
           {/* <MemberIndexNromal /> */}
+          <MemberIndexVendor />
         </div>
       </div>
     </div>
