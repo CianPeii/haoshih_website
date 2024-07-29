@@ -4,6 +4,7 @@ import SubTitleYellow from "../components/SubTitleYellow";
 import ThirdTitle from "./componets/ThirdTitle";
 import Footer from "../components/Footer";
 // import styles from "./Map.module.scss";
+import Form from "react-bootstrap/Form";
 
 const Map = () => {
   return (
@@ -17,14 +18,13 @@ const Map = () => {
             <div className="w-50 me-2 border border-dark p-3">
               <div className="d-flex justify-content-between align-items-center">
                 <ThirdTitle title="市集平面地圖" />
-                <select
-                  className="form-select  w-25 "
-                  aria-label="Default select example"
-                >
-                  <option selected>2024.07-2024.09</option>
-                  <option value="1">2024.07-2024.09</option>
-                  <option value="2">2024.07-2024.09</option>
-                </select>
+
+                <Form.Select className="w-25 " aria-label="Default select">
+                  <option value="1">2024/07-2024/08</option>
+                  <option value="2">2024/08-2024/09</option>
+                  <option value="3">2024/09-2024/10</option>
+                </Form.Select>
+                {/*  */}
               </div>
               <div>點選攤位示意圖！！！</div>
             </div>
@@ -67,7 +67,7 @@ const Map = () => {
               className="w-50"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3640.6038853440277!2d120.64844997697156!3d24.150545373293948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34693d9650422ae1%3A0x334dfd5796c49ff6!2z6LOH5bGV5ZyL6ZqbLeWOnyDos4fnrZbmnIMt5pW45L2N5pWZ6IKy56CU56m25omALeS4reWNgA!5e0!3m2!1szh-TW!2stw!4v1722097483550!5m2!1szh-TW!2stw"
               loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
+              referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
         </div>

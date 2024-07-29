@@ -2,18 +2,32 @@ $colors: (
   "primary": #a1cae3,
   "secondary": #f7ea57,
   "lake": #b7efe0,
-  "lightblue": #e8f6fe,
+  "lightBlue": #e8f6fe,
   "gray": #9e9e9e,
-  "blue-grey": #546975,
+  "blueGrey": #546975,
+  "white": #eee,
+  "black": #333,
 );
 
 @each $name, $color in $colors {
   .c-#{$name} {
-    color: $color;
+    color: $color !important;
   }
 
   .bg-#{$name} {
-    background-color: $color;
+    background-color: $color !important;
+  }
+
+  .hover-c-#{$name} {
+    &:hover {
+      color: $color;
+    }
+  }
+
+  .hover-bg-#{$name} {
+    &:hover {
+      background-color: $color;
+    }
   }
 }
 
@@ -33,11 +47,6 @@ $layouts: (
     justify-content: flex-end,
     align-items: center,
   ),
-  //   "center": (
-  //     display: flex,
-  //     justify-content: center,
-  //     align-items: center,
-  //   ),
 );
 
 @each $name, $props in $layouts {
