@@ -20,9 +20,8 @@ const Map = () => {
                 <ThirdTitle title="市集平面地圖" />
 
                 <Form.Select className="w-25 " aria-label="Default select">
-                  <option value="1">2024/07-2024/08</option>
-                  <option value="2">2024/08-2024/09</option>
-                  <option value="3">2024/09-2024/10</option>
+                  <option value="1">2024/07-2024/09</option>
+                  <option value="2">2024/10-2024/12</option>
                 </Form.Select>
                 {/*  */}
               </div>
