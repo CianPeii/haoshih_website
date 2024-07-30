@@ -3,8 +3,9 @@ import NavBar from "../components/NavBar";
 import SubTitleYellow from "../components/SubTitleYellow";
 import ThirdTitle from "./componets/ThirdTitle";
 import Footer from "../components/Footer";
-// import styles from "./Map.module.scss";
-import Form from "react-bootstrap/Form";
+
+import MarketFloorPlan from "./componets/MarketFloorPlan";
+import { Row, Col, Form } from "react-bootstrap";
 
 const Map = () => {
   return (
@@ -14,18 +15,22 @@ const Map = () => {
       <div className=" p-5">
         <SubTitleYellow title="攤位導覽" />
         <div>
-          <div className="d-flex  m-5  ">
+          <div className="d-flex   m-5  ">
             <div className="w-50 me-2 border border-dark p-3">
               <div className="d-flex justify-content-between align-items-center">
-                <ThirdTitle title="市集平面地圖" />
-
-                <Form.Select className="w-32" aria-label="Default select">
-                  <option value="1">2024/07-2024/09</option>
-                  <option value="2">2024/10-2024/12</option>
-                </Form.Select>
-                {/*  */}
+                <Col>
+                  <ThirdTitle title="市集平面地圖" />
+                </Col>
+                <Col xs="auto">
+                  <Form.Select size="sm">
+                    <option value="1">2024/07-2024/09</option>
+                    <option value="2">2024/10-2024/12</option>
+                  </Form.Select>
+                </Col>
               </div>
-              <div>點選攤位示意圖！！！</div>
+              <div>
+                <MarketFloorPlan />
+              </div>
             </div>
             <div className="border border-dark p-3 w-50">
               點選左側查看攤位詳情
