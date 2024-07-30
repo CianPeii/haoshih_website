@@ -1,0 +1,95 @@
+.container {
+  padding: 1rem;
+}
+
+.header {
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+.floorPlanRow {
+  margin-bottom: 1.5rem;
+}
+
+.floorPlan {
+  position: relative;
+  height: 490px;
+}
+
+.mainStage {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 1px solid #000;
+  padding: 10px;
+  writing-mode: vertical-rl;
+}
+
+.stallRow {
+  position: absolute;
+  right: 13%;
+  width: 70%;
+  display: flex;
+}
+
+.stall {
+  width: 20%;
+  aspect-ratio: 1;
+  border: 1px solid #000;
+  margin: 0 1%;
+}
+
+.dot {
+  position: absolute;
+  width: 4%;
+  height: 4%;
+  border-radius: 50%;
+}
+.dot2 {
+  position: absolute;
+  width: 4%;
+  height: 4%;
+  border-radius: 50%;
+  top: 100%;
+}
+.dotYellow {
+  background-color: #f7ea57;
+}
+
+.dotBlue {
+  background-color: #a1cae3;
+}
+
+.dotRed {
+  background-color: #f8e7e5;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.searchButton {
+  display: flex;
+  align-items: center;
+}
+
+.buttonIcon {
+  margin-right: 0.25rem;
+}
+
+.iconButton {
+  border-radius: 50%;
+  padding: 0.25rem;
+  margin-right: 0.5rem;
+}
+
+.iconButton:last-child {
+  margin-right: 0;
+}
