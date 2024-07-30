@@ -4,7 +4,8 @@ Bootstrap已經在App.js引入不需要寫
 
 public{
     images＝>放圖片跟icom
-    (如果會要在JSX檔案url public 為相對路徑，可省略public跟前面的路徑，例如：images/img/sun.png)
+    (如果會要在JSX檔案url public 為相對路徑，可省略public跟前面的路徑，
+     例如：images/img/sun.png)
 
 
 }

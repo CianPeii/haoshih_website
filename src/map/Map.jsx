@@ -19,7 +19,7 @@ const Map = () => {
               <div className="d-flex justify-content-between align-items-center">
                 <ThirdTitle title="市集平面地圖" />
 
-                <Form.Select className="w-25 " aria-label="Default select">
+                <Form.Select className="w-32" aria-label="Default select">
                   <option value="1">2024/07-2024/09</option>
                   <option value="2">2024/10-2024/12</option>
                 </Form.Select>

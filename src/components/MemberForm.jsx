@@ -1,8 +1,3 @@
-// const MemberForm = () => {
-
-// };
-// export default MemberForm;
-
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -24,7 +19,7 @@ function MemberForm() {
   };
 
   return (
-    <Form noValidate validated={validated} onSubmit={handleSubmit} className="">
+    <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <Row className=" my-5">
         <Col sm="2" className="text-end">
           <p className="c-gray">一般會員</p>
