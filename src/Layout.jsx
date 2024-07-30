@@ -6,8 +6,8 @@ import styles from "./Layout.module.scss";
 // import Vendor from "./vendor/Vendor";
 // import Type from "./type/Type";
 // import Map from "./map/Map";
-// import MemberIndexNromal from "./memberIndexNromal/MemberIndexNromal";
-import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
+import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
+// import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
 // 2. 加上背景
@@ -23,8 +23,8 @@ const Layout = () => {
           {/* <Vendor /> */}
           {/* <Type /> */}
           {/* <Map /> */}
-          {/* <MemberIndexNromal /> */}
-          <MemberIndexVendor />
+          <MemberIndexNormal />
+          {/* <MemberIndexVendor /> */}
         </div>
       </div>
     </div>

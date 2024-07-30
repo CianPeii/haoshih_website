@@ -3,7 +3,7 @@ import MemberSideBar from "./MemberSideBar";
 import SubTitleYellow from "../components/SubTitleYellow";
 import MemberForm from "../components/MemberForm";
 import ChatBtn from "../components/ChatBtn";
-const MemberIndexNromal = () => {
+const MemberIndexNormal = () => {
   return (
     <>
       <NavBarShop />
@@ -22,4 +22,4 @@ const MemberIndexNromal = () => {
   );
 };
 
-export default MemberIndexNromal;
+export default MemberIndexNormal;
