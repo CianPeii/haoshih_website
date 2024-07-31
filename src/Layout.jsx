@@ -16,7 +16,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
 // 2. 加上背景
-// 3. 加上 React Router（先不做）
+// 3. 加上 React Router
 const Layout = () => {
   const location = useLocation();
   return (
@@ -34,6 +34,8 @@ const Layout = () => {
           </Routes>
           {/* <MemberIndexNormal /> */}
           {/* <MemberIndexVendor /> */}
+          {/* <ShopCart /> */}
+          <CheckOutStep1 />
         </div>
       </div>
       {/* <LoginNormal /> */}

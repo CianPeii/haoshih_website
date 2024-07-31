@@ -20,7 +20,7 @@ function MemberForm() {
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-      <Row className=" my-5">
+      <Row className=" my-5 ">
         <Col sm="2" className="text-end">
           <p className="c-gray">一般會員</p>
         </Col>
