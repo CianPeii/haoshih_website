@@ -7,7 +7,7 @@ const MemberIndexNormal = () => {
   return (
     <>
       <NavBarShop />
-      <div class="row ">
+      <div class="row mw-100">
         <div className="col-2  border-end border-3">
           <MemberSideBar />
         </div>
