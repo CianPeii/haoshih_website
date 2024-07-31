@@ -11,7 +11,7 @@ import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
 // import Login from "./login/Login";
 // import LoginNormal from "./loginNormal/LoginNormal";
 // import LoginVendor from "./loginVendor/LoginVendor";
-import ShopCart from "./shopCart/ShopCart";
+// import ShopCart from "./shopCart/ShopCart";
 // import CheckOutStep1 from "./checkOut/CheckOutStep1";
 import { Routes, Route, useLocation } from "react-router-dom";
 // TODO:
