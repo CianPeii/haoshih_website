@@ -2,7 +2,7 @@ import styles from "./MemberSideBar.module.scss";
 const MemberSideBar = () => {
   return (
     <>
-      <div className="p-3 d-flex flex-column align-items-center bg-white">
+      <div className="p-3 d-flex flex-column align-items-center ">
         <div className="d-flex flex-column align-items-start">
           <h2 className="mb-5">會員專區</h2>
           <div className={`w-100 ${styles.sideBarSubTitle}`}>

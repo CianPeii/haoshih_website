@@ -54,15 +54,11 @@ $layouts: (
   ),
 );
 
-@each $name, $props in $layouts {
-  .f-#{$name} {
-    @each $property, $value in $props {
-      #{$property}: $value;
-    }
-  }
-}
-.w-32 {
-  width: 32%;
+.f-end-end {
+  display: flex;
+  align-content: end;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .f-col-center {
@@ -78,6 +74,25 @@ $layouts: (
   justify-content: space-around;
 }
 
+@each $name, $props in $layouts {
+  .f-#{$name} {
+    @each $property, $value in $props {
+      #{$property}: $value;
+    }
+  }
+}
+.w-32 {
+  width: 32%;
+}
+.w-113 {
+  width: 113%;
+}
+
 .w-10 {
   width: 10%;
+}
+
+.h-90 {
+  height: 90px;
+  object-fit: cover;
 }
