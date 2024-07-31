@@ -11,6 +11,7 @@ import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
 import Login from "./login/Login";
 import LoginNormal from "./loginNormal/LoginNormal";
 import LoginVendor from "./loginVendor/LoginVendor";
+import CheckOutStep1 from "./checkOut/CheckOutStep1";
 
 import { Routes, Route, useLocation } from 'react-router-dom';
 // TODO:
