@@ -8,11 +8,7 @@ const LoginVendor = () => {
         <div className=" d-flex rounded-5 overflow-hidden ">
           {/* 一般用戶 */}
           <div className="bg-lake w-50 f-col-around p-5 ">
-            <img
-              className="w-25 f-center"
-              src="images/icon/ShoppingCart.png"
-              alt=""
-            />
+            <img className="w-25 f-center" src="images/img/login2.png" alt="" />
             <p className="text-center w-50">
               探索創意，感受熱情 享受與創作者交流的美好時光
             </p>

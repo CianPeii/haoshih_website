@@ -10,9 +10,9 @@ import styles from "./Layout.module.scss";
 // import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
 // import Login from "./login/Login";
 // import LoginNormal from "./loginNormal/LoginNormal";
-// import LoginVendor from "./loginVendor/LoginVendor";
+import LoginVendor from "./loginVendor/LoginVendor";
 // import ShopCart from "./shopCart/ShopCart";
-import CheckOutStep1 from "./checkOut/CheckOutStep1";
+// import CheckOutStep1 from "./checkOut/CheckOutStep1";
 
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
@@ -32,11 +32,12 @@ const Layout = () => {
           {/* <MemberIndexNormal /> */}
           {/* <MemberIndexVendor /> */}
           {/* <ShopCart /> */}
-          <CheckOutStep1 />
+          {/* <CheckOutStep1 /> */}
         </div>
       </div>
+      {/* <Login /> */}
       {/* <LoginNormal /> */}
-      {/* <LoginVendor /> */}
+      <LoginVendor />
     </div>
   );
 };
