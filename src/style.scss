@@ -22,13 +22,13 @@ $colors: (
 
   .hover-c-#{$name} {
     &:hover {
-      color: $color;
+      color: $color !important;
     }
   }
 
   .hover-bg-#{$name} {
     &:hover {
-      background-color: $color;
+      background-color: $color !important;
     }
   }
 }
