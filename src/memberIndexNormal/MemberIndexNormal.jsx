@@ -1,5 +1,5 @@
 import NavBarShop from "../components/NavBarShop";
-import MemberSideBar from "./MemberSideBar";
+import MemberSideBar from "../components/MemberSideBar";
 import SubTitleYellow from "../components/SubTitleYellow";
 import MemberForm from "../components/MemberForm";
 import ChatBtn from "../components/ChatBtn";
@@ -7,8 +7,8 @@ const MemberIndexNormal = () => {
   return (
     <>
       <NavBarShop />
-      <div class="row bg-white postion-relavive">
-        <div className="col-2">
+      <div class="row ">
+        <div className="col-2  border-end border-3">
           <MemberSideBar />
         </div>
         <div className="col-10 ">
