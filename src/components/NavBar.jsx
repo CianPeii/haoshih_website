@@ -49,7 +49,7 @@ const NavBar = () => {
                 </a>
               ))}
             </div>
-            <div className="rounded-pill fs-5 px-3 py-2  bg-primary c-white hover-bg-blueGray cursor-point ">
+            <div className="rounded-pill fs-5 px-3 py-2 bg-primary c-white hover-bg-blueGray cursor-pointer">
               <a className="link-light text-decoration-none" href="/shop">
                 市集商城
               </a>
