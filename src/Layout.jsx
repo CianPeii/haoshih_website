@@ -6,14 +6,13 @@ import AllVendors from "./allVendor/AllVendors";
 import Vendor from "./vendor/Vendor";
 import Type from "./type/Type";
 import Map from "./map/Map";
-// import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
+import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
 // import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
 // import Login from "./login/Login";
 // import LoginNormal from "./loginNormal/LoginNormal";
 // import LoginVendor from "./loginVendor/LoginVendor";
-// import ShopCart from "./shopCart/ShopCart";
-import CheckOutStep1 from "./checkOut/CheckOutStep1";
-
+import ShopCart from "./shopCart/ShopCart";
+// import CheckOutStep1 from "./checkOut/CheckOutStep1";
 import { Routes, Route, useLocation } from "react-router-dom";
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
@@ -33,6 +32,7 @@ const Layout = () => {
             <Route path="/vendor" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
+            {/* TODO: default route */}
           </Routes>
           {/* <MemberIndexNormal /> */}
           {/* <MemberIndexVendor /> */}
