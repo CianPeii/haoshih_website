@@ -11,12 +11,13 @@ import styles from "./Layout.module.scss";
 // import Login from "./login/Login";
 // import LoginNormal from "./loginNormal/LoginNormal";
 // import LoginVendor from "./loginVendor/LoginVendor";
-import ShopCart from "./shopCart/ShopCart";
+// import ShopCart from "./shopCart/ShopCart";
+import CheckOutStep1 from "./checkOut/CheckOutStep1";
 
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
 // 2. 加上背景
-// 3. 加上 React Router（先不做）
+// 3. 加上 React Router
 const Layout = () => {
   return (
     <div className="layout">
@@ -30,7 +31,8 @@ const Layout = () => {
           {/* <Map /> */}
           {/* <MemberIndexNormal /> */}
           {/* <MemberIndexVendor /> */}
-          <ShopCart />
+          {/* <ShopCart /> */}
+          <CheckOutStep1 />
         </div>
       </div>
       {/* <LoginNormal /> */}
