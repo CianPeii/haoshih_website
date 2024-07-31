@@ -73,6 +73,10 @@ $layouts: (
   align-items: center;
   justify-content: space-around;
 }
+.f-space-evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
 
 @each $name, $props in $layouts {
   .f-#{$name} {
@@ -84,9 +88,6 @@ $layouts: (
 .w-32 {
   width: 32%;
 }
-.w-113 {
-  width: 113%;
-}
 
 .w-10 {
   width: 10%;
@@ -95,4 +96,8 @@ $layouts: (
 .h-90 {
   height: 90px;
   object-fit: cover;
+}
+
+.w-fit {
+  width: fit-content;
 }
