@@ -5,6 +5,7 @@ import ShopingCartForm from "./ShopingCartForm";
 import { Button } from "react-bootstrap";
 import Footer from "../components/Footer";
 
+
 const ShopCart = () => {
   return (
     <>
@@ -15,6 +16,7 @@ const ShopCart = () => {
         </div>
         <div className="col-10 ">
           <SubTitleYellow title="購物車" />
+          <ShopingCartForm />
           <ShopingCartForm />
           <ShopingCartForm />
           <div className="f-end-end mt-5 gap-3 ">
