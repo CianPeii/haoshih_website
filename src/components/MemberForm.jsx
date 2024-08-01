@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 // import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 
-function MemberForm() {
+function MemberForm(props) {
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
@@ -18,6 +18,7 @@ function MemberForm() {
     setValidated(true);
   };
 
+  // TO-DO: 把應該要改成 * 的部分用 string method 轉換成 *
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <Row className=" my-5 ">
@@ -26,9 +27,8 @@ function MemberForm() {
         </Col>
         <Col sm="6">
           <div className="f-start">
-            <h2 className="me-2">王</h2>
-            <h2 className="me-3">小明</h2>
-            <i className="bi bi-pencil-fill c-gray" />
+            <h2 className="me-2">{props.profile.first_name}</h2>
+            <h2 className="me-3">{props.profile.last_name}</h2>
           </div>
         </Col>
       </Row>
@@ -36,20 +36,46 @@ function MemberForm() {
         <Col sm="2" className="text-end">
           <p>身份字號</p>
         </Col>
-        <Col sm="6">A123***789</Col>
+        <Col sm="6">{props.profile.tw_id}</Col>
       </Row>
       <Row>
         <Col sm="2" className="text-end">
           <p>會員帳號</p>
         </Col>
-        <Col sm="6">sming1234</Col>
+        <Col sm="6">{props.profile.account}</Col>
       </Row>
+      <Form.Group as={Row} controlId="validationCustom00" className="mb-3">
+        <Form.Label column sm="2" className="text-end">
+          會員姓名
+        </Form.Label>
+        <Col sm="2">
+          <Form.Control
+            type="text"
+            placeholder={props.profile.first_name}
+            required
+          />
+        </Col>
+        <Col sm="4">
+          <Form.Control
+            type="text"
+            placeholder={props.profile.last_name}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            請輸入正確姓名
+          </Form.Control.Feedback>
+        </Col>
+      </Form.Group>
       <Form.Group as={Row} controlId="validationCustom01" className="mb-3">
         <Form.Label column sm="2" className="text-end">
           會員暱稱
         </Form.Label>
         <Col sm="6">
-          <Form.Control type="text" placeholder="煞氣a明" required />
+          <Form.Control
+            type="text"
+            placeholder={props.profile.nickname}
+            required
+          />
           <Form.Control.Feedback type="invalid">
             請輸入正確暱稱
           </Form.Control.Feedback>
@@ -60,7 +86,7 @@ function MemberForm() {
           手機號碼
         </Form.Label>
         <Col sm="6">
-          <Form.Control type="tel" placeholder="0912***123" required />
+          <Form.Control type="tel" placeholder={props.profile.phone} required />
           <Form.Control.Feedback type="invalid">
             請輸入正確手機號碼
           </Form.Control.Feedback>
@@ -71,7 +97,11 @@ function MemberForm() {
           電子信箱
         </Form.Label>
         <Col sm="6">
-          <Form.Control type="email" placeholder="demo123@gmail.com" required />
+          <Form.Control
+            type="email"
+            placeholder={props.profile.email}
+            required
+          />
           <Form.Control.Feedback type="invalid">
             請輸入正確電子信箱
           </Form.Control.Feedback>
@@ -85,7 +115,7 @@ function MemberForm() {
         <Col sm="6">
           <Form.Control
             type="address"
-            placeholder="台中市南屯區公益路123號18樓之2"
+            placeholder={props.profile.address}
             required
           />
           <Form.Control.Feedback type="invalid">
