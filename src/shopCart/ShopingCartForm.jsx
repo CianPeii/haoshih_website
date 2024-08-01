@@ -19,7 +19,7 @@ const ShopingCartForm = () => {
               </tr>
             </thead>
             <tbody>
-              <ShopList />
+              {/* <ShopList /> */}
               <ShopList />
             </tbody>
           </Table>

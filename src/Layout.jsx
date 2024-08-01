@@ -11,7 +11,7 @@ import Map from "./map/Map";
 // import Login from "./login/Login";
 // import LoginNormal from "./loginNormal/LoginNormal";
 // import LoginVendor from "./loginVendor/LoginVendor";
-// import ShopCart from "./shopCart/ShopCart";
+import ShopCart from "./shopCart/ShopCart";
 import CheckOutStep1 from "./checkOut/CheckOutStep1";
 
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -25,7 +25,7 @@ const Layout = () => {
     <div className="layout">
       <div className="position-relative">
         <div className={styles.background}>
-          <Routes location={location}>
+          {/* <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/haoshih" element={<Home />} />
             <Route path="/news" element={<News />} />
@@ -33,10 +33,11 @@ const Layout = () => {
             <Route path="/vendor" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
-          </Routes>
+            <Route path="/ShopCart/:uid" element={<ShopCart />} />
+          </Routes> */}
           {/* <MemberIndexNormal /> */}
           {/* <MemberIndexVendor /> */}
-          {/* <ShopCart /> */}
+          <ShopCart />
           {/* <CheckOutStep1 /> */}
         </div>
       </div>
