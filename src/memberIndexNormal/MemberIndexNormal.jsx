@@ -5,15 +5,20 @@ import MemberForm from "../components/MemberForm";
 import ChatBtn from "../components/ChatBtn";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const MemberIndexNormal = () => {
+const MemberIndexNormal = (props) => {
   const [memberData, setMemberData] = useState(null);
+  const { uid } = useParams();
+
+  // 現在可以使用 uid 變數
+  console.log("User ID:", uid);
 
   useEffect(() => {
     const fetchMemberData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3200/api/member/profile/2"
+          `http://localhost:3200/api/member/profile/${uid}`
         );
         setMemberData(response.data);
         // console.log("Member Data:", response.data); // 數據首次被獲取時在控制台顯示
@@ -47,20 +52,3 @@ const MemberIndexNormal = () => {
 };
 
 export default MemberIndexNormal;
-
-// const [profile, setProfile] = useState({
-//   uid: 1,
-//   account: "mingming0916",
-//   password: "123456",
-//   first_name: "王",
-//   last_name: "曉明",
-//   nickname: "煞氣a明",
-//   phone: "0911222333",
-//   address: "台中市南屯區公益路二段51號18樓",
-//   email: "demo@gmail.com",
-//   tw_id: "A123456789",
-// });
-
-{
-  /* <MemberForm profile={profile} /> */
-}
