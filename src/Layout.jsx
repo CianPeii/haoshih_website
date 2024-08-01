@@ -33,7 +33,7 @@ const Layout = () => {
             <Route path="/vendor" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
-            <Route path="/member" element={<MemberIndexNormal />} />
+            <Route path="/member/:uid" element={<MemberIndexNormal />} />
           </Routes>
           {/* <MemberIndexNormal /> */}
           {/* <MemberIndexVendor /> */}
