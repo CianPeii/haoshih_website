@@ -20,34 +20,31 @@ const NavBarShop = () => {
               <h2 className="c-lake">商</h2>
               <h2 className="c-pink">城</h2>
             </div>
-
             {/* 未登入 ---------------*/}
-            {/* <div className={styles.mallBtn}>
+            {/* <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>
               <a className="link-dark text-decoration-none" href="https:">
                 登入
               </a>
             </div> */}
             {/* 已登入------------------*/}
             <div
-              className={`d-flex flex-row  justify-content-between align-items-center ${styles.loginItem}`}
+              className={`d-flex flex-row  justify-content-between align-items-center gap-1 ${styles.loginItem}`}
             >
               <div>
-                <div className="container">
-                  <a
-                    className="position-relative text-decoration-none link-dark"
-                    href="#"
+                <a
+                  className="position-relative text-decoration-none link-dark"
+                  href="#"
+                >
+                  <div className="bi bi-cart fs-2"></div>
+                  <span
+                    className={`c-white rounded-circle  bg-gray c-black fw-bolder cursor-pointerer; ${styles.ShopQuantity}`}
                   >
-                    <div className="bi bi-cart fs-2"></div>
-                    <span
-                      className={`c-white rounded-circle  bg-gray c-black fw-bolder cursor-pointerer;
- ${styles.ShopQuantity}`}
-                    >
-                      0
-                    </span>
-                  </a>
-                </div>
+                    0
+                  </span>
+                </a>
               </div>
-              <div className="mx-2">煞氣a明</div>
+
+              <div>卍煞氣a明卍</div>
               <div>登出</div>
             </div>
           </div>
