@@ -4,7 +4,7 @@ const TypeCardBlue = ({ item }) => {
   return (
     <>
       <div
-        className={`d-flex justify-content-center p-5 mt-5 ${styles.cardSize}`}
+        className={`d-flex justify-content-center p-5 mt-5 font-special ${styles.cardSize}`}
       >
         <div className="col-6">
           <img
@@ -14,10 +14,10 @@ const TypeCardBlue = ({ item }) => {
           />
         </div>
         <div
-          className={`rounded-5 col-6 d-flex flex-column p-5 ${styles.cardBg}`}
+          className={`rounded-5 col-6 d-flex flex-column  p-5 ${styles.cardBg}`}
         >
-          <h1 className="mb-2">{title}</h1>
-          <p className={styles.cardText}>{text}</p>
+          <h1 className="mb-5">{title}</h1>
+          <p className={`lh-base fs-3 ${styles.cardText}`}>{text}</p>
         </div>
       </div>
     </>

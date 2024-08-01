@@ -34,7 +34,11 @@ const ShopList = () => {
           <Button variant="outline-secondary">+</Button>
         </InputGroup>
       </td>
-      <td className="text-center align-middle">NT$ 240</td>
+      <td className="text-center align-middle">NT$ 240 </td>
+      {/*垃圾桶icon */}
+      <td className="text-center align-middle">
+        <i class="bi bi-trash3-fill c-blueGray"></i>
+      </td>
     </tr>
   );
 };

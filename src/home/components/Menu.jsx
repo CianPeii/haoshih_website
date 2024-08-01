@@ -38,10 +38,12 @@ const Menu = () => {
     <>
       <div>
         <h2 className="py-5 text-center">功能介紹</h2>
-        <div className="row  d-flex justify-content-center mw-100">
-          {menuItems.map((item) => (
-            <MenuItem key={item.id} item={item} />
-          ))}
+        <div className="container">
+          <div className="row  d-flex justify-content-center mw-100">
+            {menuItems.map((item) => (
+              <MenuItem key={item.id} item={item} />
+            ))}
+          </div>
         </div>
       </div>
     </>
