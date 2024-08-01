@@ -63,6 +63,14 @@ $layouts: (
   ),
 );
 
+@each $name, $props in $layouts {
+  .f-#{$name} {
+    @each $property, $value in $props {
+      #{$property}: $value;
+    }
+  }
+}
+
 .f-end-end {
   display: flex;
   align-content: end;
@@ -73,8 +81,8 @@ $layouts: (
 .f-col-center {
   display: flex;
   flex-direction: column;
-  align-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .f-col-around {
@@ -89,24 +97,8 @@ $layouts: (
   justify-content: space-evenly;
 }
 
-@each $name, $props in $layouts {
-  .f-#{$name} {
-    @each $property, $value in $props {
-      #{$property}: $value;
-    }
-  }
-}
-
 .cursor-pointer {
   cursor: pointer;
-}
-
-.w-32 {
-  width: 32%;
-}
-
-.w-10 {
-  width: 10%;
 }
 
 .w-fit {
