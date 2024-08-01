@@ -1,3 +1,15 @@
+// font family setting
+@font-face {
+  font-family: "ChenYuluoyan";
+  src:
+    local("ChenYuluoyan-Thin-Monospaced"),
+    url("./font/ChenYuluoyan-Thin-Monospaced.ttf") format("truetype");
+}
+
+.font-special {
+  font-family: "ChenYuluoyan";
+}
+
 $colors: (
   "primary": #a1cae3,
   "secondary": #f7ea57,
@@ -32,9 +44,6 @@ $colors: (
     }
   }
 }
-.cursor-pointer {
-  cursor: pointer;
-}
 
 $layouts: (
   "center": (
@@ -67,12 +76,14 @@ $layouts: (
   align-content: center;
   align-items: center;
 }
+
 .f-col-around {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
 }
+
 .f-space-evenly {
   display: flex;
   justify-content: space-evenly;
@@ -85,17 +96,17 @@ $layouts: (
     }
   }
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .w-32 {
   width: 32%;
 }
 
 .w-10 {
   width: 10%;
-}
-
-.h-90 {
-  height: 90px;
-  object-fit: cover;
 }
 
 .w-fit {
