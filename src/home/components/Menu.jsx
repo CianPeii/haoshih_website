@@ -37,7 +37,7 @@ const Menu = () => {
   return (
     <>
       <div>
-        <h1 className="fs-1 py-5 text-center font-special">功能介紹</h1>
+        <h1 className="fs-larger py-5 text-center font-special">功能介紹</h1>
         <div className="container">
           <div className="row  d-flex justify-content-center mw-100">
             {menuItems.map((item) => (

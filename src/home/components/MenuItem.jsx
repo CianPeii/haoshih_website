@@ -11,7 +11,7 @@ const MenuItem = ({ item }) => {
         onClick={() => openLink(link)}
       >
         <img className="w-50" src={img} alt={title} />
-        <h2 className="pt-4 text-white font-special">{title}</h2>
+        <h1 className="pt-4 text-white font-special ">{title}</h1>
       </div>
     </>
   );
