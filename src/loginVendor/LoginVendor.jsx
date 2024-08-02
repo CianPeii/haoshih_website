@@ -20,7 +20,7 @@ const LoginVendor = () => {
             <p className="text-center w-50 font-special fs-3 c-gray">
               分享創意，連結熱情 享受與客戶交流的美好
             </p>
-            <i className="bi bi-arrow-left-circle h1 fw-bolder c-white"></i>
+            <i className="bi bi-arrow-left-circle fs-1 fw-bolder c-white"></i>
           </div>
 
           {/* 登入 */}
