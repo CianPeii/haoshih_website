@@ -5,7 +5,7 @@ const menuItems = [
     id: 1,
     img: "images/icon/News.png",
     title: "最新消息",
-    link: "/new",
+    link: "/news",
   },
   {
     id: 2,

@@ -7,12 +7,12 @@ import Vendor from "./vendor/Vendor";
 import Type from "./type/Type";
 import Map from "./map/Map";
 import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
-// import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
-// import Login from "./login/Login";
-// import LoginNormal from "./loginNormal/LoginNormal";
-// import LoginVendor from "./loginVendor/LoginVendor";
-// import ShopCart from "./shopCart/ShopCart";
-// import CheckOutStep1 from "./checkOut/CheckOutStep1";
+import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
+import Login from "./login/Login";
+import LoginNormal from "./loginNormal/LoginNormal";
+import LoginVendor from "./loginVendor/LoginVendor";
+import ShopCart from "./shopCart/ShopCart";
+import CheckOutStep1 from "./checkOut/CheckOutStep1";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 // TODO:
@@ -33,7 +33,6 @@ const Layout = () => {
             <Route path="/vendor" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
-            <Route path="/MemberIndexNormal" element={<MemberIndexNormal />} />
 
             {/* TODO: default route */}
           </Routes>
