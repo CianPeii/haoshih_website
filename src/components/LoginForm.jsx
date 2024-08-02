@@ -37,15 +37,15 @@ function LoginForm() {
           <div className="f-center">
             <Button
               className="bg-white"
-              variant=" border border-2 c-gray rounded-pill px-4 py-2 w-50"
+              variant=" border border-2 c-gray rounded-pill px-4 py-2 w-25"
               type="submit"
             >
               登入
             </Button>
           </div>
-          <div className="f-start border-top p-3 mt-4 w-100">
-            <div className="flex-grow-1 fs-5"> 其他登入</div>
-            <div className="f-center gap-2 w-25">
+          <div className="f-start border-top p-3 mt-4 gap-3 w-100">
+            <div className="fs-6"> 其他登入</div>
+            <div className="f-center gap-4 w-25">
               <img className="w-25" src="images/icon/google.png" alt="google" />
               <img
                 className="w-25"
