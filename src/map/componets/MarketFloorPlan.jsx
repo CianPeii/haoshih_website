@@ -1,23 +1,30 @@
 import React from "react";
+import axios from 'axios';
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import styles from "./MarketFloorPlan.module.scss";
 
+
 const MarketFloorPlan = () => {
+  let vendor_unmber = 1;
   return (
     <Container fluid className={styles.container}>
       <Row className={styles.floorPlanRow}>
         <Col>
           <div className={styles.floorPlan}>
             <div className={styles.mainStage}>主舞台</div>
-
+            
             {[...Array(4)].map((_, rowIndex) => (
               <div
                 key={rowIndex}
                 className={styles.stallRow}
                 style={{ top: `${20 + rowIndex * 20}%` }}
-              >
+                >
                 {[...Array(5)].map((_, colIndex) => (
-                  <div key={colIndex} className={styles.stall} />
+                  <div key={colIndex} 
+                  className={styles.stall}
+                  >
+                    {vendor_unmber++}
+                  </div>
                 ))}
               </div>
             ))}
@@ -80,3 +87,6 @@ const MarketFloorPlan = () => {
 };
 
 export default MarketFloorPlan;
+
+
+//useEffect()

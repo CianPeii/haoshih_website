@@ -4,6 +4,7 @@ import SubTitleYellow from "../components/SubTitleYellow";
 import ThirdTitle from "./componets/ThirdTitle";
 import Footer from "../components/Footer";
 
+import VendorDetail from "./componets/VendorDetail";
 import MarketFloorPlan from "./componets/MarketFloorPlan";
 import { Row, Col, Form } from "react-bootstrap";
 
@@ -32,8 +33,8 @@ const Map = () => {
                 <MarketFloorPlan />
               </div>
             </div>
-            <div className="border border-dark p-3 w-50">
-              點選左側查看攤位詳情
+            <div className="border border-dark p-3 w-50" id="shop">
+              <VendorDetail/>
             </div>
           </div>
         </div>
