@@ -15,8 +15,8 @@ const AllVendorsCard = () => {
               店家介紹，最多兩行最多兩行最多兩行
               店家介紹，最多兩行最多兩行最多兩行
             </p>
-            <div className={styles.cardTag}>#標籤限制</div>
-            <div className={styles.cardTag}>#最多四字</div>
+            <div className={styles.cardTag}>#標籤限制六字</div>
+            <div className={styles.cardTag}>#最多只能六字</div>
           </div>
         </div>
       </div>

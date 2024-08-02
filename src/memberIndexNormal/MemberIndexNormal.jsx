@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+import Footer from "../components/Footer";
 const MemberIndexNormal = (props) => {
   const [memberData, setMemberData] = useState(null);
   const { uid } = useParams();
@@ -35,7 +36,7 @@ const MemberIndexNormal = (props) => {
   return (
     <>
       <NavBarShop />
-      <div class="row ">
+      <div class="row mw-100 bg-white">
         <div className="col-2  border-end border-3">
           <MemberSideBar />
         </div>
@@ -47,6 +48,7 @@ const MemberIndexNormal = (props) => {
           <ChatBtn />
         </div>
       </div>
+      <Footer />
     </>
   );
 };

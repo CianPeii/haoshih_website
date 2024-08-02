@@ -5,6 +5,7 @@ import AllVendorsCard from "./components/AllVendorsCard";
 import PageBtn from "../components/PageBtn";
 import Footer from "../components/Footer";
 import styles from "./AllVendors.module.scss";
+import ChatBtn from "../components/ChatBtn";
 
 const AllVendors = () => {
   return (
@@ -21,6 +22,7 @@ const AllVendors = () => {
       </div>
       <PageBtn />
       <Footer />
+      <ChatBtn />
     </>
   );
 };
