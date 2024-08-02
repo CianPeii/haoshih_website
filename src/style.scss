@@ -5,9 +5,16 @@
     local("ChenYuluoyan-Thin-Monospaced"),
     url("./font/ChenYuluoyan-Thin-Monospaced.ttf") format("truetype");
 }
-
 .font-special {
   font-family: "ChenYuluoyan";
+}
+// fontSize
+.fs-larger {
+  font-size: 4rem !important;
+  font-weight: normal !important;
+}
+.fs-medium {
+  font-size: 3.6rem !important;
 }
 
 $colors: (
@@ -103,10 +110,4 @@ $layouts: (
 
 .w-fit {
   width: fit-content;
-}
-.fs-1 {
-  font-size: 4rem !important;
-}
-.fs-2 {
-  font-size: 3.4rem !important;
 }
