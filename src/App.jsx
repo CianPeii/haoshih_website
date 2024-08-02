@@ -1,8 +1,9 @@
-import { Navbar, useState } from "react-bootstrap";
 import Layout from "./Layout";
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+
 import "./style.scss";
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import "./font/ChenYuluoyan-Thin-Monospaced.ttf";
 
 function App() {
   return (
