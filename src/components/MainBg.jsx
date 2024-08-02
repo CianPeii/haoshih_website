@@ -6,7 +6,7 @@ const MainBg = ({ title, page }) => {
       <div className="position-relative">
         <div className={`${styles.mainBg} ${styles[`${page}BgUrl`]}`}>
           <div
-            className={`fs-1 bg-blueGray c-white opacity-75 font-special ${styles.mainText}`}
+            className={`fs-1 bg-blueGray c-white opacity-75 font-special ${styles.mainText} `}
           >
             {title}
           </div>
