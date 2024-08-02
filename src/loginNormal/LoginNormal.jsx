@@ -9,11 +9,12 @@ const LoginNormal = () => {
         <div className=" d-flex rounded-5 overflow-hidden ">
           {/* 一般用戶 */}
           <div className="bg-primary w-50 f-col-around p-5 gap-5">
-            <div className="w-50" style={{ height: "200px" }}>
+            <div className="w-50">
               <img
-                className=" w-100 f-center object-fit-cover"
+                className=" w-100 f-center object-fit-cover "
                 src="images/img/login1.png"
                 alt=""
+                style={{ height: "200px" }}
               />
             </div>
 

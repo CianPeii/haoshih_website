@@ -3,6 +3,7 @@ import MemberSideBar from "../components/MemberSideBar";
 import SubTitleYellow from "../components/SubTitleYellow";
 import MemberForm from "../components/MemberForm";
 import ChatBtn from "../components/ChatBtn";
+import Footer from "../components/Footer";
 const MemberIndexNormal = () => {
   return (
     <>
@@ -14,10 +15,10 @@ const MemberIndexNormal = () => {
         <div className="col-10 ">
           <SubTitleYellow title="會員資料" />
           <MemberForm />
-
           <ChatBtn />
         </div>
       </div>
+      <Footer />
     </>
   );
 };

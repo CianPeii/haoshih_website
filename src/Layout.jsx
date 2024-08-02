@@ -6,7 +6,7 @@ import AllVendors from "./allVendor/AllVendors";
 import Vendor from "./vendor/Vendor";
 import Type from "./type/Type";
 import Map from "./map/Map";
-// import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
+import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
 // import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
 // import Login from "./login/Login";
 // import LoginNormal from "./loginNormal/LoginNormal";
@@ -33,6 +33,8 @@ const Layout = () => {
             <Route path="/vendor" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
+            <Route path="/MemberIndexNormal" element={<MemberIndexNormal />} />
+
             {/* TODO: default route */}
           </Routes>
           {/* <MemberIndexNormal /> */}

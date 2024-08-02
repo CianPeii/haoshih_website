@@ -16,8 +16,8 @@ const TypeCardBlue = ({ item }) => {
         <div
           className={`rounded-5 col-6 d-flex flex-column  p-5 ${styles.cardBg}`}
         >
-          <h1 className="mb-5 fs-1">{title}</h1>
-          <p className={`fs-3 lh-base ${styles.cardText}`}>{text}</p>
+          <h1 className="mb-3 fs-1">{title}</h1>
+          <h2 className={`lh-base  ${styles.cardText}`}>{text}</h2>
         </div>
       </div>
     </>
