@@ -38,8 +38,8 @@ const Layout = () => {
           {/* <MemberIndexVendor /> */}
           {/* <ShopCart /> */}
           {/* <CheckOutStep1 /> */}
-          {/* <Vendor /> */}
-          {/* <Map /> */}
+          {/* <Vendor />
+          <Map /> */}
         </div>
       </div>
       {/* <Login /> */}
