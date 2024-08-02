@@ -14,7 +14,7 @@ const InfoCard = () => {
             <div className="position-relative">
               <div>
                 <div className={` bg-secondary ${styles.date}`}>
-                  <div className="h1">08</div>
+                  <div className="fs-1">08</div>
                   <div className="fs-6">/</div>
                   <div className="fs-3">16</div>
                 </div>
