@@ -12,7 +12,7 @@ import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
 // import LoginNormal from "./loginNormal/LoginNormal";
 // import LoginVendor from "./loginVendor/LoginVendor";
 // import ShopCart from "./shopCart/ShopCart";
-import CheckOutStep1 from "./checkOut/CheckOutStep1";
+// import CheckOutStep1 from "./checkOut/CheckOutStep1";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 // TODO:
@@ -33,6 +33,9 @@ const Layout = () => {
             <Route path="/vendor" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
+            <Route path="/MemberIndexNormal" element={<MemberIndexNormal />} />
+
+            {/* TODO: default route */}
             <Route path="/member/:uid" element={<MemberIndexNormal />} />
             <Route path="/vendor/:vid" element={<MemberIndexVendor />} />
           </Routes>

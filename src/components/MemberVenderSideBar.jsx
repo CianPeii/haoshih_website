@@ -2,10 +2,10 @@ import styles from "./MemberVenderSideBar.module.scss";
 const MemberVenderSideBar = () => {
   return (
     <>
-      <div className="p-3 d-flex flex-column align-items-center   ">
-        <div className="d-flex flex-column align-items-start">
+      <div className="p-3 d-flex flex-column align-items-center font-special">
+        <div className="d-flex flex-column align-items-start ">
           <h2 className="mb-5">會員專區</h2>
-          <div className={`w-100  ${styles.sideBarSubTitle}`}>
+          <div className={`w-100 ${styles.sideBarSubTitle}`}>
             <h4>會員資料</h4>
             <h4>我要擺攤</h4>
             <h4>

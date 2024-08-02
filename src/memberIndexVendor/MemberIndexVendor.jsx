@@ -32,7 +32,7 @@ const MemberIndexVendor = () => {
   return (
     <>
       <NavBarShop />
-      <div class="row bg-white postion-relavive">
+      <div class="row mw-100 bg-white">
         <div className="col-3  border-end border-3">
           <MemberVenderSideBar />
         </div>
