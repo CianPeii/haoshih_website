@@ -7,18 +7,21 @@ const NavBarShop = () => {
       <div className="navBarShop">
         <nav className="navbar navbar-expand p-3 bg-white">
           <div className="container-fluid">
-            <a href="https://首頁">
+            <a href="/">
               <img
                 className={styles.logo}
                 src="images/img/logo.png"
                 alt="logo"
               />
             </a>
+
             <div className="d-flex flex-row bg-white">
-              <h2 className="c-primary">市</h2>
-              <h2 className="c-secondary">集</h2>
-              <h2 className="c-lake">商</h2>
-              <h2 className="c-pink">城</h2>
+              <a className="f-center text-decoration-none" href="/">
+                <h2 className="c-primary">市</h2>
+                <h2 className="c-secondary">集</h2>
+                <h2 className="c-lake">商</h2>
+                <h2 className="c-pink">城</h2>
+              </a>
             </div>
             {/* 未登入 ---------------*/}
             {/* <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>
@@ -44,7 +47,7 @@ const NavBarShop = () => {
                 </a>
               </div>
 
-              <div>卍煞氣a明卍</div>
+              <div>煞氣a明</div>
               <div>登出</div>
             </div>
           </div>
