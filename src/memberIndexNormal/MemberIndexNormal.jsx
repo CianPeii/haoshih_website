@@ -12,7 +12,7 @@ const MemberIndexNormal = (props) => {
   const { uid } = useParams();
 
   // 現在可以使用 uid 變數
-  console.log("User ID:", uid);
+  // console.log("User ID:", uid);
 
   useEffect(() => {
     const fetchMemberData = async () => {
