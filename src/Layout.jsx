@@ -35,9 +35,9 @@ const Layout = () => {
             <Route path="/map" element={<Map />} />
 
             {/* TODO: default route */}
+            <Route path="/member/:uid" element={<MemberIndexNormal />} />
+            <Route path="/vendor/:vid" element={<MemberIndexVendor />} />
           </Routes>
-          {/* <MemberIndexNormal /> */}
-          {/* <MemberIndexVendor /> */}
           {/* <ShopCart /> */}
           {/* <CheckOutStep1 /> */}
         </div>

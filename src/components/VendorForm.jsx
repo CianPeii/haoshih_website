@@ -7,14 +7,13 @@ import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function MemberForm(props) {
+const VendorForm = (props) => {
   // 重新導向功能
   const navigate = useNavigate();
   // 管理表單資料
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    nickname: "",
     phone: "",
     email: "",
     address: "",
@@ -67,7 +66,7 @@ function MemberForm(props) {
 
       try {
         const response = await axios.put(
-          `http://localhost:3200/put/member/profile/${props.profile.uid}`,
+          `http://localhost:3200/vendor/put/profile/${props.profile.vid}`,
           updatedFields
         );
         console.log("Full response:", response);
@@ -90,7 +89,7 @@ function MemberForm(props) {
           }
 
           // 重新導回會員資料頁面
-          navigate(`/member/${props.profile.uid}`);
+          navigate(`/vendor/${props.profile.vid}`);
         } else {
           console.log("Unexpected response status:", response.status);
         }
@@ -107,7 +106,6 @@ function MemberForm(props) {
     }
   };
 
-  // TO-DO: 把應該要改成 * 的部分用 string method 轉換成 *
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <Row className=" my-5 ">
@@ -159,24 +157,6 @@ function MemberForm(props) {
           />
           <Form.Control.Feedback type="invalid">
             請輸入正確姓名
-          </Form.Control.Feedback>
-        </Col>
-      </Form.Group>
-
-      <Form.Group as={Row} controlId="validationCustom01" className="mb-3">
-        <Form.Label column sm="2" className="text-end">
-          會員暱稱
-        </Form.Label>
-        <Col sm="6">
-          <Form.Control
-            type="text"
-            placeholder={props.profile.nickname}
-            name="nickname"
-            value={formData.nickname}
-            onChange={handleInputChange}
-          />
-          <Form.Control.Feedback type="invalid">
-            請輸入正確暱稱
           </Form.Control.Feedback>
         </Col>
       </Form.Group>
@@ -279,7 +259,7 @@ function MemberForm(props) {
               className="me-5"
               variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
               type="button"
-              onClick={() => navigate(`/member/${props.profile.uid}`)}
+              onClick={() => navigate(`/vendor/${props.profile.vid}`)}
             >
               取消變更
             </Button>
@@ -295,6 +275,6 @@ function MemberForm(props) {
       </Row>
     </Form>
   );
-}
+};
 
-export default MemberForm;
+export default VendorForm;
