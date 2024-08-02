@@ -38,7 +38,7 @@ const NavBarShop = () => {
                   className="position-relative text-decoration-none link-dark"
                   href="#"
                 >
-                  <div className="bi bi-cart fs-2"></div>
+                  <div className="bi bi-cart h2 "></div>
                   <span
                     className={`c-white rounded-circle  bg-gray c-black fw-bolder cursor-pointerer; ${styles.ShopQuantity}`}
                   >

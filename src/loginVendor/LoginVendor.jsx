@@ -9,11 +9,12 @@ const LoginVendor = () => {
         <div className=" d-flex rounded-5 overflow-hidden ">
           {/* 一般用戶 */}
           <div className="bg-lake w-50 f-col-around p-5 gap-5 ">
-            <div className="w-50" style={{ height: "200px" }}>
+            <div className="w-50">
               <img
                 className=" w-100 f-center object-fit-contain"
                 src="images/img/login2.png"
                 alt=""
+                style={{ height: "200px" }}
               />
             </div>
             <p className="text-center w-50 font-special fs-3 c-gray">

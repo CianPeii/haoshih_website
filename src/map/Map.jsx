@@ -1,10 +1,10 @@
 import MainBg from "../components/MainBg";
 import NavBar from "../components/NavBar";
 import SubTitleYellow from "../components/SubTitleYellow";
-import ThirdTitle from "./componets/ThirdTitle";
+import ThirdTitle from "./components/ThirdTitle";
 import Footer from "../components/Footer";
 
-import MarketFloorPlan from "./componets/MarketFloorPlan";
+import MarketFloorPlan from "./components/MarketFloorPlan";
 import { Row, Col, Form } from "react-bootstrap";
 
 const Map = () => {
