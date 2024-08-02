@@ -17,7 +17,7 @@ const MemberIndexVendor = () => {
     const fetchVendorData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3200/vendor/api/profile/1`
+          `http://localhost:3200/vendor/api/profile/${vid}`
         );
         setVendorData(response.data);
         // console.log("Vendor Data:", response.data); // 數據首次被獲取時在控制台顯示
