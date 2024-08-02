@@ -66,7 +66,7 @@ const VendorForm = (props) => {
 
       try {
         const response = await axios.put(
-          `http://localhost:3200/put/member/profile/${props.profile.uid}`,
+          `http://localhost:3200/vendor/put/profile/${props.profile.vid}`,
           updatedFields
         );
         console.log("Full response:", response);
@@ -89,7 +89,7 @@ const VendorForm = (props) => {
           }
 
           // 重新導回會員資料頁面
-          navigate(`/member/${props.profile.uid}`);
+          navigate(`/vendor/${props.profile.vid}`);
         } else {
           console.log("Unexpected response status:", response.status);
         }
@@ -259,7 +259,7 @@ const VendorForm = (props) => {
               className="me-5"
               variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
               type="button"
-              onClick={() => navigate(`/member/${props.profile.uid}`)}
+              onClick={() => navigate(`/vendor/${props.profile.vid}`)}
             >
               取消變更
             </Button>
