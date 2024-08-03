@@ -18,10 +18,10 @@ const LoginNormal = () => {
               />
             </div>
 
-            <p className="text-center w-50 font-special fs-3 c-gray">
-              探索創意，感受熱情 享受與創作者交流的美好
+            <p className="text-center w-50 font-special fs-2">
+              探索創意，感受熱情，享受與創作者交流的美好一切
             </p>
-            <i className="bi bi-arrow-left-circle fs-3 fw-bolder c-white"></i>
+            <i className="bi bi-arrow-left-circle fs-3 fw-bolder c-white fs-1"></i>
           </div>
 
           {/* 登入 */}
