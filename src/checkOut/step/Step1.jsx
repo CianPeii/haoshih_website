@@ -1,10 +1,10 @@
-import NavBarShop from "../components/NavBarShop";
-import Arrows from "../components/Arrows";
-import Footer from "../components/Footer";
-import ChatBtn from "../components/ChatBtn";
-import CheckOutCard from "./CheckOutCard";
+import NavBarShop from "../../components/NavBarShop";
+import Arrows from "../../components/Arrows";
+import Footer from "../../components/Footer";
+import ChatBtn from "../../components/ChatBtn";
+import CheckOutCard from "../CheckOutCard";
 import { Button } from "react-bootstrap";
-const CheckOutStep1 = () => {
+const Step1 = () => {
   return (
     <>
       <NavBarShop />
@@ -22,4 +22,4 @@ const CheckOutStep1 = () => {
     </>
   );
 };
-export default CheckOutStep1;
+export default Step1;
