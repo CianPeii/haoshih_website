@@ -12,9 +12,10 @@ import Login from "./login/Login";
 import LoginNormal from "./loginNormal/LoginNormal";
 import LoginVendor from "./loginVendor/LoginVendor";
 import ShopCart from "./shopCart/ShopCart";
-import CheckOutStep1 from "./checkOut/CheckOutStep1";
+import Step1 from "./checkOut/step/Step1";
 
 import { Routes, Route, useLocation } from "react-router-dom";
+import Normal from "./SignUp/Normal";
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
 // 2. 加上背景
@@ -33,13 +34,15 @@ const Layout = () => {
             <Route path="/vendor" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
+            <Route path="/normal" element={<Normal />} />
 
             {/* TODO: default route */}
             {/* <Route path="/member/:uid" element={<MemberIndexNormal />} /> */}
             {/* <Route path="/vendor/:vid" element={<MemberIndexVendor />} /> */}
           </Routes>
           {/* <ShopCart /> */}
-          {/* <CheckOutStep1 /> */}
+          {/* <Step1 /> */}
+          {/* <Normal /> */}
         </div>
       </div>
       {/* <Login /> */}
