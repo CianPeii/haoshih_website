@@ -5,16 +5,9 @@
     local("ChenYuluoyan-Thin-Monospaced"),
     url("./font/ChenYuluoyan-Thin-Monospaced.ttf") format("truetype");
 }
+
 .font-special {
   font-family: "ChenYuluoyan";
-}
-// fontSize
-.fs-larger {
-  font-size: 4rem !important;
-  font-weight: normal !important;
-}
-.fs-medium {
-  font-size: 3.6rem !important;
 }
 
 $colors: (
@@ -99,9 +92,9 @@ $layouts: (
   justify-content: space-around;
 }
 
-.f-space-evenly {
+.f-space-around {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 .cursor-pointer {
@@ -110,4 +103,12 @@ $layouts: (
 
 .w-fit {
   width: fit-content;
+}
+.fs-larger {
+  font-size: 4rem !important;
+  font-weight: normal !important;
+}
+.fs-medium {
+  font-size: 3.4rem !important;
+  font-weight: normal !important;
 }
