@@ -47,11 +47,6 @@ const Type = () => {
     <>
       <NavBar />
       <MainBg page="type" title="攤位類型" />
-      {/* <div className="ps-5">
-        {vendorTypeList.map((item, index) => (
-          <TypeCardYellow key={item.id} item={item} />
-        ))}
-      </div> */}
 
       <div className="ps-5">
         {vendorTypeList.map((item, index) =>
