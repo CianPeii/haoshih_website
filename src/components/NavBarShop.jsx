@@ -16,7 +16,7 @@ const NavBarShop = () => {
             </a>
 
             <div className="d-flex flex-row bg-white">
-              <a className="f-center text-decoration-none" href="/">
+              <a className="f-center text-decoration-none" href="/shop">
                 <h2 className="c-primary">市</h2>
                 <h2 className="c-secondary">集</h2>
                 <h2 className="c-lake">商</h2>
