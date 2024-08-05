@@ -1,10 +1,10 @@
 .title {
-  width: 320px;
-  height: 98px;
+  width: 250px;
+  height: 90px;
   text-align-last: center;
   background-image: url(../../public/images/img/second-title-yellow.png);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   vertical-align: middle;
 
   &::before {
