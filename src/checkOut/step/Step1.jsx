@@ -1,5 +1,5 @@
 import NavBarShop from "../../components/NavBarShop";
-import Arrows from "../../components/Arrows";
+import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 import CheckOutCard from "../CheckOutCard";
@@ -8,8 +8,14 @@ const Step1 = () => {
   return (
     <>
       <NavBarShop />
+      <div className="f-space-around">
+        <Arrow color="yellow" title="確認商品" />
+        <Arrow color="white" title="寄送資訊" />
+        <Arrow color="white" title="付款方式" />
+        <Arrow color="white" title="完成訂單" />
+      </div>
+
       <div className="container">
-        <Arrows />
         <CheckOutCard />
         <CheckOutCard />
         <div className="f-end-end mt-5 gap-3 ">
