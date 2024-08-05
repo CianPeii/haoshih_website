@@ -1,14 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Table, Form, Card } from "react-bootstrap";
-
 import ShopList from "./ShopList";
 
-const ShopCartForm = () => {
+const ShopCartForm = ({ productsData, selectedProducts, onProductCheckChange, onProductAmountChange, onProductDelete }) => {
+  const [allChecked, setAllChecked] = useState(false);
+
+  const handleAllCheckChange = () => {
+    const newAllChecked = !allChecked;
+    setAllChecked(newAllChecked);
+    productsData.forEach(product => {
+      onProductCheckChange(product.pid, newAllChecked);
+    });
+  };
+
+  useEffect(() => {
+    setAllChecked(selectedProducts.size === productsData.length);
+  }, [selectedProducts, productsData]);
+
   return (
     <Container>
       <Card className="my-5">
         <Card.Body>
-          <Form.Check type="checkbox" label="店家1" className="mb-3 fw-bold" />
+          <Form.Check
+            type="checkbox"
+            label="店家1"
+            className="mb-3 fw-bold"
+            checked={allChecked}
+            onChange={handleAllCheckChange}
+          />
           <Table borderless>
             <thead>
               <tr className="border-bottom">
@@ -20,8 +39,13 @@ const ShopCartForm = () => {
               </tr>
             </thead>
             <tbody>
-              <ShopList />
-              <ShopList />
+              <ShopList
+                productsData={productsData}
+                selectedProducts={selectedProducts}
+                onProductCheckChange={onProductCheckChange}
+                onProductAmountChange={onProductAmountChange}
+                onProductDelete={onProductDelete}
+              />
             </tbody>
           </Table>
         </Card.Body>
