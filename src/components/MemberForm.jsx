@@ -22,35 +22,79 @@ function MemberForm(props) {
   });
   // 表單是否已經被驗證
   const [validated, setValidated] = useState(false);
+  // 暱稱驗證狀態
+  const [nicknameError, setNicknameError] = useState(false);
   // 手機號碼驗證狀態
   const [phoneError, setPhoneError] = useState(false);
+  // 電子信箱驗證狀態
+  const [emailError, setEmailError] = useState(false);
 
   // 有 change => 更新 state
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: value.trim(),
     }));
+
+    if (name === "nickname" && value !== "") {
+      setNicknameError(!validateNickname(value));
+    } else if (name === "nickname" && value === "") {
+      setNicknameError(false); // 如果欄位為空，不顯示錯誤
+    }
 
     if (name === "phone" && value !== "") {
       setPhoneError(!validatePhone(value));
     } else if (name === "phone" && value === "") {
       setPhoneError(false); // 如果欄位為空，不顯示錯誤
     }
+
+    if (name === "email" && value !== "") {
+      setEmailError(!validateEmail(value));
+    } else if (name === "email" && value === "") {
+      setEmailError(false); // 如果欄位為空，不顯示錯誤
+    }
   };
 
-  // 手機號碼驗證函數
+  // 暱稱驗證
+  const validateNickname = (nickname) => {
+    return nickname.length <= 6 ? true : false;
+  };
+
+  // 手機號碼驗證
   const validatePhone = (phone) => {
     const phoneRegex = /^09\d{8}$/;
     return phoneRegex.test(phone);
   };
 
+  // 電子信箱驗證
+  const validateEmail = (email) => {
+    const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})*$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const form = event.currentTarget;
+    // const form = event.currentTarget;
 
-    if (form.checkValidity() === false || !validatePhone(formData.phone)) {
+    let isValid = true;
+
+    if (formData.nickname && !validateNickname(formData.nickname)) {
+      setNicknameError(true);
+      isValid = false;
+    }
+
+    if (formData.phone && !validatePhone(formData.phone)) {
+      setPhoneError(true);
+      isValid = false;
+    }
+
+    if (formData.email && !validateEmail(formData.email)) {
+      setEmailError(true);
+      isValid = false;
+    }
+
+    if (!isValid) {
       event.stopPropagation();
       setValidated(true);
       return;
@@ -66,6 +110,7 @@ function MemberForm(props) {
       }, {});
 
       try {
+        console.log("Sending update request with:", updatedFields);
         const response = await axios.put(
           `http://localhost:3200/put/member/profile/${props.profile.uid}`,
           updatedFields
@@ -174,9 +219,10 @@ function MemberForm(props) {
             name="nickname"
             value={formData.nickname}
             onChange={handleInputChange}
+            isInvalid={nicknameError}
           />
           <Form.Control.Feedback type="invalid">
-            請輸入正確暱稱
+            請輸入六個字以內的暱稱
           </Form.Control.Feedback>
         </Col>
       </Form.Group>
@@ -212,9 +258,10 @@ function MemberForm(props) {
             name="email"
             value={formData.email}
             onChange={handleInputChange}
+            isInvalid={emailError}
           />
           <Form.Control.Feedback type="invalid">
-            請輸入正確電子信箱
+            請輸入正確格式電子信箱
           </Form.Control.Feedback>
         </Col>
       </Form.Group>
