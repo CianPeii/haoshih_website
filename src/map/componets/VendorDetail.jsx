@@ -64,7 +64,7 @@ const VendorDetail = () => {
         //圖片
         const cimage = document.createElement("img");
         cimage.src = `data:image/jpeg;base64,${Buffer.from(image).toString("base64")}`;
-        cimage.className = "d-block w-100";
+        cimage.className = "d-block w-100 carousel";
         cimage.alt = "...";
         //圖片添加到容器
         cimagecontainer.appendChild(cimage);

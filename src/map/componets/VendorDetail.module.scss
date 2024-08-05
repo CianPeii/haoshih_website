@@ -4,11 +4,9 @@
   .headerText {
     height: 70px;
   }
-  .carousel {
-    img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-    }
-  }
 }
+.carousel {
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+  }
