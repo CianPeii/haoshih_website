@@ -31,7 +31,7 @@ function OrderCard() {
             <Col className="text-end">
               <p className="c-gray">付款方式：信用卡</p>
               <p className="c-gray">訂單狀態：未出貨</p>
-              <h5 className="text-danger">訂單總額：NT$ 560</h5>
+              <h5 className="text-red">訂單總額：NT$ 560</h5>
             </Col>
           </Row>
 

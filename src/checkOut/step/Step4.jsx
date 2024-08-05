@@ -23,14 +23,14 @@ const Step3 = () => {
 
         <Col className="f-end">
           <Button
-            className="bg-white border border-danger me-3"
+            className="bg-white border border-red me-3"
             variant="border border-2 rounded-pill px-4"
             type="button"
           >
             回上一步
           </Button>
           <Button
-            className="bg-danger c-white"
+            className="bg-red c-white"
             variant="border border-2 rounded-pill px-4"
             type="button"
           >

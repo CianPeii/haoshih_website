@@ -26,7 +26,7 @@ const LoginNormal = () => {
 
           {/* 登入 */}
 
-          <div className="bg-white w-50 f-col-center p-5  bg-lightGray">
+          <div className="w-50 f-col-center p-5 bg-glass">
             <LoginForm />
           </div>
         </div>
