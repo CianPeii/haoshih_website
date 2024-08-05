@@ -6,10 +6,15 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useAxios from "axios-hooks";
 
 function MemberForm(props) {
   // 重新導向功能
   const navigate = useNavigate();
+  // refetch功能
+  const [{ data, loading, error }, refetch] = useAxios(
+    `http://localhost:3200/api/member/profile/${props.profile.uid}`
+  );
   // 管理表單資料
   const [formData, setFormData] = useState({
     first_name: "",
@@ -121,7 +126,6 @@ function MemberForm(props) {
         if (response.status === 200) {
           console.log("Profile updated successfully:", response.data.message);
           console.log("Updated fields:", response.data.updatedFields);
-          alert("資料更新成功");
 
           // 更新表單狀態
           setFormData((prevState) => ({
@@ -134,6 +138,7 @@ function MemberForm(props) {
             props.onProfileUpdate({ ...props.profile, ...updatedFields });
           }
 
+          alert("資料更新成功");
           // 重新導回會員資料頁面
           navigate(`/member/${props.profile.uid}`);
         } else {
@@ -261,7 +266,7 @@ function MemberForm(props) {
             isInvalid={emailError}
           />
           <Form.Control.Feedback type="invalid">
-            請輸入正確格式電子信箱
+            請輸入正確格式之電子信箱
           </Form.Control.Feedback>
         </Col>
       </Form.Group>
@@ -285,6 +290,7 @@ function MemberForm(props) {
       </Form.Group>
 
       <Form.Group as={Row} controlId="validationCustom05" className="mb-3">
+        {/* 待完成 */}
         <Form.Label column sm="2" className="text-end">
           修改密碼
         </Form.Label>
@@ -326,7 +332,9 @@ function MemberForm(props) {
               className="me-5"
               variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
               type="button"
-              onClick={() => navigate(`/member/${props.profile.uid}`)}
+              onClick={() => {
+                navigate(`/member/${props.profile.uid}`); // 然後導航
+              }}
             >
               取消變更
             </Button>
@@ -334,6 +342,10 @@ function MemberForm(props) {
               className="ms-5"
               variant=" bg-blueGray text-white rounded-pill px-4 py-2"
               type="submit"
+              onClick={async () => {
+                await refetch(); // 先執行 refetch
+                navigate(`/member/${props.profile.uid}`); // 然後導航
+              }}
             >
               儲存變更
             </Button>
