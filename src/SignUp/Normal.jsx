@@ -8,7 +8,7 @@ const Normal = () => {
     <>
       <NavBarShop />
       <SingUpMain />
-      <div className="f-center p-5">
+      <div className="f-center p-5 border">
         <NormalForm />
       </div>
       <Footer />
