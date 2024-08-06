@@ -6,12 +6,16 @@ import ChatBtn from "../components/ChatBtn";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Footer from "../components/Footer";
 
 const MemberIndexVendor = () => {
   const [vendorData, setVendorData] = useState(null);
   const { vid } = useParams();
+  const updateProfileData = (newData) => {
+    setVendorData(newData);
+  };
 
-  console.log("User ID:", vid);
+  // console.log("User ID:", vid);
 
   useEffect(() => {
     const fetchVendorData = async () => {
@@ -27,7 +31,7 @@ const MemberIndexVendor = () => {
     };
 
     fetchVendorData();
-  }, []); // 空陣列表示這個效果只在組件首次渲染時運行
+  }, [vid]); // 空陣列表示這個效果只在組件首次渲染時運行
 
   return (
     <>
@@ -38,10 +42,20 @@ const MemberIndexVendor = () => {
         </div>
         <div className="col-9 ">
           <SubTitleYellow title="會員資料" />
-          {vendorData ? <VendorForm profile={vendorData} /> : <p>Loading...</p>}
+
+          {vendorData ? (
+            <VendorForm
+              profile={vendorData}
+              onProfileUpdate={updateProfileData}
+            />
+          ) : (
+            <p>Loading...</p>
+          )}
+
           <ChatBtn />
         </div>
       </div>
+      <Footer />
     </>
   );
 };
