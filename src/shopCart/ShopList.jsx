@@ -2,9 +2,7 @@ import React from "react";
 import { Form, Button, Image, InputGroup } from "react-bootstrap";
 import { Buffer } from 'buffer';
 
-const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProductAmountChange, onProductDelete  }) => {
-  console.log(productsData);
-  
+const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProductAmountChange, onProductDelete, turnPrice, uid }) => {
   const handleAmountChange = (pid, increment) => {
     const product = productsData.find(p => p.pid === pid);
     if (product) {
@@ -15,9 +13,28 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
     }
   };
 
-  const clickDelete = (pid) => {
+  const clickDelete = async (pid) => {
     if (window.confirm("確定要刪除此商品嗎？")) {
-      onProductDelete(pid);  // 調用從父組件傳下來的刪除函數
+      try {
+        const response = await fetch(`http://localhost:5000/index/${uid}/${pid}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const result = await response.text();
+        console.log('Delete Success:', result);
+
+        // 調用父組件的 onProductDelete 方法以更新本地顯示
+        onProductDelete(pid);
+      } catch (error) {
+        console.error('Delete Error:', error);
+      }
     }
   };
 
@@ -56,7 +73,7 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
                 <span className="ms-3">{product.name}</span>
               </div>
             </td>
-            <td className="text-center align-middle">NT$ {product.price}</td>
+            <td className="text-center align-middle">{turnPrice(product.price)}</td>
             <td className="text-center align-middle">
               <InputGroup className="mx-auto" style={{ width: "120px" }}>
                 <Button
@@ -81,12 +98,12 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
               </InputGroup>
             </td>
             <td className="text-center align-middle">
-              NT$ {product.amount * product.price}
+              {turnPrice(product.amount * product.price)}
             </td>
             <td className="text-center align-middle">
               <i
                 className="bi bi-trash3-fill c-blueGray"
-                onClick={() => { clickDelete(product.pid) }}
+                onClick={() => clickDelete(product.pid)}
                 style={{ cursor: 'pointer' }}
               ></i>
             </td>

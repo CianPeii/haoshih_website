@@ -13,6 +13,15 @@ const ShopCart = () => {
   const [selectedProducts, setSelectedProducts] = useState(new Set());
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const turnPrice = (price) => {
+    return Number(price).toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+  };
+
   useEffect(() => {
     const fetchProductsData = async () => {
       try {
@@ -80,11 +89,12 @@ const ShopCart = () => {
                 selectedProducts={selectedProducts}
                 onProductCheckChange={handleProductCheckChange}
                 onProductAmountChange={handleProductAmountChange}
-                onProductDelete={handleProductDelete} 
+                onProductDelete={handleProductDelete}
+                turnPrice={turnPrice} 
               />
             )}
             <div className="f-end-end mt-5 gap-3">
-              <h4>總金額：NT${totalPrice}</h4>
+              <h4>總金額：NT${turnPrice(totalPrice)}</h4>
               <Button variant="danger rounded-pill px-4 py-2">前往結帳</Button>
             </div>
           </div>
