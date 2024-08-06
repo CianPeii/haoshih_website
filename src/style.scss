@@ -1,3 +1,15 @@
+// font family setting
+@font-face {
+  font-family: "ChenYuluoyan";
+  src:
+    local("ChenYuluoyan-Thin-Monospaced"),
+    url("./font/ChenYuluoyan-Thin-Monospaced.ttf") format("truetype");
+}
+
+.font-special {
+  font-family: "ChenYuluoyan";
+}
+
 $colors: (
   "primary": #a1cae3,
   "secondary": #f7ea57,
@@ -8,8 +20,14 @@ $colors: (
   "white": #fff,
   "black": #333,
   "pink": #f8e7e5,
-  "lightGray": #eeeeee50,
+  "red": #f06f5f,
 );
+
+.bg-glass {
+  background-color: rgba(rgb(46, 46, 46), 0.1); /* 使用rgba來設置透明度 */
+  backdrop-filter: blur(100px); /* 毛玻璃效果 */
+  -webkit-backdrop-filter: blur(5px); /* 兼容Safari瀏覽器 */
+}
 
 @each $name, $color in $colors {
   .c-#{$name} {
@@ -32,9 +50,6 @@ $colors: (
     }
   }
 }
-.cursor-pointer {
-  cursor: pointer;
-}
 
 $layouts: (
   "center": (
@@ -54,6 +69,14 @@ $layouts: (
   ),
 );
 
+@each $name, $props in $layouts {
+  .f-#{$name} {
+    @each $property, $value in $props {
+      #{$property}: $value;
+    }
+  }
+}
+
 .f-end-end {
   display: flex;
   align-content: end;
@@ -64,40 +87,34 @@ $layouts: (
 .f-col-center {
   display: flex;
   flex-direction: column;
-  align-content: center;
   align-items: center;
+  justify-content: center;
 }
+
 .f-col-around {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
 }
-.f-space-evenly {
+
+.f-space-around {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
-@each $name, $props in $layouts {
-  .f-#{$name} {
-    @each $property, $value in $props {
-      #{$property}: $value;
-    }
-  }
-}
-.w-32 {
-  width: 32%;
-}
-
-.w-10 {
-  width: 10%;
-}
-
-.h-90 {
-  height: 90px;
-  object-fit: cover;
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .w-fit {
   width: fit-content;
+}
+.fs-larger {
+  font-size: 4rem !important;
+  font-weight: normal !important;
+}
+.fs-medium {
+  font-size: 3.4rem !important;
+  font-weight: normal !important;
 }

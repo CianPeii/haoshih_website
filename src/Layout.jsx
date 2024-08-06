@@ -7,16 +7,20 @@ import Vendor from "./vendor/Vendor";
 import Type from "./type/Type";
 import Map from "./map/Map";
 import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
-// import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
-// import Login from "./login/Login";
-// import LoginNormal from "./loginNormal/LoginNormal";
-// import LoginVendor from "./loginVendor/LoginVendor";
-// import ShopCart from "./shopCart/ShopCart";
-// import CheckOutStep1 from "./checkOut/CheckOutStep1";
+import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
+import Login from "./login/Login";
+import LoginNormal from "./loginNormal/LoginNormal";
+import LoginVendor from "./loginVendor/LoginVendor";
+import ShopCart from "./shopCart/ShopCart";
+import Normal from "./SignUp/Normal";
+import SetStalls from "./setStalls/SetStalls";
+import Default from "./default/Default";
+
 import { Routes, Route, useLocation } from "react-router-dom";
+
 // TODO:
 // 1. 把 Home 搬進來、Layout 搬進 App（注意路徑改變）
-// 2. 加上背景
+// 2. 加上背景xe
 // 3. 加上 React Router
 const Layout = () => {
   const location = useLocation();
@@ -32,14 +36,20 @@ const Layout = () => {
             <Route path="/vendor" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
-            {/* TODO: default route */}
+            <Route path="/SetStalls" element={<SetStalls />} />
+            {/* TODO: default route  =- 已經在 default/Default.jsx*/}
+            <Route path="/member/:uid" element={<MemberIndexNormal />} />
+            <Route path="/vendor/:vid" element={<MemberIndexVendor />} />
           </Routes>
-          {/* <MemberIndexNormal /> */}
-          {/* <MemberIndexVendor /> */}
           {/* <ShopCart /> */}
+<<<<<<< HEAD
           {/* <CheckOutStep1 /> */}
           {/* {<Vendor />} */}
           {/* {<Map />} */}
+=======
+          {/* <Step1 /> */}
+          {/* <Normal /> */}
+>>>>>>> main
         </div>
       </div>
       {/* <Login /> */}

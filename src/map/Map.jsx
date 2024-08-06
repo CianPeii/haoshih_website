@@ -1,14 +1,17 @@
 import MainBg from "../components/MainBg";
 import NavBar from "../components/NavBar";
 import SubTitleYellow from "../components/SubTitleYellow";
-import ThirdTitle from "./componets/ThirdTitle";
+import ThirdTitle from "./components/ThirdTitle";
 import Footer from "../components/Footer";
-import VendorDetail from "./componets/VendorDetail";
+import VendorDetail from "./components/VendorDetail";
 import MarketFloorPlan from "./componets/MarketFloorPlan";
 
 import { Row, Col, Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from "axios";
+
+import MarketFloorPlan from "./components/MarketFloorPlan";
+import { Col, Form } from "react-bootstrap";
 
 const Map = () => {
 

@@ -1,8 +1,9 @@
 import React from "react";
 import { Container, Table, Form, Card } from "react-bootstrap";
+
 import ShopList from "./ShopList";
 
-const ShopingCartForm = () => {
+const ShopCartForm = () => {
   return (
     <Container>
       <Card className="my-5">
@@ -29,4 +30,4 @@ const ShopingCartForm = () => {
   );
 };
 
-export default ShopingCartForm;
+export default ShopCartForm;

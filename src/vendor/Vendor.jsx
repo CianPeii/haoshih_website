@@ -1,10 +1,12 @@
-import NavBarShop from "../components/NavBarShop";
-import styles from "./Vendor.module.scss";
 import { useEffect } from "react";
 import { Carousel } from "bootstrap";
+
+import NavBarShop from "../components/NavBarShop";
+import styles from "./Vendor.module.scss";
 import VendorCard from "./components/VendorCardYellow";
 import PageBtn from "../components/PageBtn";
 import Footer from "../components/Footer";
+import ChatBtn from "../components/ChatBtn";
 
 function VendorCarousel() {
   useEffect(() => {
@@ -198,6 +200,7 @@ const Vendor = () => {
       </div>
       <PageBtn />
       <Footer />
+      <ChatBtn />
     </>
   );
 };

@@ -1,6 +1,6 @@
 .mainBg {
   width: 100%;
-  height: 600px;
+  height: 450px;
   background-repeat: no-repeat;
   background-size: cover;
   object-fit: contain;
@@ -27,4 +27,7 @@
 }
 .mapBgUrl {
   background-image: url("../../public/images/img/map.png");
+}
+.setStallsBgUrl {
+  background-image: url("../../public/images/img/setStalls.png");
 }
