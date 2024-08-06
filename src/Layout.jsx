@@ -42,14 +42,8 @@ const Layout = () => {
             <Route path="/vendor/:vid" element={<MemberIndexVendor />} />
           </Routes>
           {/* <ShopCart /> */}
-<<<<<<< HEAD
-          {/* <CheckOutStep1 /> */}
-          {/* {<Vendor />} */}
-          {/* {<Map />} */}
-=======
           {/* <Step1 /> */}
           {/* <Normal /> */}
->>>>>>> main
         </div>
       </div>
       {/* <Login /> */}
