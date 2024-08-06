@@ -22,5 +22,5 @@ app.use("/member", memberRouter)
 // var shopRouter = require("./shopRouter.js")
 // app.use("/shop", shopRouter)
 
-// var vendorRouter = require("./vendorRouter.js")
-// app.use("/vendor", vendorRouter)
+var vendorRouter = require("./vendorRouter.js")
+app.use("/vendor", vendorRouter)
