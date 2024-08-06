@@ -9,7 +9,6 @@ var conn = config.connection
 // cartRouter.get('/', function(req,res){res.send('OK')})
 
 // cartRouter.get('/test', function(req,res){
-//     // const conn = req.app.get('connection')
 //     conn.query("SELECT * FROM member WHERE uid = 1",function(err,result){res.json(result)})
 // })
 // --------測試路由用----------
