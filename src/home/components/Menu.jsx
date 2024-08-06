@@ -23,7 +23,7 @@ const menuItems = [
     id: 4,
     img: "images/icon/Stall.png",
     title: "我要擺攤",
-    link: "http",
+    link: "/SetStalls",
   },
   {
     id: 5,
