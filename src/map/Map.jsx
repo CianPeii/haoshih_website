@@ -19,8 +19,6 @@ const fetchData = async(vinfo) => {
     const response = await axios.get("http://localhost:8000/getdata", 
       {params: {vinfo}} );
     setVinfo(response.data.data_from_server);
-    // response.data.data_from_server;
-    // console.log(dataFromParent);
   } catch (error) {
     console.log('Error fetching data', error);
     }
