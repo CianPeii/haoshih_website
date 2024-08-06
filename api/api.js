@@ -16,8 +16,8 @@ app.use("/login", loginRouter)
 var mapRouter = require("./mapRouter.js")
 app.use("/map", mapRouter)
 
-// var memberRouter = require("./memberRouter.js")
-// app.use("/member", memberRouter)
+var memberRouter = require("./memberRouter.js")
+app.use("/member", memberRouter)
 
 // var shopRouter = require("./shopRouter.js")
 // app.use("/shop", shopRouter)

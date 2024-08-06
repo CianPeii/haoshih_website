@@ -5,31 +5,18 @@ memberRouter.use(express.json());
 var config = require("./databaseConfig.js")
 var conn = config.connection
 
-const http = require("http").createServer(app);
-const io = require("socket.io")(http);
+// memberRouter.set("view engine", "ejs");
 
+const { queryAsync, hashPW } = require("../src/utils/utils.js");
 
-memberRouter.set("view engine", "ejs");
+// --------測試路由用----------
+memberRouter.get('/', function(req,res){res.send('OK')})
 
-const mysql = require("mysql");
-const conn = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "haoshih_test",
-});
-memberRouter.set("mysqlConnection", conn);
+memberRouter.get('/test', function(req,res){
+    conn.query("SELECT * FROM member WHERE uid = 1",function(err,result){res.json(result)})
+})
+// --------測試路由用----------
 
-const { queryAsync, hashPW } = require("./utils/utils");
-
-conn.connect((err) => {
-  if (err) {
-    console.log("MySQL連線失敗");
-    return;
-  } else {
-    console.log("MySQL連線成功");
-  }
-});
 
 // 資料庫更新函式 (一般會員)
 async function updateUserProfile(uid, profileData) {
@@ -62,12 +49,12 @@ memberRouter.get("/", (req, res) => {
 });
 
 // 會員專區首頁 => 預設導到會員資料畫面
-memberRouter.get("/member/index/:uid", (req, res) => {
-  res.redirect(`/member/profile/${req.params.uid}`);
+memberRouter.get("/:uid", (req, res) => {
+  res.redirect(`/profile/${req.params.uid}`);
 });
 
 // 會員資料 API
-memberRouter.get("/api/member/profile/:uid", (req, res) => {
+memberRouter.get("/profile/:uid", (req, res) => {
   // console.log(`Received request for user ID: ${req.params.uid}`); // 添加這行日誌
  
   conn.query(
@@ -86,41 +73,9 @@ memberRouter.get("/api/member/profile/:uid", (req, res) => {
     }
   );
 });
-// 編輯會員資料 (for ejs)
-memberRouter.put("/member/profile/:uid", async (req, res) => {
-  try {
-    const { first_name, last_name, nickname, phone, email, address, password } =
-      req.body;
-    const uid = req.params.uid;
 
-    // 有被填寫的欄位才會傳入 value
-    let updateFields = {};
-    if (first_name) updateFields.first_name = first_name;
-    if (last_name) updateFields.last_name = last_name;
-    if (nickname) updateFields.nickname = nickname;
-    if (phone) updateFields.phone = phone;
-    if (email) updateFields.email = email;
-    if (address) updateFields.address = address;
-    // 有被填寫的密碼才會被雜湊加密並傳入
-    if (password) {
-      var hashedPW = await hashPW(password);
-      updateFields.password = hashedPW;
-    }
-
-    // 假如有欄位被填寫才會 update到資料庫，否則就是回到原畫面
-    if (Object.keys(updateFields > 0)) {
-      await updateUserProfile(uid, updateFields);
-      res.redirect(`/member/profile/${req.params.uid}`);
-    } else {
-      res.redirect(`/member/profile/${req.params.uid}`);
-    }
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    res.status(500).send("An error occurred while updating the profile");
-  }
-});
 // 編輯會員資料 --React--
-memberRouter.put("/put/member/profile/:uid", async (req, res) => {
+memberRouter.put("/profile/:uid", async (req, res) => {
   try {
     const { first_name, last_name, nickname, phone, email, address, password } =
       req.body;
@@ -157,7 +112,7 @@ memberRouter.put("/put/member/profile/:uid", async (req, res) => {
 });
 
 // 我的訂單 API
-memberRouter.get("/api/member/orderList/:uid", async (req, res) => {
+memberRouter.get("/orderList/:uid", async (req, res) => {
   try {
     // 抓這個 uid 的訂單資料 => vid 找到 vendor table => vinfo 找到 vendor_info table
     const orderQuery = `
@@ -256,6 +211,7 @@ memberRouter.get("/api/member/orderList/:uid", async (req, res) => {
     const formattedOrders = await Promise.all(formattedOrdersPromises);
 
     res.json(formattedOrders);
+    res.send(orders)
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Fail to render your page" });
@@ -263,7 +219,7 @@ memberRouter.get("/api/member/orderList/:uid", async (req, res) => {
 });
 
 // 按讚攤位 API
-memberRouter.get("/api/member/like/:uid", async (req, res) => {
+memberRouter.get("/like/:uid", async (req, res) => {
   try {
     const heartQuery = `
         SELECT * FROM heart WHERE uid = ?
@@ -321,51 +277,9 @@ memberRouter.get("/api/member/like/:uid", async (req, res) => {
 
     res.json([likedBrandArr[0], likes[0]]);
   } catch (error) {
-    console.error("Error in /api/member/like/:uid:", error);
+    console.error("Error in /member/like/:uid:", error);
     res.status(500).send("Internal Server Error");
   }
-});
-
-// 聊天室頁面
-memberRouter.get("/member/chat/:uid", (req, res) => {
-  conn.query(
-    "select * from member where uid = ?",
-    [req.params.uid],
-    (err, result) => {
-      res.render("memberChat.ejs", {
-        profile: result[0],
-        uid: req.params.uid,
-      });
-    }
-  );
-});
-
-// Socket.IO 事件處理
-io.on("connection", (socket) => {
-  socket.emit("user connected", "一個用戶連接了");
-
-  // 處理聊天訊息
-  socket.on("chat message", (msg) => {
-    io.emit("chat message", msg);
-  });
-
-  socket.on("disconnect", () => {
-    io.emit("用戶斷開連接");
-  });
-});
-
-// 攤主相關 router
-const vendorRoutes = require("./routes/vendor");
-memberRouter.use("/vendor", vendorRoutes);
-
-const PORT = 3200 || process.env.PORT;
-http.listen(PORT, () => {
-  console.log(`服務器運行在 ${PORT} 端口`);
-});
-
-memberRouter.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
 });
 
 module.exports = memberRouter
