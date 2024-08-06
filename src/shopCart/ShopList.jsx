@@ -3,6 +3,8 @@ import { Form, Button, Image, InputGroup } from "react-bootstrap";
 import { Buffer } from 'buffer';
 
 const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProductAmountChange, onProductDelete  }) => {
+  console.log(productsData);
+  
   const handleAmountChange = (pid, increment) => {
     const product = productsData.find(p => p.pid === pid);
     if (product) {
@@ -68,7 +70,6 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
                   type="text"
                   value={product.amount}
                   className="text-center border-secondary"
-                  readOnly
                 />
                 <Button
                   variant="outline-secondary"
