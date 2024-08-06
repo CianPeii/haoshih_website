@@ -20,7 +20,7 @@ const Step1 = () => {
         <CheckOutCard />
         <div className="f-end-end mt-5 gap-3 ">
           <h4>總金額：NT$999</h4>
-          <Button variant="danger rounded-pill px-4 py-2">前往結帳</Button>
+          <Button variant="red rounded-pill px-4 py-2">前往結帳</Button>
         </div>
       </div>
       <Footer />

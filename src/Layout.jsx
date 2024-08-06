@@ -13,6 +13,8 @@ import LoginNormal from "./loginNormal/LoginNormal";
 import LoginVendor from "./loginVendor/LoginVendor";
 import ShopCart from "./shopCart/ShopCart";
 import Normal from "./SignUp/Normal";
+import SetStalls from "./setStalls/SetStalls";
+import Default from "./default/Default";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -34,9 +36,10 @@ const Layout = () => {
             <Route path="/vendor" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
+            <Route path="/SetStalls" element={<SetStalls />} />
             {/* <Route path="/member/:uid" element={<MemberIndexNormal />} /> */}
             {/* <Route path="/vendor/:vid" element={<MemberIndexVendor />} /> */}
-            TODO: default route
+            TODO: default route =- 已經在 default/Default.jsx
           </Routes>
           {/* <ShopCart /> */}
           {/* <Step1 /> */}
