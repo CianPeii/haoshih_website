@@ -345,7 +345,7 @@ function MemberForm(props) {
             {showPassword ? "隱藏" : "顯示"}
           </Button> */}
           <Form.Control.Feedback type="invalid">
-            請輸入8~12個英數字或符號，請區分大小寫
+            請輸入8-12位密碼，可包含大小寫字母、數字和特殊符號
           </Form.Control.Feedback>
         </Col>
       </Form.Group>
