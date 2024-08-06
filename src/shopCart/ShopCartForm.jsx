@@ -2,55 +2,85 @@ import React, { useState, useEffect } from "react";
 import { Container, Table, Form, Card } from "react-bootstrap";
 import ShopList from "./ShopList";
 
-const ShopCartForm = ({ productsData, selectedProducts, onProductCheckChange, onProductAmountChange, onProductDelete }) => {
-  const [allChecked, setAllChecked] = useState(false);
+const ShopCartForm = ({ productsData, selectedProducts, onProductCheckChange, onProductAmountChange, onProductDelete, turnPrice }) => {
+  const [groupedProducts, setGroupedProducts] = useState({});
+  const [allChecked, setAllChecked] = useState({});
 
-  const handleAllCheckChange = () => {
-    const newAllChecked = !allChecked;
-    setAllChecked(newAllChecked);
-    productsData.forEach(product => {
+  useEffect(() => {
+    // 按 vinfo 分組商品
+    const grouped = productsData.reduce((acc, product) => {
+      if (!acc[product.vinfo]) {
+        acc[product.vinfo] = [];
+      }
+      acc[product.vinfo].push(product);
+      return acc;
+    }, {});
+    setGroupedProducts(grouped);
+
+    // 初始化每個攤販的全選狀態
+    const initialAllChecked = Object.keys(grouped).reduce((acc, vinfo) => {
+      acc[vinfo] = false;
+      return acc;
+    }, {});
+    setAllChecked(initialAllChecked);
+  }, [productsData]);
+
+  const handleAllCheckChange = (vinfo) => {
+    const newAllChecked = !allChecked[vinfo];
+    setAllChecked(prev => ({ ...prev, [vinfo]: newAllChecked }));
+    groupedProducts[vinfo].forEach(product => {
       onProductCheckChange(product.pid, newAllChecked);
     });
   };
 
   useEffect(() => {
-    setAllChecked(selectedProducts.size === productsData.length);
-  }, [selectedProducts, productsData]);
+    // 更新每個攤販的全選狀態
+    const newAllChecked = Object.keys(groupedProducts).reduce((acc, vinfo) => {
+      acc[vinfo] = groupedProducts[vinfo].every(product => selectedProducts.has(product.pid));
+      return acc;
+    }, {});
+    setAllChecked(newAllChecked);
+  }, [selectedProducts, groupedProducts]);
 
   return (
-    <Container>
-      <Card className="my-5">
-        <Card.Body>
-          <Form.Check
-            type="checkbox"
-            label="店家1"
-            className="mb-3 fw-bold"
-            checked={allChecked}
-            onChange={handleAllCheckChange}
-          />
-          <Table borderless>
-            <thead>
-              <tr className="border-bottom">
-                <th className="text-center"></th>
-                <th className="text-center">商品</th>
-                <th className="text-center">單價</th>
-                <th className="text-center">數量</th>
-                <th className="text-center">小計</th>
-              </tr>
-            </thead>
-            <tbody>
-              <ShopList
-                productsData={productsData}
-                selectedProducts={selectedProducts}
-                onProductCheckChange={onProductCheckChange}
-                onProductAmountChange={onProductAmountChange}
-                onProductDelete={onProductDelete}
+    <>
+      {Object.entries(groupedProducts).map(([vinfo, products]) => (
+        <Container key={vinfo}>
+          <Card className="my-5">
+            <Card.Body>
+              <Form.Check
+                type="checkbox"
+                label={products[0].brand_name}  // 使用該組的第一個商品的 brand_name
+                className="mb-3 fw-bold"
+                checked={allChecked[vinfo]}
+                onChange={() => handleAllCheckChange(vinfo)}
               />
-            </tbody>
-          </Table>
-        </Card.Body>
-      </Card>
-    </Container>
+              <Table borderless>
+                <thead>
+                  <tr className="border-bottom">
+                    <th className="text-center"></th>
+                    <th className="text-center">商品</th>
+                    <th className="text-center">單價</th>
+                    <th className="text-center">數量</th>
+                    <th className="text-center">小計</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ShopList
+                    productsData={products}
+                    selectedProducts={selectedProducts}
+                    onProductCheckChange={onProductCheckChange}
+                    onProductAmountChange={onProductAmountChange}
+                    onProductDelete={onProductDelete}
+                    turnPrice={turnPrice}
+                  />
+                </tbody>
+              </Table>
+            </Card.Body>
+          </Card>
+        </Container>
+      ))}
+    </>
   );
 };
 
