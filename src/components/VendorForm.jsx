@@ -23,6 +23,7 @@ const VendorForm = (props) => {
     email: "",
     address: "",
     password: "",
+    doubleCheck: "",
   });
   // 表單是否已經被驗證
   const [validated, setValidated] = useState(false);
@@ -30,6 +31,12 @@ const VendorForm = (props) => {
   const [phoneError, setPhoneError] = useState(false);
   // 電子信箱驗證狀態
   const [emailError, setEmailError] = useState(false);
+  // 密碼驗證狀態
+  const [pwError, setPwError] = useState(false);
+  // 密碼顯示狀態
+  // const [showPassword, setShowPassword] = useState(false);
+  // 確認密碼
+  const [dbCheckError, setDbCheckError] = useState(false);
 
   // 有 change => 更新 state
   const handleInputChange = (event) => {
@@ -50,6 +57,16 @@ const VendorForm = (props) => {
     } else if (name === "email" && value === "") {
       setEmailError(false); // 如果欄位為空，不顯示錯誤
     }
+
+    if (name === "password" && value !== "") {
+      setPwError(!validatePassword(value));
+    } else if (name === "password" && value === "") {
+      setPwError(false); // 如果欄位為空，不顯示錯誤
+    }
+
+    if (name === "doubleCheck") {
+      setDbCheckError(value !== formData.password);
+    }
   };
 
   // 手機號碼驗證函數
@@ -64,6 +81,17 @@ const VendorForm = (props) => {
     return emailRegex.test(email);
   };
 
+  // 密碼驗證
+  function validatePassword(password) {
+    const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()]{8,12}$/;
+    return passwordRegex.test(password);
+  }
+
+  // 確認密碼驗證
+  function validateDbCheck(doubleCheck) {
+    return doubleCheck === formData.password;
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -77,6 +105,15 @@ const VendorForm = (props) => {
 
     if (formData.email && !validateEmail(formData.email)) {
       setEmailError(true);
+      isValid = false;
+    }
+
+    if (formData.password && !validatePassword(formData.password)) {
+      setPwError(true);
+      isValid = false;
+    }
+    if (formData.password && !validateDbCheck(formData.doubleCheck)) {
+      setDbCheckError(true);
       isValid = false;
     }
 
@@ -261,9 +298,13 @@ const VendorForm = (props) => {
             name="password"
             value={formData.password}
             onChange={handleInputChange}
+            isInvalid={pwError}
           />
+          {/* <Button onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? "隱藏" : "顯示"}
+          </Button> */}
           <Form.Control.Feedback type="invalid">
-            請輸入密碼
+            請輸入8-12位密碼，可包含大小寫字母、數字和特殊符號
           </Form.Control.Feedback>
         </Col>
       </Form.Group>
@@ -275,9 +316,12 @@ const VendorForm = (props) => {
         <Col sm="6">
           <Form.Control
             type="password"
-            placeholder=""
+            placeholder="請再次輸入新密碼"
             name="doubleCheck"
-            required={formData.password ? "required" : ""}
+            value={formData.doubleCheck || ""}
+            onChange={handleInputChange}
+            isInvalid={dbCheckError}
+            required={!!formData.password}
           />
           <Form.Control.Feedback type="invalid">
             請輸入相同密碼
