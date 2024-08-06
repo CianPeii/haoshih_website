@@ -4,7 +4,7 @@ import SubTitleYellow from "../components/SubTitleYellow";
 import ThirdTitle from "./components/ThirdTitle";
 import Footer from "../components/Footer";
 import VendorDetail from "./components/VendorDetail";
-import MarketFloorPlan from "./componets/MarketFloorPlan";
+import MarketFloorPlan from "./components/MarketFloorPlan";
 
 import { Row, Col, Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
