@@ -1,10 +1,14 @@
 import React from "react";
-import axios from 'axios';
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import styles from "./MarketFloorPlan.module.scss";
 
+const MarketFloorPlan = ({fetchData}) => {
+  const handleClick = (event) => {
+    const vinfo = event.target.innerText
+    console.log(vinfo);
+    fetchData(vinfo);
+  };
 
-const MarketFloorPlan = () => {
   let vendor_unmber = 1;
   return (
     <Container fluid className={styles.container}>
@@ -22,6 +26,7 @@ const MarketFloorPlan = () => {
                 {[...Array(5)].map((_, colIndex) => (
                   <div key={colIndex} 
                   className={styles.stall}
+                  onClick={handleClick}
                   >
                     {vendor_unmber++}
                   </div>

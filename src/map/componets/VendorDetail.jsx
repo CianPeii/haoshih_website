@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
 import styles from "./VendorDetail.module.scss";
-import { Carousel } from "bootstrap";
 
-const VendorDetail = () => {
+const VendorDetail = ({data_from_parent}) => {
   const [data, setData] = useState();
+  
   //useEffect用於畫面上有變化時動態更新資料
   useEffect(() => {
-    const getData = async () => {
+    const getData = async (vinfo) => {
       try {
-        const response = await axios.get("http://localhost:8000/getdata");
+        const response = await axios.get("http://localhost:8000/getdata",
+        {params: {vinfo}});
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data", error);
@@ -18,7 +19,17 @@ const VendorDetail = () => {
     };
     getData();
   }, []);
-  //輪播容器
+  
+  
+  
+  // 當 data_from_parent 更新時，更新 data 狀態
+  // useEffect(() => {
+    //   if (data_from_parent.length != 0) {
+      //     setData(data_from_parent);
+      //   }
+      // }, [data_from_parent]);
+      
+      //輪播容器
   useEffect(() => {
     if (!data) return;
     //選擇按鈕、圖片容器元素
@@ -29,8 +40,10 @@ const VendorDetail = () => {
     //每次動態生成前先清空容器內容
     indicatorsContainer.innerHTML = "";
     imageContainer.innerHTML = "";
+
+    
     //圖片src清單
-    const imageList = [
+    var imageList = [
       data.data_from_server[0].brand_img01,
       data.data_from_server[0].brand_img02,
       data.data_from_server[0].brand_img03,
@@ -38,6 +51,19 @@ const VendorDetail = () => {
       data.data_from_server[0].brand_img05,
     ];
 
+    if(data_from_parent.length != 0) {
+      imageList = [
+        data_from_parent[0].brand_img01,
+        data_from_parent[0].brand_img02,
+        data_from_parent[0].brand_img03,
+        data_from_parent[0].brand_img04,
+        data_from_parent[0].brand_img05
+      ];
+    }
+    
+
+    console.log(data_from_parent[0]);
+    console.log( data.data_from_server[0]);
     //使用forEach迴圈生成輪播按鈕、圖片
     imageList.forEach((image, index) => {
       if (image !== null) {
@@ -72,19 +98,24 @@ const VendorDetail = () => {
         imageContainer.appendChild(cimagecontainer);
       }
     });
-  }, [data]);
+  }, [data, data_from_parent]);
 
   if (!data) {
     return <p>Loading</p>;
   }
 
   //攤位名稱
-  const brandName = data.data_from_server[0].brand_name;
+  var brandName = data.data_from_server[0].brand_name;
+  if(data_from_parent.length != 0) {
+    brandName = data_from_parent[0].brand_name;
+  };
   //攤位簡介
-  const vendorContent = data.data_from_server[0].content;
+  var vendorContent = data.data_from_server[0].content;
+  if(data_from_parent.length != 0) {
+    vendorContent = data_from_parent[0].content;
+  };
   return (
     <div id="shop">
-      {console.log(data.data_from_server[0].brand_img05)}
       <div id="shop_nav">
         <div id="brand_logo"></div>
         <h3 id="brand_name">{brandName}</h3>
@@ -100,8 +131,7 @@ const VendorDetail = () => {
           {/* 輪播按鈕 */}
           <div className="carousel-indicators" id="carousel-indicators"></div>
           {/* 輪播圖片 */}
-          <div className="carousel-inner " id="carousel-inner"></div>
-          {/*  */}
+          <div className="carousel-inner" id="carousel-inner"></div>
           <button
             className="carousel-control-prev"
             type="button"
@@ -128,13 +158,12 @@ const VendorDetail = () => {
           </button>
         </div>
       </div>
+      <br />
       <div id="shop_detail">
         <p>{vendorContent}</p>
       </div>
       <div id="shop_btn">
-        {/* <i className="fa fa-instagram" style="font-size:30px"></i>
-        <i className="fa fa-facebook-square" style="font-size:30px"></i>
-        <i className="fa fa-twitter" style="font-size:30px"></i> */}
+        
       </div>
     </div>
   );
