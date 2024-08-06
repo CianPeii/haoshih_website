@@ -19,15 +19,6 @@ const VendorDetail = ({data_from_parent}) => {
     };
     getData();
   }, []);
-  
-  
-  
-  // 當 data_from_parent 更新時，更新 data 狀態
-  // useEffect(() => {
-    //   if (data_from_parent.length != 0) {
-      //     setData(data_from_parent);
-      //   }
-      // }, [data_from_parent]);
       
       //輪播容器
   useEffect(() => {
