@@ -7,7 +7,7 @@ const Sections = ({ type, changeType }) => {
     <>
       <div className="p-5 d-flex ">
         {title.map((item, index) => (
-          <SectionBtn key={index} title={item} type={en_title[index]} changeType={changeType} />
+          <SectionBtn key={index} title={item} type={en_title[index]} changeType={changeType} choose={(type === en_title[index])}/>
         ))}
       </div>
     </>
