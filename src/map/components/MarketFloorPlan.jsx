@@ -1,10 +1,10 @@
 import React from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import styles from "./MarketFloorPlan.module.scss";
 
 const MarketFloorPlan = () => {
   return (
-    <Container fluid className={styles.container}>
+    <Container fluid className={styles.containerSize}>
       <Row className={styles.floorPlanRow}>
         <Col>
           <div className={styles.floorPlan}>

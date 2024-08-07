@@ -1,5 +1,6 @@
 import { Image } from "react-bootstrap";
 
+
 const CheckOutItem = () => {
   return (
     <>
