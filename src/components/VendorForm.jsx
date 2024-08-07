@@ -133,46 +133,42 @@ const VendorForm = (props) => {
         return acc;
       }, {});
 
-      try {
-        console.log("Sending update request with:", updatedFields);
-        const response = await axios.put(
-          `http://localhost:3200/vendor/profile/${props.profile.vid}`,
-          updatedFields
-        );
-        console.log("Full response:", response);
+      console.log("Sending update request with:", updatedFields);
+      const response = await axios.put(
+        `http://localhost:3200/vendor/profile/${props.profile.vid}`,
+        updatedFields
+      );
+      console.log("Full response:", response);
 
-        // 根據響應決定是否導航
-        if (response.status === 200) {
-          console.log("Profile updated successfully:", response.data.message);
-          console.log("Updated fields:", response.data.updatedFields);
+      // 根據響應決定是否導航
+      if (response.status === 200) {
+        console.log("Profile updated successfully:", response.data.message);
+        console.log("Updated fields:", response.data.updatedFields);
 
-          // 更新表單狀態
-          setFormData((prevState) => ({
-            ...prevState,
-            ...updatedFields,
-          }));
+        // 更新表單狀態
+        setFormData((prevState) => ({
+          ...prevState,
+          ...updatedFields,
+        }));
 
-          // 更新 props.profile
-          if (typeof props.onProfileUpdate === "function") {
-            props.onProfileUpdate({ ...props.profile, ...updatedFields });
-          }
-
-          alert("資料更新成功");
-          // 重新導回會員資料頁面
-          navigate(`/vendor/${props.profile.vid}`);
-        } else {
-          console.log("Unexpected response status:", response.status);
+        // 更新 props.profile
+        if (typeof props.onProfileUpdate === "function") {
+          props.onProfileUpdate({ ...props.profile, ...updatedFields });
         }
-      } catch (error) {
-        console.error("Error updating profile:", error);
-        if (error.response) {
-          console.log("Error response:", error.response.data);
-          console.log("Error status:", error.response.status);
-        }
+
+        alert("資料更新成功");
+        // 重新導回會員資料頁面
+        navigate(`/vendor/${props.profile.vid}`);
+      } else {
+        console.log("Unexpected response status:", response.status);
       }
     } catch (error) {
       // 在這裡處理錯誤，例如顯示錯誤消息
       console.error("Error updating profile:", error);
+      if (error.response) {
+        console.log("Error response:", error.response.data);
+        console.log("Error status:", error.response.status);
+      }
     }
   };
 

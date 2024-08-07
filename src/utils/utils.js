@@ -58,6 +58,7 @@ exports.updateVendorProfile = async function (conn, vid, profileData) {
     });
   });
 };
+
 // 資料庫更新函式 ==> 交易設定
 exports.updateVendorPayment = async function (conn, vid, bankInfo) {
   return new Promise((resolve, reject) => {
