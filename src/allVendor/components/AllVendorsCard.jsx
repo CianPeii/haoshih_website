@@ -4,7 +4,7 @@ const AllVendorsCard = ({data}) => {
   var imgBlob = Buffer.from(data.brand_img01).toString('base64')
   return (
     <>
-      <div className="col-3">
+      <div className="col-3 cursor-pointer">
         <div className={`card p-3 mx-2  my-3 ${styles.cardBg}`}>
           <img
             className={styles.cardImg}
