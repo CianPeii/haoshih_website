@@ -1,9 +1,9 @@
 const express = require("express");
 const vendorRouter = express.Router();
 const {
-  queryAsync,
   hashPW,
   updateVendorProfile,
+  updateVendorPayment,
 } = require("../src/utils/utils.js");
 var config = require("./databaseConfig.js");
 var conn = config.connection;
@@ -83,8 +83,30 @@ vendorRouter.get("/bankInfo/:vid", (req, res) => {
 });
 
 // 編輯交易設定
-vendorRouter.put("/bankInfo/:vid", (req, res) => {
-  res.send("Go for it");
+vendorRouter.put("/bankInfo/:vid", async (req, res) => {
+  try {
+    const { bank_code, bank_account } = req.body;
+    const vid = req.params.vid;
+
+    // 有被填寫的欄位才會傳入 value
+    let updateFields = {};
+    if (bank_code) updateFields.bank_code = bank_code;
+    if (bank_account) updateFields.bank_account = bank_account;
+
+    // 假如有欄位被填寫才會 update到資料庫，否則就是回到原畫面
+    if (Object.keys(updateFields).length > 0) {
+      await updateVendorPayment(conn, vid, updateFields);
+      res.status(200).json({
+        message: "Bank Information updated successfully",
+        updatedFields: Object.keys(updateFields),
+      });
+    } else {
+      res.status(200).json({ message: "No fields to update" });
+    }
+  } catch (error) {
+    console.error("Error updating bankInfo:", error);
+    res.status(500).send("An error occurred while updating the bankInfo");
+  }
 });
 
 module.exports = vendorRouter;

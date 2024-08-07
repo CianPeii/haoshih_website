@@ -10,12 +10,18 @@ import Footer from "../components/Footer";
 import { Form, InputGroup, Button, Row, Col } from "react-bootstrap";
 
 const VendorPaymentSettings = () => {
+  const [currentBankInfo, setCurrentBankInfo] = useState({
+    bank_code: "",
+    bank_account: "",
+  });
   const [bankInfo, setBankInfo] = useState({
     bank_code: "",
     bank_account: "",
   });
   const { vid } = useParams();
   const navigate = useNavigate();
+  // 表單是否已經被驗證
+  const [validated, setValidated] = useState(false);
   // refetch功能
   const [{ data, loading, error }, refetch] = useAxios(
     `http://localhost:3200/vendor/bankInfo/${vid}`
@@ -27,6 +33,7 @@ const VendorPaymentSettings = () => {
         const response = await axios.get(
           `http://localhost:3200/vendor/bankInfo/${vid}`
         );
+        setCurrentBankInfo(response.data);
         setBankInfo(response.data);
       } catch (error) {
         console.error("Error fetching bank info:", error);
@@ -34,6 +41,85 @@ const VendorPaymentSettings = () => {
     };
     fetchBankInfo();
   }, [vid]);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setBankInfo((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // const form = event.currentTarget;
+
+    let isValid = true;
+
+    if (!bankInfo.bank_code || !bankInfo.bank_account) {
+      isValid = false;
+    }
+
+    if (!isValid) {
+      event.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
+    console.log("test 1");
+
+    try {
+      // 把有改變且與原始數據不同的項目打包成一個新物件 updatedFields
+      const updatedFields = Object.keys(bankInfo).reduce((acc, key) => {
+        if (bankInfo[key] !== "") {
+          acc[key] = bankInfo[key];
+        }
+        return acc;
+      }, {});
+
+      try {
+        console.log("Sending update request with:", updatedFields);
+        const response = await axios.put(
+          `http://localhost:3200/vendor/bankInfo/${vid}`,
+          updatedFields
+        );
+        console.log("Full response:", response);
+
+        // 根據響應決定是否導航
+        if (response.status === 200) {
+          console.log("Updated successfully:", response.data.message);
+          console.log("Updated fields:", response.data.updatedFields);
+
+          await refetch();
+
+          // 更新狀態
+          setCurrentBankInfo((prevState) => ({
+            ...prevState,
+            ...updatedFields,
+          }));
+          setBankInfo((prevState) => ({
+            ...prevState,
+            ...updatedFields,
+          }));
+
+          alert("資料更新成功");
+          // 重新導回會員資料頁面
+          navigate(`/vendor/${vid}/payment`);
+        } else {
+          console.log("Unexpected response status:", response.status);
+        }
+      } catch (error) {
+        console.error("Error updating bank info 1:", error);
+        if (error.response) {
+          console.log("Error response:", error.response.data);
+          console.log("Error status:", error.response.status);
+        }
+      }
+    } catch (error) {
+      // 在這裡處理錯誤，例如顯示錯誤消息
+      console.error("Error updating bank info 2:", error);
+    }
+  };
 
   return (
     <>
@@ -46,7 +132,7 @@ const VendorPaymentSettings = () => {
           <SubTitleYellow title="交易設定" />
 
           <div className="tempPaymentArea">
-            <Form>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <h3>收款帳戶</h3>
               <Form.Group as={Row} className="my-5 ms-5">
                 <Form.Label column sm="2" className="text-end">
@@ -56,13 +142,21 @@ const VendorPaymentSettings = () => {
                   <Form.Control
                     plaintext
                     readOnly
-                    value={bankInfo.bank_code + "-" + bankInfo.bank_account}
+                    value={
+                      currentBankInfo.bank_code +
+                      "-" +
+                      currentBankInfo.bank_account
+                    }
                   />
                 </Col>
               </Form.Group>
               <Form.Group as={Row} className="my-5 ms-5">
-                <Form.Select name="bank_code" style={{ width: "8rem" }}>
-                  <option>選擇銀行</option>
+                <Form.Select
+                  name="bank_code"
+                  style={{ width: "8rem" }}
+                  onChange={handleInputChange}
+                >
+                  <option disabled>選擇銀行</option>
                   <option value="004">004 – 臺灣銀行</option>
                   <option value="005">005 – 土地銀行</option>
                   <option value="006">006 – 合作商銀</option>
@@ -171,11 +265,15 @@ const VendorPaymentSettings = () => {
                 <Form.Control
                   type="input"
                   name="bank_account"
-                  placeholder="請輸入收款帳號"
+                  placeholder="請輸入銀行帳號"
                   className="ms-1"
                   style={{ width: "18rem" }}
+                  onChange={handleInputChange}
                 />
                 {/* 要限制輸入字數、限制只能輸入數字、去掉開頭的 0 */}
+                <Form.Text className="text-muted ms-2">
+                  在此輸入欲使用的銀行帳戶資訊
+                </Form.Text>
               </Form.Group>
               <Row>
                 <Col sm="8">
@@ -191,10 +289,6 @@ const VendorPaymentSettings = () => {
                       className="ms-3"
                       variant=" bg-blueGray text-white rounded-pill px-4 py-2"
                       type="submit"
-                      onClick={async () => {
-                        await refetch(); // 先執行 refetch
-                        navigate(`/vendor/${vid}/payment`); // 然後導航
-                      }}
                     >
                       儲存變更
                     </Button>
