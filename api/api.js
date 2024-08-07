@@ -24,3 +24,6 @@ app.use("/shop", shopRouter)
 
 var vendorRouter = require("./vendorRouter.js")
 app.use("/vendor", vendorRouter)
+
+var chatRouter = require("./chatRouter.js")
+app.use("/chat",chatRouter)
