@@ -27,8 +27,7 @@ const ShopCart = () => {
     };
     fetchProductsData();
   }, []);
-  console.log("ASD:", productsData);
-  
+
 
   useEffect(() => {
     if (productsData) {

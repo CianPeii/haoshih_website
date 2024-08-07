@@ -37,6 +37,8 @@ const Step1 = () => {
         <p>没有选中的商品。</p>
       )}
     </div>
+
+    
       <NavBarShop />
       <div className="f-space-around">
         <Arrow color="yellow" title="確認商品" />
