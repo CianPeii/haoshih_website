@@ -95,7 +95,7 @@ const VendorForm = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const form = event.currentTarget;
+    // const form = event.currentTarget;
 
     let isValid = true;
 
@@ -159,7 +159,7 @@ const VendorForm = (props) => {
 
           alert("資料更新成功");
           // 重新導回會員資料頁面
-          navigate(`/vendor/profile/${props.profile.vid}`);
+          navigate(`/vendor/${props.profile.vid}`);
         } else {
           console.log("Unexpected response status:", response.status);
         }
@@ -350,7 +350,7 @@ const VendorForm = (props) => {
               className="me-5"
               variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
               type="button"
-              onClick={() => navigate(`/vendor/profile/${props.profile.vid}`)}
+              onClick={() => navigate(`/vendor/${props.profile.vid}`)}
             >
               取消變更
             </Button>
