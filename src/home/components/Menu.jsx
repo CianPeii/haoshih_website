@@ -5,7 +5,7 @@ const menuItems = [
     id: 1,
     img: "images/icon/News.png",
     title: "最新消息",
-    link: "/new",
+    link: "/news",
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const menuItems = [
     id: 4,
     img: "images/icon/Stall.png",
     title: "我要擺攤",
-    link: "http",
+    link: "/SetStalls",
   },
   {
     id: 5,
@@ -37,7 +37,7 @@ const Menu = () => {
   return (
     <>
       <div>
-        <h1 className="fs-1 py-5 text-center font-special">功能介紹</h1>
+        <h1 className="fs-larger py-5 text-center font-special">功能介紹</h1>
         <div className="container">
           <div className="row  d-flex justify-content-center mw-100">
             {menuItems.map((item) => (

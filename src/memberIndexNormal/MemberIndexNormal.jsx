@@ -37,10 +37,10 @@ const MemberIndexNormal = (props) => {
     <>
       <NavBarShop />
       <div class="row mw-100 bg-white">
-        <div className="col-2  border-end border-3">
+        <div className="col-3  border-end border-3">
           <MemberSideBar />
         </div>
-        <div className="col-10 ">
+        <div className="col-9 ">
           <SubTitleYellow title="會員資料" />
 
           {memberData ? <MemberForm profile={memberData} /> : <p>Loading...</p>}

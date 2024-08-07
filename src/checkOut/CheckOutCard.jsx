@@ -1,7 +1,9 @@
 import { Table, Card } from "react-bootstrap";
 import CheckOutItem from "./CheckOutItem";
 
-const CheckOutCard = () => {
+const CheckOutCard = (products) => {
+  // console.log(products);
+  
   return (
     <>
       <Card className="my-5">
