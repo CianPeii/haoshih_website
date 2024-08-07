@@ -1,12 +1,16 @@
+import { useState, useEffect } from "react";
+import { useParams, Routes, Route, Outlet } from "react-router-dom";
+import axios from "axios";
 import NavBarShop from "../components/NavBarShop";
 import MemberVenderSideBar from "../components/MemberVenderSideBar";
 import SubTitleYellow from "../components/SubTitleYellow";
 import VendorForm from "../components/VendorForm";
 import ChatBtn from "../components/ChatBtn";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
 import Footer from "../components/Footer";
+// import VendorStallInfo from './components/VendorStallInfo';
+import VendorPaymentSettings from "./components/VendorPaymentSettings";
+// import VendorProducts from './components/VendorProducts';
+// import VendorOrders from './components/VendorOrders';
 
 const MemberIndexVendor = () => {
   const [vendorData, setVendorData] = useState(null);
@@ -14,8 +18,6 @@ const MemberIndexVendor = () => {
   const updateProfileData = (newData) => {
     setVendorData(newData);
   };
-
-  // console.log("User ID:", vid);
 
   useEffect(() => {
     const fetchVendorData = async () => {
@@ -33,6 +35,17 @@ const MemberIndexVendor = () => {
     fetchVendorData();
   }, [vid]); // 空陣列表示這個效果只在組件首次渲染時運行
 
+  const VendorProfile = () => (
+    <>
+      <SubTitleYellow title="會員資料" />
+      {vendorData ? (
+        <VendorForm profile={vendorData} onProfileUpdate={updateProfileData} />
+      ) : (
+        <p>Loading...</p>
+      )}
+    </>
+  );
+
   return (
     <>
       <NavBarShop />
@@ -41,16 +54,20 @@ const MemberIndexVendor = () => {
           <MemberVenderSideBar />
         </div>
         <div className="col-9 ">
-          <SubTitleYellow title="會員資料" />
+          <Routes>
+            {/* http://localhost:3000/vendor/1 */}
+            <Route index element={<VendorProfile />} />
 
-          {vendorData ? (
-            <VendorForm
-              profile={vendorData}
-              onProfileUpdate={updateProfileData}
-            />
-          ) : (
-            <p>Loading...</p>
-          )}
+            {/* <Route path="vendorInfo" element={<VendorStallInfo />} /> */}
+
+            {/* http://localhost:3000/vendor/1/payment */}
+            <Route path="payment" element={<VendorPaymentSettings />} />
+
+            {/* <Route path="products" element={<VendorProducts />} /> */}
+
+            {/* <Route path="orders" element={<VendorOrders />} /> */}
+          </Routes>
+          <Outlet />
 
           <ChatBtn />
         </div>
@@ -59,4 +76,5 @@ const MemberIndexVendor = () => {
     </>
   );
 };
+
 export default MemberIndexVendor;

@@ -2,6 +2,7 @@ const express = require("express");
 const vendorRouter = express.Router();
 const {
   hashPW,
+  queryAsync,
   updateVendorProfile,
   updateVendorPayment,
 } = require("../src/utils/utils.js");
@@ -23,7 +24,7 @@ vendorRouter.get("/", (req, res) => {
 // 會員資料 API
 vendorRouter.get("/profile/:vid", (req, res) => {
   conn.query(
-    "select * from vendor where vid = ?",
+    "SELECT * FROM vendor WHERE vid = ?",
     [req.params.vid],
     (err, result) => {
       res.json(result[0]);
@@ -66,15 +67,71 @@ vendorRouter.put("/profile/:vid", async (req, res) => {
   }
 });
 
-// 攤位資訊
-vendorRouter.get("/info/:vid", (req, res) => {
-  res.send("<h1>shop info here</h1>");
+// 攤位資訊 API http://localhost:3200/vendor/info/:vid
+vendorRouter.get("/info/:vid", async (req, res) => {
+  try {
+    const stallInfoQuery = `
+    SELECT vi.*, v.vid 
+    FROM vendor AS v 
+    INNER JOIN vendor_info 
+    AS vi ON vi.vinfo = v.vinfo 
+    WHERE vid = ?`;
+
+    // 取得資料庫資料
+    const stallInfo = await queryAsync(conn, stallInfoQuery, [req.params.vid]);
+    // res.json(stallInfo[0]);
+
+    if (stallInfo.length === 0) {
+      return res.status(404).json({ error: "Vendor not found" });
+    }
+
+    const convertImgToBase64 = (img) => {
+      if (img) {
+        if (Buffer.isBuffer(img)) {
+          // 如果是 Buffer，轉換為 Base64
+          img = `data:image/jpeg;base64,${img.toString("base64")}`;
+        } else if (typeof img === "string") {
+          // 如果已經是字串，檢查是否需要添加前綴
+          if (!img.startsWith("data:image/")) {
+            img = `data:image/jpeg;base64,${img}`;
+          }
+        } else {
+          // 如果是其他類型，設置為 null
+          console.log("Unexpected image data type");
+          img = null;
+        }
+      } else {
+        img = null;
+      }
+      return img;
+    };
+
+    const convertedImages = Object.entries(stallInfo[0]).reduce(
+      (acc, [key, value]) => {
+        if (key.includes("img")) {
+          acc[key] = convertImgToBase64(value);
+        }
+        return acc;
+      },
+      {}
+    );
+
+    const formattedStallInfo = {
+      ...stallInfo[0],
+      ...convertedImages,
+    };
+
+    res.json(formattedStallInfo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Fail to provide data" });
+  }
 });
 
 // 交易設定 API
 vendorRouter.get("/bankInfo/:vid", (req, res) => {
   conn.query(
-    "select bank_code, bank_account from vendor where vid = ?",
+    "SELECT bank_code, bank_account FROM vendor WHERE vid = ?",
     [req.params.vid],
     (err, result) => {
       res.json(result[0]);

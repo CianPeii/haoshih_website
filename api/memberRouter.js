@@ -5,8 +5,6 @@ memberRouter.use(express.json());
 var config = require("./databaseConfig.js");
 var conn = config.connection;
 
-// memberRouter.set("view engine", "ejs");
-
 const { queryAsync, hashPW } = require("../src/utils/utils.js");
 
 // --------測試路由用----------
@@ -139,6 +137,7 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
           return "未知狀態";
       }
     }
+
     const formattedOrdersPromises = orders.map(async (order) => {
       let detailObj;
       try {
@@ -213,7 +212,7 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
     res.send(orders);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Fail to render your page" });
+    res.status(500).json({ error: "Fail to provide data" });
   }
 });
 
