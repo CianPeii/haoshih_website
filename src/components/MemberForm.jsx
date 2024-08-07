@@ -2,7 +2,8 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
-// import InputGroup from "react-bootstrap/InputGroup";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -13,12 +14,12 @@ function MemberForm(props) {
   const navigate = useNavigate();
   // refetch功能
   const [{ data, loading, error }, refetch] = useAxios(
-    `http://localhost:3200/api/member/profile/${props.profile.uid}`
+    `http://localhost:3200/member/profile/${props.profile.uid}`
   );
   // 管理表單資料
   const [formData, setFormData] = useState({
-    first_name: "",
     last_name: "",
+    first_name: "",
     nickname: "",
     phone: "",
     email: "",
@@ -37,7 +38,7 @@ function MemberForm(props) {
   // 密碼驗證狀態
   const [pwError, setPwError] = useState(false);
   // 密碼顯示狀態
-  // const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   // 確認密碼
   const [dbCheckError, setDbCheckError] = useState(false);
 
@@ -154,7 +155,7 @@ function MemberForm(props) {
       try {
         console.log("Sending update request with:", updatedFields);
         const response = await axios.put(
-          `http://localhost:3200/put/member/profile/${props.profile.uid}`,
+          `http://localhost:3200/member/profile/${props.profile.uid}`,
           updatedFields
         );
         console.log("Full response:", response);
@@ -203,8 +204,8 @@ function MemberForm(props) {
         </Col>
         <Col sm="6">
           <div className="f-start">
-            <h2 className="me-2">{props.profile.first_name}</h2>
-            <h2 className="me-3">{props.profile.last_name}</h2>
+            <h2 className="me-2">{props.profile.last_name}</h2>
+            <h2 className="me-3">{props.profile.first_name}</h2>
           </div>
         </Col>
       </Row>
@@ -228,21 +229,21 @@ function MemberForm(props) {
         <Col sm="2">
           <Form.Control
             type="text"
-            placeholder={props.profile.first_name}
-            name="first_name"
-            value={formData.first_name}
-            onChange={handleInputChange}
-            id="validationCustomFirstName"
-          />
-        </Col>
-        <Col sm="4">
-          <Form.Control
-            type="text"
             placeholder={props.profile.last_name}
             name="last_name"
             value={formData.last_name}
             onChange={handleInputChange}
             id="validationCustomLastName"
+          />
+        </Col>
+        <Col sm="4">
+          <Form.Control
+            type="text"
+            placeholder={props.profile.first_name}
+            name="first_name"
+            value={formData.first_name}
+            onChange={handleInputChange}
+            id="validationCustomFirstName"
           />
           <Form.Control.Feedback type="invalid">
             請輸入正確姓名
@@ -327,26 +328,37 @@ function MemberForm(props) {
       </Form.Group>
 
       <Form.Group as={Row} controlId="validationCustom05" className="mb-3">
-        {/* 待完成 */}
         <Form.Label column sm="2" className="text-end">
           修改密碼
         </Form.Label>
         <Col sm="6">
-          <Form.Control
-            // type={showPassword ? "text" : "password"}
-            type="password"
-            placeholder=""
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            isInvalid={pwError}
-          />
-          {/* <Button onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? "隱藏" : "顯示"}
-          </Button> */}
-          <Form.Control.Feedback type="invalid">
-            請輸入8-12位密碼，可包含大小寫字母、數字和特殊符號
-          </Form.Control.Feedback>
+          <InputGroup>
+            <Form.Control
+              type={showPassword ? "text" : "password"}
+              placeholder="請輸入新密碼"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              isInvalid={pwError}
+            />
+            <Button
+              variant="outline-secondary"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                borderColor: "#ced4da", // 與輸入框邊框顏色一致
+                backgroundColor: "#B7EFE0", // 白色背景
+                borderTopRightRadius: "0.25rem",
+                borderBottomRightRadius: "0.25rem",
+              }}
+            >
+              <i
+                className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
+              ></i>
+            </Button>
+            <Form.Control.Feedback type="invalid" tooltip>
+              請輸入8-12位密碼，可包含大小寫字母、數字和特殊符號
+            </Form.Control.Feedback>
+          </InputGroup>
         </Col>
       </Form.Group>
 

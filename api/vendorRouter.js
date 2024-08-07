@@ -1,17 +1,20 @@
 const express = require("express");
 const vendorRouter = express.Router();
-const { queryAsync, hashPW, updateVendorProfile } = require("../src/utils/utils.js");
-var config = require("./databaseConfig.js")
-var conn = config.connection
+const {
+  queryAsync,
+  hashPW,
+  updateVendorProfile,
+} = require("../src/utils/utils.js");
+var config = require("./databaseConfig.js");
+var conn = config.connection;
 
 // --------測試路由用----------
-vendorRouter.get('/', function(req,res){res.send('OK')})
+// vendorRouter.get('/', function(req,res){res.send('OK')})
 
-vendorRouter.get('/test', function(req,res){
-    conn.query("SELECT * FROM member WHERE uid = 1",function(err,result){res.json(result)})
-})
+// vendorRouter.get('/test', function(req,res){
+//     conn.query("SELECT * FROM member WHERE uid = 1",function(err,result){res.json(result)})
+// })
 // --------測試路由用----------
-
 
 vendorRouter.get("/", (req, res) => {
   res.send("vendor page");
