@@ -1,22 +1,21 @@
-var express = require("express")
-var memberRouter = express.Router()
+var express = require("express");
+var memberRouter = express.Router();
 memberRouter.use(express.urlencoded({ extended: true }));
 memberRouter.use(express.json());
-var config = require("./databaseConfig.js")
-var conn = config.connection
+var config = require("./databaseConfig.js");
+var conn = config.connection;
 
 // memberRouter.set("view engine", "ejs");
 
 const { queryAsync, hashPW } = require("../src/utils/utils.js");
 
 // --------測試路由用----------
-memberRouter.get('/', function(req,res){res.send('OK')})
+// memberRouter.get('/', function(req,res){res.send('OK')})
 
-memberRouter.get('/test', function(req,res){
-    conn.query("SELECT * FROM member WHERE uid = 1",function(err,result){res.json(result)})
-})
+// memberRouter.get('/test', function(req,res){
+//     conn.query("SELECT * FROM member WHERE uid = 1",function(err,result){res.json(result)})
+// })
 // --------測試路由用----------
-
 
 // 資料庫更新函式 (一般會員)
 async function updateUserProfile(uid, profileData) {
@@ -56,7 +55,7 @@ memberRouter.get("/:uid", (req, res) => {
 // 會員資料 API
 memberRouter.get("/profile/:uid", (req, res) => {
   // console.log(`Received request for user ID: ${req.params.uid}`); // 添加這行日誌
- 
+
   conn.query(
     "select * from member where uid = ?",
     [req.params.uid],
@@ -211,7 +210,7 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
     const formattedOrders = await Promise.all(formattedOrdersPromises);
 
     res.json(formattedOrders);
-    res.send(orders)
+    res.send(orders);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Fail to render your page" });
@@ -282,4 +281,4 @@ memberRouter.get("/like/:uid", async (req, res) => {
   }
 });
 
-module.exports = memberRouter
+module.exports = memberRouter;
