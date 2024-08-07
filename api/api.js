@@ -19,8 +19,11 @@ app.use("/map", mapRouter);
 var memberRouter = require("./memberRouter.js");
 app.use("/member", memberRouter);
 
-// var shopRouter = require("./shopRouter.js")
-// app.use("/shop", shopRouter)
+var shopRouter = require("./shopRouter.js");
+app.use("/shop", shopRouter);
 
 var vendorRouter = require("./vendorRouter.js");
 app.use("/vendor", vendorRouter);
+
+var chatRouter = require("./chatRouter.js");
+app.use("/chat", chatRouter);
