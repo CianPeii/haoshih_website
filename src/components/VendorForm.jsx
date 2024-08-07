@@ -306,8 +306,8 @@ const VendorForm = (props) => {
               variant="outline-secondary"
               onClick={() => setShowPassword(!showPassword)}
               style={{
-                borderColor: "#ced4da", // 與輸入框邊框顏色一致
-                backgroundColor: "#B7EFE0", // 白色背景
+                borderColor: "#ced4da",
+                backgroundColor: "#B7EFE0",
                 borderTopRightRadius: "0.25rem",
                 borderBottomRightRadius: "0.25rem",
               }}
