@@ -66,11 +66,25 @@ vendorRouter.put("/profile/:vid", async (req, res) => {
   }
 });
 
-// 我要擺攤
-
 // 攤位資訊
 vendorRouter.get("/info/:vid", (req, res) => {
   res.send("<h1>shop info here</h1>");
+});
+
+// 交易設定 API
+vendorRouter.get("/bankInfo/:vid", (req, res) => {
+  conn.query(
+    "select bank_code, bank_account from vendor where vid = ?",
+    [req.params.vid],
+    (err, result) => {
+      res.json(result[0]);
+    }
+  );
+});
+
+// 編輯交易設定
+vendorRouter.put("/bankInfo/:vid", (req, res) => {
+  res.send("Go for it");
 });
 
 module.exports = vendorRouter;

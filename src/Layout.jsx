@@ -15,6 +15,8 @@ import ShopCart from "./shopCart/ShopCart";
 import Normal from "./SignUp/Normal";
 import SetStalls from "./setStalls/SetStalls";
 import Default from "./default/Default";
+// for qing branch 測試開發用
+import VendorPaymentSettings from "./VendorPaymentSettings/VendorPaymentSettings";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -40,6 +42,11 @@ const Layout = () => {
             {/* TODO: default route  =- 已經在 default/Default.jsx*/}
             <Route path="/member/:uid" element={<MemberIndexNormal />} />
             <Route path="/vendor/:vid" element={<MemberIndexVendor />} />
+            {/* for qing branch 測試開發用 */}
+            <Route
+              path="/vendor/:vid/payment"
+              element={<VendorPaymentSettings />}
+            />
           </Routes>
           {/* <ShopCart /> */}
           {/* <Step1 /> */}
