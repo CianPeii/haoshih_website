@@ -2,25 +2,51 @@ import NavBarShop from "../components/NavBarShop";
 import MainBg from "../components/MainBg";
 import Sections from "./components/Sections";
 import AllVendorsCard from "./components/AllVendorsCard";
-import PageBtn from "../components/PageBtn";
+// import PageBtn from "../components/PageBtn";
 import Footer from "../components/Footer";
 import styles from "./AllVendors.module.scss";
 import ChatBtn from "../components/ChatBtn";
+import { useState, useEffect } from "react";
+import axios from 'axios';
 
 const AllVendors = () => {
+  const [vendors, setVendors] = useState([])
+  const [type, setType] = useState("all")
+
+  const fetchVendorData = async (type) => {
+    var url = "http://localhost:3200/shop/"
+    if (type !== "all") {
+      url+=type
+    }
+    try {
+      const response = await axios.get(url);
+      setVendors(response.data);
+      // 檢查用：數據首次被獲取時顯示
+      // console.log("Vendors Data:", response.data);
+    } catch (error) {
+      console.error("Error fetching vendors data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchVendorData(type);
+  }, [type]); // 空陣列表示這個效果只在 component 首次渲染時執行
+
+
   return (
     <>
       <NavBarShop />
       <MainBg title="市集商城" page="allVendors" />
-      <Sections />
+      <Sections type={type}
+        changeType={(current_type) => {
+          setType(current_type)
+          // console.log(current_type)
+        }} />
       <div className={`row p-5 ${styles.vendorBorder}`}>
-        <AllVendorsCard />
-        <AllVendorsCard />
-        <AllVendorsCard />
-        <AllVendorsCard />
-        <AllVendorsCard />
+        {vendors.map((vendor, index) => (
+          <AllVendorsCard key={vendor.vinfo} data={vendor} />
+        ))}
       </div>
-      <PageBtn />
+      {/* <PageBtn /> */}
       <Footer />
       <ChatBtn />
     </>
