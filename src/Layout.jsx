@@ -25,7 +25,7 @@ const Layout = () => {
     <div className="layout">
       <div className="position-relative">
         <div className={styles.background}>
-          {/* <Routes location={location}>
+           {/* <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/haoshih" element={<Home />} />
             <Route path="/news" element={<News />} />
@@ -35,7 +35,7 @@ const Layout = () => {
             <Route path="/map" element={<Map />} />
             <Route path="/MemberIndexNormal" element={<MemberIndexNormal />} />
 
-            {/* TODO: default route */}
+             TODO: default route
             <Route path="/member/:uid" element={<MemberIndexNormal />} />
             <Route path="/vendor/:vid" element={<MemberIndexVendor />} />
             <Route path="/ShopCart/:uid" element={<ShopCart />} />
