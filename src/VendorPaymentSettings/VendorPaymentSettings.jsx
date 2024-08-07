@@ -10,18 +10,31 @@ import Footer from "../components/Footer";
 import { Form, InputGroup, Button, Row, Col } from "react-bootstrap";
 
 const VendorPaymentSettings = () => {
+  // 控制使用中帳戶
   const [currentBankInfo, setCurrentBankInfo] = useState({
     bank_code: "",
     bank_account: "",
   });
+
+  // 控制輸入帳戶
   const [bankInfo, setBankInfo] = useState({
     bank_code: "",
     bank_account: "",
   });
+
   const { vid } = useParams();
   const navigate = useNavigate();
+
   // 表單是否已經被驗證
   const [validated, setValidated] = useState(false);
+  // 銀行帳號驗證狀態
+  const [bankAccountError, setBankAccountError] = useState(false);
+  // 銀行帳號驗證函數
+  const validateBankAccount = (bankAccount) => {
+    const bankAccountRegex = /^([0-9]{10,14})$/;
+    return bankAccountRegex.test(bankAccount);
+  };
+
   // refetch功能
   const [{ data, loading, error }, refetch] = useAxios(
     `http://localhost:3200/vendor/bankInfo/${vid}`
@@ -48,15 +61,25 @@ const VendorPaymentSettings = () => {
       ...prevState,
       [name]: value,
     }));
+
+    // 確保輸入時立即檢查
+    if (name === "bank_account" && value !== "") {
+      setBankAccountError(!validateBankAccount(value));
+    } else if (name === "validateBankAccount" && value === "") {
+      setBankAccountError(false); // 如果欄位為空，不顯示錯誤
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // const form = event.currentTarget;
 
     let isValid = true;
 
-    if (!bankInfo.bank_code || !bankInfo.bank_account) {
+    if (
+      !bankInfo.bank_code ||
+      !bankInfo.bank_account ||
+      validateBankAccount(bankInfo.bank_account)
+    ) {
       isValid = false;
     }
 
@@ -65,8 +88,6 @@ const VendorPaymentSettings = () => {
       setValidated(true);
       return;
     }
-
-    console.log("test 1");
 
     try {
       // 把有改變且與原始數據不同的項目打包成一個新物件 updatedFields
@@ -77,47 +98,43 @@ const VendorPaymentSettings = () => {
         return acc;
       }, {});
 
-      try {
-        console.log("Sending update request with:", updatedFields);
-        const response = await axios.put(
-          `http://localhost:3200/vendor/bankInfo/${vid}`,
-          updatedFields
-        );
-        console.log("Full response:", response);
+      console.log("Sending update request with:", updatedFields);
+      const response = await axios.put(
+        `http://localhost:3200/vendor/bankInfo/${vid}`,
+        updatedFields
+      );
+      console.log("Full response:", response);
 
-        // 根據響應決定是否導航
-        if (response.status === 200) {
-          console.log("Updated successfully:", response.data.message);
-          console.log("Updated fields:", response.data.updatedFields);
+      // 根據響應決定是否導航
+      if (response.status === 200) {
+        console.log("Updated successfully:", response.data.message);
+        console.log("Updated fields:", response.data.updatedFields);
 
-          await refetch();
+        await refetch();
 
-          // 更新狀態
-          setCurrentBankInfo((prevState) => ({
-            ...prevState,
-            ...updatedFields,
-          }));
-          setBankInfo((prevState) => ({
-            ...prevState,
-            ...updatedFields,
-          }));
+        // 更新狀態
+        setCurrentBankInfo((prevState) => ({
+          ...prevState,
+          ...updatedFields,
+        }));
+        setBankInfo((prevState) => ({
+          ...prevState,
+          ...updatedFields,
+        }));
 
-          alert("資料更新成功");
-          // 重新導回會員資料頁面
-          navigate(`/vendor/${vid}/payment`);
-        } else {
-          console.log("Unexpected response status:", response.status);
-        }
-      } catch (error) {
-        console.error("Error updating bank info 1:", error);
-        if (error.response) {
-          console.log("Error response:", error.response.data);
-          console.log("Error status:", error.response.status);
-        }
+        alert("資料更新成功");
+        // 重新導回會員資料頁面
+        navigate(`/vendor/${vid}/payment`);
+      } else {
+        console.log("Unexpected response status:", response.status);
       }
     } catch (error) {
       // 在這裡處理錯誤，例如顯示錯誤消息
-      console.error("Error updating bank info 2:", error);
+      console.error("Error updating bank info :", error);
+      if (error.response) {
+        console.log("Error response:", error.response.data);
+        console.log("Error status:", error.response.status);
+      }
     }
   };
 
@@ -156,7 +173,7 @@ const VendorPaymentSettings = () => {
                   style={{ width: "8rem" }}
                   onChange={handleInputChange}
                 >
-                  <option disabled>選擇銀行</option>
+                  <option>選擇銀行</option>
                   <option value="004">004 – 臺灣銀行</option>
                   <option value="005">005 – 土地銀行</option>
                   <option value="006">006 – 合作商銀</option>
@@ -269,8 +286,11 @@ const VendorPaymentSettings = () => {
                   className="ms-1"
                   style={{ width: "18rem" }}
                   onChange={handleInputChange}
+                  isInvalid={bankAccountError}
                 />
-                {/* 要限制輸入字數、限制只能輸入數字、去掉開頭的 0 */}
+                <Form.Control.Feedback type="invalid">
+                  請輸入10~14位數字的銀行帳號，開頭 0 可省略
+                </Form.Control.Feedback>
                 <Form.Text className="text-muted ms-2">
                   在此輸入欲使用的銀行帳戶資訊
                 </Form.Text>
