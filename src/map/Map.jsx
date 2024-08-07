@@ -3,11 +3,32 @@ import NavBar from "../components/NavBar";
 import SubTitleYellow from "../components/SubTitleYellow";
 import ThirdTitle from "../components/ThirdTitle";
 import Footer from "../components/Footer";
-
+import VendorDetail from "./components/VendorDetail";
 import MarketFloorPlan from "./components/MarketFloorPlan";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Col, Form } from "react-bootstrap";
 
 const Map = () => {
+
+const [data_from_parent, setVinfo] = useState([]);
+
+const fetchData = async(vinfo) => {
+  try {
+    const response = await axios.get("http://localhost:8000/getdata", 
+      {params: {vinfo}} );
+    setVinfo(response.data.data_from_server);
+  } catch (error) {
+    console.log('Error fetching data', error);
+    }
+  };
+  //確保dataFromParent資料已動態更新
+  useEffect(() => {
+    console.log(data_from_parent);
+  },[data_from_parent]);
+  
+  
   return (
     <>
       <NavBar />
@@ -29,11 +50,11 @@ const Map = () => {
                 </Col>
               </div>
               <div>
-                <MarketFloorPlan />
+                <MarketFloorPlan fetchData={fetchData} />
               </div>
             </div>
-            <div className="border border-dark p-3 w-50">
-              點選左側查看攤位詳情
+            <div className="border border-dark p-3 w-50" id="shop">
+              <VendorDetail data_from_parent={data_from_parent}/>
             </div>
           </div>
         </div>
