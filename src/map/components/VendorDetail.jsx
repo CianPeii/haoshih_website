@@ -10,7 +10,7 @@ const VendorDetail = ({data_from_parent}) => {
   useEffect(() => {
     const getData = async (vinfo) => {
       try {
-        const response = await axios.get("http://localhost:8000/getdata",
+        const response = await axios.get("http://localhost:3200/map/getdata",
         {params: {vinfo}});
         setData(response.data);
       } catch (error) {
@@ -105,12 +105,27 @@ const VendorDetail = ({data_from_parent}) => {
   if(data_from_parent.length != 0) {
     vendorContent = data_from_parent[0].content;
   };
+  //攤位類別，英文轉中文
+  const brandTypeList = [
+    "服飾",
+    "飾品",
+    "手作",
+    "美食",
+    "寵物",
+    "其他"
+  ];
+  var brandType = data.data_from_server[0].brand_type;
+  if(data_from_parent.length != 0) {
+    brandType = data_from_parent[0].brand_type;
+  };
+  
   return (
     <div id="shop">
-      <div id="shop_nav">
-        <div id="brand_logo"></div>
-        <h3 id="brand_name">{brandName}</h3>
+      <div className="f-row-center" id="shop_nav">
+        <h3 className="c-blueGray fw-bold flex-5" id="brand_name">{brandName}</h3>
+        <h5 className="c-gray fw-500 flex-1" id="brand_type">{brandType}</h5>
       </div>
+      <br />
       {/* //輪播圖 */}
       <div className={`w-100 overflow-hidden rounded-4 ${styles.carousel}`}>
         <div

@@ -16,7 +16,7 @@ const [data_from_parent, setVinfo] = useState([]);
 
 const fetchData = async(vinfo) => {
   try {
-    const response = await axios.get("http://localhost:8000/getdata", 
+    const response = await axios.get("http://localhost:3200/map/getdata", 
       {params: {vinfo}} );
     setVinfo(response.data.data_from_server);
   } catch (error) {
@@ -40,7 +40,7 @@ const fetchData = async(vinfo) => {
             <div className="w-50 me-2 border border-dark p-3">
               <div className="d-flex justify-content-between align-items-center">
                 <Col>
-                  <ThirdTitle title="市集平面地圖" />
+                  <ThirdTitle title="市集平面圖" />
                 </Col>
                 <Col xs="auto">
                   <Form.Select size="sm">
