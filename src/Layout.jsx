@@ -37,7 +37,7 @@ const Layout = () => {
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
             <Route path="/SetStalls" element={<SetStalls />} />
-            {/* TODO: default route  =- 已經在 default/Default.jsx*/}
+            {/* TODO: default route  =- 已經在 default/Default.jsx */}
             <Route path="/member/:uid" element={<MemberIndexNormal />} />
             <Route path="/vendor/:vid*" element={<MemberIndexVendor />} />
           </Routes>
