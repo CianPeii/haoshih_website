@@ -76,6 +76,17 @@ $layouts: (
     }
   }
 }
+// 以下是flex設定，在className輸入flex-任何
+@mixin flex($value) {
+  flex: $value;
+}
+
+@for $i from 1 through 10 {
+  .flex-#{$i} {
+    @include flex($i);
+  }
+}
+// 以上是flex設定
 
 .f-end-end {
   display: flex;
@@ -103,6 +114,13 @@ $layouts: (
   justify-content: space-around;
 }
 
+.f-row-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -118,3 +136,10 @@ $layouts: (
   font-size: 3.4rem !important;
   font-weight: normal !important;
 }
+.fw-bold {
+  font-weight: bold;
+}
+.fw-500 {
+  font-weight: 500;
+}
+
