@@ -24,15 +24,22 @@ const ShopList = () => {
       </td>
       <td className="align-middle">NT$ 999</td>
       <td className="align-middle">
-        <InputGroup style={{ width: "120px" }}>
-          <Button variant="outline-secondary">-</Button>
-          <Form.Control type="text" value="12" className=" border-secondary" />
-          <Button variant="outline-secondary">+</Button>
-        </InputGroup>
+        <div className="mt-3">
+          <InputGroup style={{ width: "120px" }}>
+            <Button variant="outline-secondary">-</Button>
+            <Form.Control
+              type="text"
+              value="12"
+              className=" border-secondary"
+            />
+            <Button variant="outline-secondary">+</Button>
+          </InputGroup>
+          <div className="c-gray ms-5">庫存0</div>
+        </div>
       </td>
-      <td className=" align-middle">NT$ 240 </td>
+      <td className="align-middle">NT$ 240 </td>
       {/*垃圾桶icon */}
-      <td className=" align-middle">
+      <td className="align-middle">
         <i class="bi bi-trash3-fill c-blueGray"></i>
       </td>
     </tr>
