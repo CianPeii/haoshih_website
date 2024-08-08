@@ -1,7 +1,7 @@
 import { Image } from "react-bootstrap";
 
 
-const CheckOutItem = () => {
+const CheckOutItem = ({products}) => {
   return (
     <>
       <tr>

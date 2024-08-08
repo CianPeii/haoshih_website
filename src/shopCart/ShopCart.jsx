@@ -51,8 +51,8 @@ const ShopCart = () => {
   };
 
   const handleProductAmountChange = (pid, newAmount) => {
-    setProductsData(prevData => 
-      prevData.map(product => 
+    setProductsData(prevData =>
+      prevData.map(product =>
         product.pid === pid ? { ...product, amount: newAmount } : product
       )
     );
