@@ -15,6 +15,7 @@ import ShopCart from "./shopCart/ShopCart";
 import Normal from "./SignUp/Normal";
 import SetStalls from "./setStalls/SetStalls";
 import Default from "./default/Default";
+import Chartroom from "./cartroom/Cartroom";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -44,6 +45,7 @@ const Layout = () => {
           {/* <ShopCart /> */}
           {/* <Step1 /> */}
           {/* <Normal /> */}
+          {/* <Chartroom /> */}
         </div>
       </div>
       {/* <Login /> */}
