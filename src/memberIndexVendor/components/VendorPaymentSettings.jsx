@@ -8,6 +8,7 @@ import useAxios from "axios-hooks";
 import { useParams, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import { Form, InputGroup, Button, Row, Col } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
 
 const VendorPaymentSettings = () => {
   // 控制使用中帳戶

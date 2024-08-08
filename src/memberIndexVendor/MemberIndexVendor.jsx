@@ -7,7 +7,7 @@ import SubTitleYellow from "../components/SubTitleYellow";
 import VendorForm from "../components/VendorForm";
 import ChatBtn from "../components/ChatBtn";
 import Footer from "../components/Footer";
-// import VendorStallInfo from './components/VendorStallInfo';
+import VendorStallInfo from "./components/VendorStallInfo";
 import VendorPaymentSettings from "./components/VendorPaymentSettings";
 // import VendorProducts from './components/VendorProducts';
 // import VendorOrders from './components/VendorOrders';
@@ -58,7 +58,7 @@ const MemberIndexVendor = () => {
             {/* http://localhost:3000/vendor/1 */}
             <Route index element={<VendorProfile />} />
 
-            {/* <Route path="vendorInfo" element={<VendorStallInfo />} /> */}
+            <Route path="vendorInfo" element={<VendorStallInfo />} />
 
             {/* http://localhost:3000/vendor/1/payment */}
             <Route path="payment" element={<VendorPaymentSettings />} />
