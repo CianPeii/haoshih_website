@@ -1,7 +1,7 @@
 import { Table, Card } from "react-bootstrap";
 import CheckOutItem from "./CheckOutItem";
 
-const CheckOutCard = (products) => {
+const CheckOutCard = ({products}) => {
   // console.log(products);
   
   return (
@@ -19,8 +19,7 @@ const CheckOutCard = (products) => {
                 <th className="text-center">數量</th>
                 <th className="text-center">小計</th>
               </tr>
-              <CheckOutItem />
-              <CheckOutItem />
+              <CheckOutItem products={products}/>
             </thead>
             <tbody></tbody>
           </Table>

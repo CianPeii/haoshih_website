@@ -40,7 +40,9 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
     }
   };
 
+  // console.log(productsData);
   if (!productsData) {
+    
     return <tr><td colSpan="5">Loading...</td></tr>;
   }
 
