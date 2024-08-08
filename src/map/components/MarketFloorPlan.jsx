@@ -8,7 +8,6 @@ const MarketFloorPlan = ({fetchData}) => {
     console.log(vinfo);
     fetchData(vinfo);
   };
-
   let vendor_unmber = 1;
   return (
     <Container fluid className={styles.containerSize}>
@@ -25,7 +24,7 @@ const MarketFloorPlan = ({fetchData}) => {
                 >
                 {[...Array(5)].map((_, colIndex) => (
                   <div key={colIndex} 
-                  className={styles.stall}
+                  className={`${styles.stall} ${styles.hover}`}
                   onClick={handleClick}
                   >
                     {vendor_unmber++}
