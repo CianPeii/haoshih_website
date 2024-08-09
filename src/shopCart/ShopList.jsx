@@ -4,11 +4,11 @@ import { Form, Button, Image, InputGroup } from "react-bootstrap";
 const ShopList = () => {
   return (
     <tr>
-      <td className="text-center align-middle">
+      <td className="align-middle">
         <Form.Check type="checkbox" />
       </td>
-      <td className="text-center">
-        <div className="d-flex align-items-center justify-content-center">
+      <td className="">
+        <div className="d-flex align-items-center ">
           <div
             className="overflow-hidden rounded"
             style={{ width: "100px", height: "100px" }}
@@ -22,21 +22,24 @@ const ShopList = () => {
           <span className="ms-3">商品名字1</span>
         </div>
       </td>
-      <td className="text-center align-middle">NT$ 999</td>
-      <td className="text-center align-middle">
-        <InputGroup className="mx-auto" style={{ width: "120px" }}>
-          <Button variant="outline-secondary">-</Button>
-          <Form.Control
-            type="text"
-            value="12"
-            className="text-center border-secondary"
-          />
-          <Button variant="outline-secondary">+</Button>
-        </InputGroup>
+      <td className="align-middle">NT$ 999</td>
+      <td className="align-middle">
+        <div className="mt-3">
+          <InputGroup style={{ width: "120px" }}>
+            <Button variant="outline-secondary">-</Button>
+            <Form.Control
+              type="text"
+              value="12"
+              className=" border-secondary"
+            />
+            <Button variant="outline-secondary">+</Button>
+          </InputGroup>
+          <div className="c-gray ms-5">庫存0</div>
+        </div>
       </td>
-      <td className="text-center align-middle">NT$ 240 </td>
+      <td className="align-middle">NT$ 240 </td>
       {/*垃圾桶icon */}
-      <td className="text-center align-middle">
+      <td className="align-middle">
         <i class="bi bi-trash3-fill c-blueGray"></i>
       </td>
     </tr>
