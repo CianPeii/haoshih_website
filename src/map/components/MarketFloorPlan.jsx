@@ -2,22 +2,33 @@ import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import styles from "./MarketFloorPlan.module.scss";
 
-const MarketFloorPlan = () => {
+const MarketFloorPlan = ({fetchData}) => {
+  const handleClick = (event) => {
+    const vinfo = event.target.innerText
+    console.log(vinfo);
+    fetchData(vinfo);
+  };
+  let vendor_unmber = 1;
   return (
     <Container fluid className={styles.containerSize}>
       <Row className={styles.floorPlanRow}>
         <Col>
           <div className={styles.floorPlan}>
             <div className={styles.mainStage}>主舞台</div>
-
+            
             {[...Array(4)].map((_, rowIndex) => (
               <div
                 key={rowIndex}
                 className={styles.stallRow}
                 style={{ top: `${20 + rowIndex * 20}%` }}
-              >
+                >
                 {[...Array(5)].map((_, colIndex) => (
-                  <div key={colIndex} className={styles.stall} />
+                  <div key={colIndex} 
+                  className={`${styles.stall} ${styles.hover}`}
+                  onClick={handleClick}
+                  >
+                    {vendor_unmber++}
+                  </div>
                 ))}
               </div>
             ))}
@@ -80,3 +91,6 @@ const MarketFloorPlan = () => {
 };
 
 export default MarketFloorPlan;
+
+
+//useEffect()

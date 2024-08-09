@@ -1,10 +1,11 @@
 import ChatBtn from "../components/ChatBtn";
 import Footer from "../components/Footer";
 import MainBg from "../components/MainBg";
-import NavBar from "../components/NavBar";
+import NavBarShop from "../components/NavBarShop";
 import ThirdTitle from "../components/ThirdTitle";
+
 import React from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 const SetStalls = () => {
   const booths = [
@@ -22,7 +23,7 @@ const SetStalls = () => {
   };
   return (
     <>
-      <NavBar />
+      <NavBarShop />
       <MainBg title="我要擺攤" page="setStalls" />
       <Container fluid className="mt-4 bg-white p-5">
         <Row className="d-flex h-100">

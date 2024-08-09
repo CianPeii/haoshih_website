@@ -6,11 +6,14 @@ import ChatBtn from "../components/ChatBtn";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-
 import Footer from "../components/Footer";
+
 const MemberIndexNormal = (props) => {
   const [memberData, setMemberData] = useState(null);
   const { uid } = useParams();
+  const updateProfileData = (newData) => {
+    setMemberData(newData);
+  };
 
   // 現在可以使用 uid 變數
   // console.log("User ID:", uid);
@@ -29,7 +32,7 @@ const MemberIndexNormal = (props) => {
     };
 
     fetchMemberData();
-  }, []); // 空陣列表示這個效果只在組件首次渲染時運行
+  }, [uid]); // 空陣列表示這個效果只在組件首次渲染時運行
 
   // console.log("Current memberData state:", memberData); // 每次重新渲染時顯示當前的 memberData 狀態
 
@@ -43,7 +46,14 @@ const MemberIndexNormal = (props) => {
         <div className="col-9 ">
           <SubTitleYellow title="會員資料" />
 
-          {memberData ? <MemberForm profile={memberData} /> : <p>Loading...</p>}
+          {memberData ? (
+            <MemberForm
+              profile={memberData}
+              onProfileUpdate={updateProfileData}
+            />
+          ) : (
+            <p>Loading...</p>
+          )}
 
           <ChatBtn />
         </div>

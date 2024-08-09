@@ -14,6 +14,7 @@ import LoginVendor from "./loginVendor/LoginVendor";
 import ShopCart from "./shopCart/ShopCart";
 import Normal from "./SignUp/Normal";
 import SetStalls from "./setStalls/SetStalls";
+import Default from "./default/Default";
 import Step1 from "./checkOut/step/Step1";
 
 import { Routes, Route, useLocation } from "react-router-dom";
