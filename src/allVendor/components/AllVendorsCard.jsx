@@ -1,10 +1,10 @@
 import styles from "./AllVendorsCard.module.scss";
 import { Buffer } from "buffer";
-const AllVendorsCard = ({data}) => {
+const AllVendorsCard = ({ data , linkTo}) => {
   var imgBlob = Buffer.from(data.brand_img01).toString('base64')
   return (
     <>
-      <div className="col-3 cursor-pointer">
+      <div className="col-3 cursor-pointer" onClick={()=>{linkTo(data.vinfo)}}>
         <div className={`card p-3 mx-2  my-3 ${styles.cardBg}`}>
           <img
             className={styles.cardImg}
