@@ -34,7 +34,7 @@ exports.verifyPW = async function (originalPW, hashedPW) {
   }
 };
 
-// 資料庫更新函式 ==> 攤主
+// 資料庫更新函式 ==> 攤主會員資料
 exports.updateVendorProfile = async function (conn, vid, profileData) {
   return new Promise((resolve, reject) => {
     const keys = Object.keys(profileData);
@@ -48,6 +48,31 @@ exports.updateVendorProfile = async function (conn, vid, profileData) {
       .map((key) => `${key} = ?`)
       .join(",")} WHERE vid = ?`;
     let params = [...Object.values(profileData), vid];
+    // 更新資料庫
+    conn.query(sql, params, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+// 資料庫更新函式 ==> 交易設定
+exports.updateVendorPayment = async function (conn, vid, bankInfo) {
+  return new Promise((resolve, reject) => {
+    const keys = Object.keys(bankInfo);
+    // 如果都沒填寫，就不執行動作
+    if (keys.length === 0) {
+      resolve();
+      return;
+    }
+    // 依照有填寫的欄位動態生成 SQL語法
+    let sql = `UPDATE vendor SET ${keys
+      .map((key) => `${key} = ?`)
+      .join(",")} WHERE vid = ?`;
+    let params = [...Object.values(bankInfo), vid];
     // 更新資料庫
     conn.query(sql, params, (err, result) => {
       if (err) {
