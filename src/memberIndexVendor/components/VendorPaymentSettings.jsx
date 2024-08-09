@@ -300,8 +300,7 @@ const VendorPaymentSettings = () => {
                 <div className="d-flex justify-content-center">
                   <Button
                     variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
-                    type="button"
-                    onClick={() => navigate(`/vendor/${vid}/payment`)}
+                    type="reset"
                   >
                     取消變更
                   </Button>

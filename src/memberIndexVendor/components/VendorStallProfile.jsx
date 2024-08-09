@@ -1,13 +1,9 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import useAxios from "axios-hooks";
 import SubTitleYellow from "../../components/SubTitleYellow";
 
 const VendorStallProfile = (props) => {
@@ -32,6 +28,12 @@ const VendorStallProfile = (props) => {
               className="me-5"
               variant=" bg-blueGray text-white rounded-pill px-4 py-2"
               type="submit"
+              //   點下去會error
+              onClick={() => {
+                navigate(
+                  `http://localhost:3000/vendor/${stallProfile.vid}/edit`
+                );
+              }}
             >
               編輯
             </Button>
@@ -59,48 +61,38 @@ const VendorStallProfile = (props) => {
           <Col sm="2" className="text-end">
             <p>品牌類型</p>
           </Col>
-          <Col sm="6">{stallProfile.brand_type}</Col>
+          <Col sm="6">{stallProfile.brand_type_text}</Col>
         </Row>
         <Row>
           <Col sm="2" className="text-end">
             <p>品牌標籤</p>
           </Col>
           <Col sm="6">
-            {stallProfile.tag1}
+            {stallProfile.tag1 ? `${stallProfile.tag1}` : ""}
             {stallProfile.tag2 ? ` ; ${stallProfile.tag2}` : ""}
           </Col>
         </Row>
 
-        {stallProfile.fb ? (
-          <Row>
-            <Col sm="2" className="text-end">
-              <p>品牌ＦＢ</p>
-            </Col>
-            <Col sm="6">{stallProfile.fb}</Col>
-          </Row>
-        ) : (
-          ""
-        )}
-        {stallProfile.ig ? (
-          <Row>
-            <Col sm="2" className="text-end">
-              <p>品牌ＩＧ</p>
-            </Col>
-            <Col sm="6">{stallProfile.ig}</Col>
-          </Row>
-        ) : (
-          ""
-        )}
-        {stallProfile.web ? (
-          <Row>
-            <Col sm="2" className="text-end">
-              <p>品牌網站</p>
-            </Col>
-            <Col sm="6">{stallProfile.web}</Col>
-          </Row>
-        ) : (
-          ""
-        )}
+        <Row>
+          <Col sm="2" className="text-end">
+            <p>品牌ＦＢ</p>
+          </Col>
+          <Col sm="6">{stallProfile.fb ? stallProfile.fb : "無"}</Col>
+        </Row>
+
+        <Row>
+          <Col sm="2" className="text-end">
+            <p>品牌ＩＧ</p>
+          </Col>
+          <Col sm="6">{stallProfile.ig ? stallProfile.ig : "無"}</Col>
+        </Row>
+
+        <Row>
+          <Col sm="2" className="text-end">
+            <p>品牌網站</p>
+          </Col>
+          <Col sm="6">{stallProfile.web ? stallProfile.web : "無"}</Col>
+        </Row>
 
         <Row>
           <Col sm="2" className="text-end">

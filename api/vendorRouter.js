@@ -140,13 +140,68 @@ vendorRouter.get("/info/:vid", async (req, res) => {
     const formattedStallInfo = {
       ...stallInfo[0],
       ...convertedImages,
-      brand_type: getCategoryText(stallInfo[0].brand_type),
+      brand_type_text: getCategoryText(stallInfo[0].brand_type),
     };
 
     res.json(formattedStallInfo);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Fail to provide data" });
+  }
+});
+
+// 編輯攤位資訊
+vendorRouter.put("/info/:vid", async (req, res) => {
+  try {
+    const {
+      vinfo,
+      logo_img,
+      brand_name,
+      brand_type,
+      tag1,
+      tag2,
+      fb,
+      ig,
+      web,
+      content,
+      brand_img01,
+      brand_img02,
+      brand_img03,
+      brand_img04,
+      brand_img05,
+    } = req.body;
+    const vid = req.params.vid;
+
+    // 有被填寫的欄位才會傳入 value
+    let updateFields = {};
+    if (brand_name) updateFields.brand_name = brand_name;
+    if (brand_type) updateFields.brand_type = brand_type;
+    if (logo_img) updateFields.logo_img = logo_img;
+    if (tag1) updateFields.tag1 = tag1;
+    if (tag2) updateFields.tag2 = tag2;
+    if (fb) updateFields.fb = fb;
+    if (ig) updateFields.ig = ig;
+    if (web) updateFields.web = web;
+    if (content) updateFields.content = content;
+    if (brand_img01) updateFields.brand_img01 = brand_img01;
+    if (brand_img02) updateFields.brand_img02 = brand_img02;
+    if (brand_img03) updateFields.brand_img03 = brand_img03;
+    if (brand_img04) updateFields.brand_img04 = brand_img04;
+    if (brand_img05) updateFields.brand_img05 = brand_img05;
+
+    // 假如有欄位被填寫才會 update到資料庫，否則就是回到原畫面
+    if (Object.keys(updateFields).length > 0) {
+      await updateStallProfile(conn, vinfo, updateFields);
+      res.status(200).json({
+        message: "Stall Profile updated successfully",
+        updatedFields: Object.keys(updateFields),
+      });
+    } else {
+      res.status(200).json({ message: "No fields to update" });
+    }
+  } catch (error) {
+    console.error("Error updating stall profile:", error);
+    res.status(500).send("An error occurred while updating the stall profile");
   }
 });
 

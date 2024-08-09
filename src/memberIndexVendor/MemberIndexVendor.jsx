@@ -9,6 +9,7 @@ import ChatBtn from "../components/ChatBtn";
 import Footer from "../components/Footer";
 // import VendorStallInfo from "./components/VendorStallInfo";
 import VendorStallProfile from "./components/VendorStallProfile";
+import EditStallProfile from "./components/EditStallProfile";
 import VendorPaymentSettings from "./components/VendorPaymentSettings";
 // import VendorProducts from './components/VendorProducts';
 // import VendorOrders from './components/VendorOrders';
@@ -85,6 +86,14 @@ const MemberIndexVendor = () => {
                 ) : (
                   <p>Loading...</p>
                 )
+              }
+            />
+            <Route
+              path="edit"
+              element={
+                <EditStallProfile
+                  stallProfile={stallProfile ? stallProfile : ""}
+                />
               }
             />
 
