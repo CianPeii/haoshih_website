@@ -3,9 +3,9 @@ import axios from "axios";
 import { Buffer } from "buffer";
 import styles from "./VendorDetail.module.scss";
 
-const VendorDetail = ({ data_from_parent }) => {
-  const [data, setData] = useState();
-
+const VendorDetail = ({data_from_parent}) => {
+  var [data, setData] = useState();
+  
   //useEffect用於畫面上有變化時動態更新資料
   useEffect(() => {
     const getData = async (vinfo) => {
@@ -162,7 +162,7 @@ const VendorDetail = ({ data_from_parent }) => {
       </div>
       <br />
       <div id="shop_detail">
-        <p>{vendorContent}</p>
+        <p className="fs-content fw-530">{vendorContent}</p>
       </div>
       <div id="shop_btn"></div>
     </div>
