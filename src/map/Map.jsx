@@ -11,24 +11,23 @@ import axios from "axios";
 import { Col, Form } from "react-bootstrap";
 
 const Map = () => {
+  const [data_from_parent, setVinfo] = useState([]);
 
-const [data_from_parent, setVinfo] = useState([]);
-
-const fetchData = async(vinfo) => {
-  try {
-    const response = await axios.get("http://localhost:3200/map/getdata", 
-      {params: {vinfo}} );
-    setVinfo(response.data.data_from_server);
-  } catch (error) {
-    console.log('Error fetching data', error);
+  const fetchData = async (vinfo) => {
+    try {
+      const response = await axios.get("http://localhost:3200/map/getdata", {
+        params: { vinfo },
+      });
+      setVinfo(response.data.data_from_server);
+    } catch (error) {
+      console.log("Error fetching data", error);
     }
   };
   //確保dataFromParent資料已動態更新
   useEffect(() => {
     console.log(data_from_parent);
-  },[data_from_parent]);
-  
-  
+  }, [data_from_parent]);
+
   return (
     <>
       <NavBar />
@@ -54,7 +53,7 @@ const fetchData = async(vinfo) => {
               </div>
             </div>
             <div className="border border-dark p-3 w-50" id="shop">
-              <VendorDetail data_from_parent={data_from_parent}/>
+              <VendorDetail data_from_parent={data_from_parent} />
             </div>
           </div>
         </div>

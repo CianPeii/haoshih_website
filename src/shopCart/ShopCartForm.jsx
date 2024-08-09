@@ -58,11 +58,11 @@ const ShopCartForm = ({ productsData, selectedProducts, onProductCheckChange, on
               <Table borderless>
                 <thead>
                   <tr className="border-bottom">
-                    <th className="text-center"></th>
-                    <th className="text-center">商品</th>
-                    <th className="text-center">單價</th>
-                    <th className="text-center">數量</th>
-                    <th className="text-center">小計</th>
+                    <th></th>
+                    <th>商品</th>
+                    <th>單價</th>
+                    <th>數量</th>
+                    <th>小計</th>
                   </tr>
                 </thead>
                 <tbody>

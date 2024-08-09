@@ -10,7 +10,7 @@ const NavBarShop = () => {
             <a href="/">
               <img
                 className={styles.logo}
-                src="images/img/logo.png"
+                src="/images/img/logo.png"
                 alt="logo"
               />
             </a>

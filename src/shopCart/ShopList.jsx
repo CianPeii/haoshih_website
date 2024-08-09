@@ -55,14 +55,14 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
 
         return (
           <tr key={index}>
-            <td className="text-center align-middle">
+            <td className="align-middle">
               <Form.Check
                 type="checkbox"
                 checked={selectedProducts.has(product.pid)}
                 onChange={() => onProductCheckChange(product.pid, !selectedProducts.has(product.pid))}
               />
             </td>
-            <td className="text-center">
+            <td className="">
               <div className="d-flex align-items-center">
                 <div
                   className="overflow-hidden rounded"
@@ -77,9 +77,10 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
                 <span className="ms-3">{product.name}</span>
               </div>
             </td>
-            <td className="text-center align-middle">{turnPrice(product.price)}</td>
-            <td className="text-center align-middle">
-              <InputGroup className="mx-auto" style={{ width: "120px" }}>
+            <td className="align-middle">{turnPrice(product.price)}</td>
+            <td className="align-middle">
+              <div>
+              <InputGroup className="" style={{ width: "120px" }}>
                 <Button
                   variant="outline-secondary"
                   onClick={() => handleAmountChange(product.pid, -1)}
@@ -101,11 +102,14 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
                   +
                 </Button>
               </InputGroup>
+                <div className="c-gray ms-3">剩餘庫存:{product.quantity}</div>
+              </div>
+
             </td>
-            <td className="text-center align-middle">
+            <td className="align-middle">
               {turnPrice(product.amount * product.price)}
             </td>
-            <td className="text-center align-middle">
+            <td className="align-middle">
               <i
                 className="bi bi-trash3-fill c-blueGray"
                 onClick={() => clickDelete(product.pid)}
