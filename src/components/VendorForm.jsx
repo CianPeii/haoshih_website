@@ -345,8 +345,7 @@ const VendorForm = (props) => {
             <Button
               className="me-5"
               variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
-              type="button"
-              onClick={() => navigate(`/vendor/${props.profile.vid}`)}
+              type="reset"
             >
               取消變更
             </Button>
