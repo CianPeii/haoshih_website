@@ -4,18 +4,28 @@ import styles from "./MarketFloorPlan.module.scss";
 
 const MarketFloorPlan = ({fetchData}) => {
   const handleClick = (event) => {
-    const vinfo = event.target.innerText
+    const letter_map = {
+      'A': 1,
+      'B': 2,
+      'C': 3,
+      'D': 4
+    };  //定義攤位區域碼文字對應數字
+    const number_to_vinfo = event.target.innerText 
+    const letter = number_to_vinfo.charAt(0);  //取得文字部分
+    const number = parseInt(number_to_vinfo.slice(1));  //取得數字部分，從索引1開始
+    const vinfo = (letter_map[letter] - 1) * 5 + number;
     console.log(vinfo);
     fetchData(vinfo);
   };
-  let vendor_unmber = 1;
+  const position = ["A", "B", "C", "D"];
+  const vendor_unmber = ["01", "02", "03", "04", "05"];
+  
   return (
     <Container fluid className={styles.containerSize}>
       <Row className={styles.floorPlanRow}>
         <Col>
           <div className={styles.floorPlan}>
             <div className={styles.mainStage}>主舞台</div>
-            
             {[...Array(4)].map((_, rowIndex) => (
               <div
                 key={rowIndex}
@@ -27,7 +37,7 @@ const MarketFloorPlan = ({fetchData}) => {
                   className={`${styles.stall} ${styles.hover}`}
                   onClick={handleClick}
                   >
-                    {vendor_unmber++}
+                    {position[rowIndex] + vendor_unmber[colIndex]}
                   </div>
                 ))}
               </div>

@@ -8,10 +8,18 @@ import styles from "./AllVendors.module.scss";
 import ChatBtn from "../components/ChatBtn";
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import { useNavigate, useParams } from "react-router-dom";
 
 const AllVendors = () => {
   const [vendors, setVendors] = useState([])
   const [type, setType] = useState("all")
+
+  let navigate = useNavigate();
+
+  const handleNavigation = (vid) => {
+    navigate("/shop/"+vid);
+    // console.log("click",vid)
+  };
 
   const fetchVendorData = async (type) => {
     var url = "http://localhost:3200/shop/"
@@ -43,7 +51,7 @@ const AllVendors = () => {
         }} />
       <div className={`row p-5 ${styles.vendorBorder}`}>
         {vendors.map((vendor, index) => (
-          <AllVendorsCard key={vendor.vinfo} data={vendor} />
+          <AllVendorsCard key={vendor.vinfo} data={vendor} linkTo={handleNavigation}/>
         ))}
       </div>
       {/* <PageBtn /> */}

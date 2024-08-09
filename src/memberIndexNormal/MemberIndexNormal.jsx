@@ -22,7 +22,7 @@ const MemberIndexNormal = (props) => {
     const fetchMemberData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3200/api/member/profile/${uid}`
+          `http://localhost:3200/member/profile/${uid}`
         );
         setMemberData(response.data);
         // console.log("Member Data:", response.data); // 數據首次被獲取時在控制台顯示

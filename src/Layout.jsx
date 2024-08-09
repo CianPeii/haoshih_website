@@ -15,6 +15,7 @@ import ShopCart from "./shopCart/ShopCart";
 import Normal from "./SignUp/Normal";
 import SetStalls from "./setStalls/SetStalls";
 import Default from "./default/Default";
+import Chartroom from "./cartroom/Cartroom";
 import Step1 from "./checkOut/step/Step1";
 
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -34,12 +35,13 @@ const Layout = () => {
             <Route path="/haoshih" element={<Home />} />
             <Route path="/news" element={<News />} />
             <Route path="/shop" element={<AllVendors />} />
-            <Route path="/vendor" element={<Vendor />} />
+            <Route path="/shop/:vid/*" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
             <Route path="/SetStalls" element={<SetStalls />} />
+            {/* TODO: default route  =- 已經在 default/Default.jsx */}
             <Route path="/member/:uid" element={<MemberIndexNormal />} />
-            <Route path="/vendor/:vid" element={<MemberIndexVendor />} />
+            {/* <Route path="/vendor/:vid*" element={<MemberIndexVendor />} /> */}
             <Route path="/Step1" element={<Step1 />} />
             <Route path="/ShopCart" element={<ShopCart />} />
             TODO: default route
@@ -49,6 +51,7 @@ const Layout = () => {
           <Normal />
           <AllVendors />
           <Vendor /> */}
+          {/* <Chartroom /> */}
         </div>
       </div>
       {/* <Login /> */}
