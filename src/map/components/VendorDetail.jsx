@@ -10,8 +10,9 @@ const VendorDetail = ({data_from_parent}) => {
   useEffect(() => {
     const getData = async (vinfo) => {
       try {
-        const response = await axios.get("http://localhost:3200/map/getdata",
-        {params: {vinfo}});
+        const response = await axios.get("http://localhost:3200/map/getdata", {
+          params: { vinfo },
+        });
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data", error);
@@ -19,8 +20,8 @@ const VendorDetail = ({data_from_parent}) => {
     };
     getData();
   }, []);
-      
-      //輪播容器
+
+  //輪播容器
   useEffect(() => {
     if (!data) return;
     //選擇按鈕、圖片容器元素
@@ -41,13 +42,13 @@ const VendorDetail = ({data_from_parent}) => {
       data.data_from_server[0].brand_img05,
     ];
 
-    if(data_from_parent.length != 0) {
+    if (data_from_parent.length != 0) {
       imageList = [
         data_from_parent[0].brand_img01,
         data_from_parent[0].brand_img02,
         data_from_parent[0].brand_img03,
         data_from_parent[0].brand_img04,
-        data_from_parent[0].brand_img05
+        data_from_parent[0].brand_img05,
       ];
     }
 
@@ -95,33 +96,30 @@ const VendorDetail = ({data_from_parent}) => {
 
   //攤位名稱
   var brandName = data.data_from_server[0].brand_name;
-  if(data_from_parent.length != 0) {
+  if (data_from_parent.length != 0) {
     brandName = data_from_parent[0].brand_name;
-  };
+  }
   //攤位簡介
   var vendorContent = data.data_from_server[0].content;
-  if(data_from_parent.length != 0) {
+  if (data_from_parent.length != 0) {
     vendorContent = data_from_parent[0].content;
-  };
+  }
   //攤位類別，英文轉中文
-  const brandTypeList = [
-    "服飾",
-    "飾品",
-    "手作",
-    "美食",
-    "寵物",
-    "其他"
-  ];
+  const brandTypeList = ["服飾", "飾品", "手作", "美食", "寵物", "其他"];
   var brandType = data.data_from_server[0].brand_type;
-  if(data_from_parent.length != 0) {
+  if (data_from_parent.length != 0) {
     brandType = data_from_parent[0].brand_type;
-  };
-  
+  }
+
   return (
     <div id="shop">
       <div className="f-row-center" id="shop_nav">
-        <h3 className="c-blueGray fw-bold flex-5" id="brand_name">{brandName}</h3>
-        <h5 className="c-gray fw-500 flex-1" id="brand_type">{brandType}</h5>
+        <h3 className="c-blueGray fw-bold flex-5" id="brand_name">
+          {brandName}
+        </h3>
+        <h5 className="c-gray fw-500 flex-1" id="brand_type">
+          {brandType}
+        </h5>
       </div>
       <br />
       {/* //輪播圖 */}
@@ -166,9 +164,7 @@ const VendorDetail = ({data_from_parent}) => {
       <div id="shop_detail">
         <p className="fs-content fw-530">{vendorContent}</p>
       </div>
-      <div id="shop_btn">
-        
-      </div>
+      <div id="shop_btn"></div>
     </div>
   );
 };
