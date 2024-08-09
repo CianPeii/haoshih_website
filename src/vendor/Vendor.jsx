@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Carousel } from "bootstrap";
 
 import NavBarShop from "../components/NavBarShop";
@@ -7,8 +7,12 @@ import VendorCard from "./components/VendorCardYellow";
 import PageBtn from "../components/PageBtn";
 import Footer from "../components/Footer";
 import ChatBtn from "../components/ChatBtn";
+import axios from 'axios';
+import { useNavigate, useParams } from "react-router-dom";
+import { Buffer } from "buffer";
 
 function VendorCarousel() {
+  
   useEffect(() => {
     const carouselElement = document.querySelector(
       "#carouselExampleIndicators"
@@ -25,6 +29,25 @@ function VendorCarousel() {
 }
 
 const Vendor = () => {
+  const [vendor, setVendor] = useState([])
+  const params = useParams();
+  console.log(params) // can get vid
+  const fetchVendorData = async () => {
+    var url = "http://localhost:3200/shop/vendor/"+params.vid
+    try {
+      const response = await axios.get(url);
+      setVendor(response.data[0]);
+      // 檢查用：數據首次被獲取時顯示
+      console.log("Vendors Data:", response.data);
+      console.log(vendor)
+    } catch (error) {
+      console.error("Error fetching vendors data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchVendorData();
+  }, []);
+  
   return (
     <>
       <NavBarShop />
@@ -43,23 +66,21 @@ const Vendor = () => {
           <div className=" w-75">
             {/*攤販資訊} */}
             <div className="d-flex align-items-center">
-              <h3>攤販名稱</h3>
+              <h3>{vendor.brand_name}</h3>
               <i className=" fs-5 bi bi-heart px-3 text-black-50"></i>
             </div>
             <p className={`${styles.headerText} overflow-hidden`}>
-              攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數
-              攤販販介紹資料庫有限制字數攤販販攤販販介紹資料庫有限制字數介紹資料庫有限制字數
-              攤販販介紹資料！！這最後！！
+              {vendor.content}
             </p>
             {/* 攤販link */}
             <div className=" d-flex justify-content-end fs-3 d-grid gap-3 ">
-              <a className="text-black-50" href="#">
+              <a className="text-black-50" href={vendor.fb} target="_blank">
                 <i className="bi bi-facebook"></i>
               </a>
-              <a className="text-black-50" href="#">
+              <a className="text-black-50" href={vendor.ig} target="_blank">
                 <i className="bi bi-instagram "></i>
               </a>
-              <a className="text-black-50" href="#">
+              <a className="text-black-50" href={vendor.web} target="_blank">
                 <i className="bi bi-globe"></i>
               </a>
             </div>
