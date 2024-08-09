@@ -47,7 +47,9 @@ const NavBarShop = () => {
                 </a>
               </div>
 
-              <div>煞氣a明</div>
+              <a href="http://localhost:3000/vendor/1">
+                <div>會員專區</div>
+              </a>
               <div>登出</div>
             </div>
           </div>

@@ -40,7 +40,7 @@ const Layout = () => {
             <Route path="/SetStalls" element={<SetStalls />} />
             {/* TODO: default route  =- 已經在 default/Default.jsx */}
             <Route path="/member/:uid" element={<MemberIndexNormal />} />
-            {/* <Route path="/vendor/:vid*" element={<MemberIndexVendor />} /> */}
+            <Route path="/vendor/:vid*" element={<MemberIndexVendor />} />
           </Routes>
           {/* <ShopCart /> */}
           {/* <Step1 /> */}
