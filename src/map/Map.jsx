@@ -3,8 +3,7 @@ import NavBar from "../components/NavBar";
 import SubTitleYellow from "../components/SubTitleYellow";
 import ThirdTitle from "../components/ThirdTitle";
 import Footer from "../components/Footer";
-// 因出現Error先註解掉
-// import VendorDetail from "./components/VendorDetail";
+import VendorDetail from "./components/VendorDetail";
 import MarketFloorPlan from "./components/MarketFloorPlan";
 
 import { useEffect, useState } from "react";
@@ -54,8 +53,7 @@ const Map = () => {
               </div>
             </div>
             <div className="border border-dark p-3 w-50" id="shop">
-              {/* 因出現Error先註解掉 */}
-              {/* <VendorDetail data_from_parent={data_from_parent} /> */}
+              <VendorDetail data_from_parent={data_from_parent} />
             </div>
           </div>
         </div>
