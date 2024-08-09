@@ -85,6 +85,7 @@ vendorRouter.get("/info/:vid", async (req, res) => {
       return res.status(404).json({ error: "Vendor not found" });
     }
 
+    // 處理圖片
     const convertImgToBase64 = (img) => {
       if (img) {
         if (Buffer.isBuffer(img)) {
@@ -116,9 +117,30 @@ vendorRouter.get("/info/:vid", async (req, res) => {
       {}
     );
 
+    // 處理類型
+    function getCategoryText(category) {
+      switch (category) {
+        case "pet":
+          return "寵物";
+        case "food":
+          return "美食";
+        case "accessories":
+          return "飾品";
+        case "clothing":
+          return "服飾";
+        case "handmade":
+          return "手作";
+        case "others":
+          return "其他";
+        default:
+          return "其他";
+      }
+    }
+
     const formattedStallInfo = {
       ...stallInfo[0],
       ...convertedImages,
+      brand_type: getCategoryText(stallInfo[0].brand_type),
     };
 
     res.json(formattedStallInfo);

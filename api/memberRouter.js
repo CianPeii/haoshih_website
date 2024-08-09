@@ -134,7 +134,7 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
         case 3:
           return "已完成";
         default:
-          return "未知狀態";
+          return "等待接單";
       }
     }
 

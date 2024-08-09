@@ -42,6 +42,10 @@ const VendorPaymentSettings = () => {
   );
 
   useEffect(() => {
+    console.log("Current path:", window.location.pathname);
+  }, []);
+
+  useEffect(() => {
     const fetchBankInfo = async () => {
       try {
         const response = await axios.get(
@@ -79,7 +83,7 @@ const VendorPaymentSettings = () => {
     if (
       !bankInfo.bank_code ||
       !bankInfo.bank_account ||
-      validateBankAccount(bankInfo.bank_account)
+      !validateBankAccount(bankInfo.bank_account)
     ) {
       isValid = false;
     }

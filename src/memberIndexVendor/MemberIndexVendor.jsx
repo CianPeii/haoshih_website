@@ -15,11 +15,13 @@ import VendorPaymentSettings from "./components/VendorPaymentSettings";
 
 const MemberIndexVendor = () => {
   const [vendorData, setVendorData] = useState(null);
+  const [stallProfile, setStallProfile] = useState(null);
   const { vid } = useParams();
   const updateProfileData = (newData) => {
     setVendorData(newData);
   };
 
+  // 抓會員資料
   useEffect(() => {
     const fetchVendorData = async () => {
       try {
@@ -34,6 +36,22 @@ const MemberIndexVendor = () => {
     };
 
     fetchVendorData();
+  }, [vid]); // 空陣列表示這個效果只在組件首次渲染時運行
+
+  // 抓攤位資訊
+  useEffect(() => {
+    const fetchStallProfile = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3200/vendor/info/${vid}`
+        );
+        setStallProfile(response.data);
+      } catch (error) {
+        console.error("Error fetching StallProfile:", error);
+      }
+    };
+
+    fetchStallProfile();
   }, [vid]); // 空陣列表示這個效果只在組件首次渲染時運行
 
   const VendorProfile = () => (
@@ -59,7 +77,16 @@ const MemberIndexVendor = () => {
             {/* http://localhost:3000/vendor/1 */}
             <Route index element={<VendorProfile />} />
 
-            <Route path="vendorInfo" element={<VendorStallProfile />} />
+            <Route
+              path="vendorInfo"
+              element={
+                stallProfile ? (
+                  <VendorStallProfile stallProfile={stallProfile} />
+                ) : (
+                  <p>Loading...</p>
+                )
+              }
+            />
 
             {/* http://localhost:3000/vendor/1/payment */}
             <Route path="payment" element={<VendorPaymentSettings />} />
