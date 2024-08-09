@@ -8,14 +8,14 @@ const MarketFloorPlan = ({fetchData}) => {
     console.log(vinfo);
     fetchData(vinfo);
   };
-  let vendor_unmber = 1;
+  const vendor_unmber = ["01", "02", "03", "04", "05"];
+  const position = ["A", "B", "C", "D"];
   return (
     <Container fluid className={styles.containerSize}>
       <Row className={styles.floorPlanRow}>
         <Col>
           <div className={styles.floorPlan}>
             <div className={styles.mainStage}>主舞台</div>
-            
             {[...Array(4)].map((_, rowIndex) => (
               <div
                 key={rowIndex}
@@ -27,7 +27,7 @@ const MarketFloorPlan = ({fetchData}) => {
                   className={`${styles.stall} ${styles.hover}`}
                   onClick={handleClick}
                   >
-                    {vendor_unmber++}
+                    {position[rowIndex] + vendor_unmber[colIndex]}
                   </div>
                 ))}
               </div>

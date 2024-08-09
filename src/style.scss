@@ -143,3 +143,26 @@ $layouts: (
   font-weight: 500;
 }
 
+// 以下是font-weight設定，在className輸入fw-任何
+@mixin fw($value) {
+  font-weight: $value;
+}
+
+@for $i from 1 through 1000 {
+  .fw-#{$i} {
+    @include fw($i);
+  }
+}
+
+
+//forVendorDetail
+.fs-content {
+  font-size: larger;
+  color: #546975;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical; 
+}
