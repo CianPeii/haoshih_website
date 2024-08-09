@@ -5,7 +5,6 @@ import styles from "./VendorDetail.module.scss";
 
 const VendorDetail = ({data_from_parent}) => {
   var [data, setData] = useState();
-  
   //useEffect用於畫面上有變化時動態更新資料
   useEffect(() => {
     const getData = async (vinfo) => {
@@ -51,7 +50,7 @@ const VendorDetail = ({data_from_parent}) => {
         data_from_parent[0].brand_img05,
       ];
     }
-
+    
     console.log(data_from_parent[0]);
     console.log(data.data_from_server[0]);
     //使用forEach迴圈生成輪播按鈕、圖片
