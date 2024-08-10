@@ -18,7 +18,7 @@ const AllVendors = () => {
 
   const handleNavigation = (vid) => {
     navigate("/shop/"+vid);
-    console.log("click",vid)
+    // console.log("click",vid)
   };
 
   const fetchVendorData = async (type) => {
