@@ -17,17 +17,19 @@ const EditStallProfile = (props) => {
   const [{ data, loading, error }, refetch] = useAxios(
     `http://localhost:3200/vendor/info/${props.stallProfile.vid}`
   );
+  // 資料庫抓出來的資料
   const stallProfile = props.stallProfile;
+  // 新填寫的表單資料
   const [stallData, setStallData] = useState({
     logo_img: "",
     brand_name: "",
     brand_type: "",
-    content: "",
     fb: "",
     ig: "",
     web: "",
     tag1: "",
     tag2: "",
+    content: "",
     brand_img01: "",
     brand_img02: "",
     brand_img03: "",
@@ -37,6 +39,13 @@ const EditStallProfile = (props) => {
 
   // 表單是否已經被驗證
   const [validated, setValidated] = useState(false);
+  // 品牌名稱驗證狀態
+  const [brandNameError, setBrandNameError] = useState(false);
+  // 品牌標籤驗證狀態
+  const [tag1Error, setTag1Error] = useState(false);
+  const [tag2Error, setTag2Error] = useState(false);
+  // 品牌描述驗證狀態
+  const [contentError, setContentError] = useState(false);
 
   // 有 change => 更新 state
   const handleInputChange = (event) => {
@@ -45,12 +54,116 @@ const EditStallProfile = (props) => {
       ...prevState,
       [name]: value.trim(),
     }));
+
+    if (name === "brand_name" && value !== "") {
+      setBrandNameError(!validateBrandName(value));
+    } else if (name === "brand_name" && value === "") {
+      setBrandNameError(false);
+    }
+
+    if (name === "tag1" && value !== "") {
+      setTag1Error(!validateTags(value));
+    } else if (name === "tag1" && value === "") {
+      setTag1Error(false);
+    }
+
+    if (name === "tag2" && value !== "") {
+      setTag2Error(!validateTags(value));
+    } else if (name === "tag2" && value === "") {
+      setTag2Error(false);
+    }
+
+    if (name === "content" && value !== "") {
+      setContentError(!validateContent(value));
+    } else if (name === "content" && value === "") {
+      setContentError(false);
+    }
+  };
+
+  const validateBrandName = (brandName) => {
+    return brandName.length <= 30;
+  };
+
+  const validateTags = (tag) => {
+    return tag.length <= 6;
+  };
+
+  const validateContent = (content) => {
+    return content.length <= 300;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     let isValid = true;
+
+    if (stallData.brand_name && !validateBrandName(stallData.brand_name)) {
+      setBrandNameError(true);
+      isValid = false;
+    }
+    if (stallData.tag1 && !validateTags(stallData.tag1)) {
+      setTag1Error(true);
+      isValid = false;
+    }
+    if (stallData.tag2 && !validateTags(stallData.tag2)) {
+      setTag2Error(true);
+      isValid = false;
+    }
+    if (stallData.content && !validateContent(stallData.content)) {
+      setContentError(true);
+      isValid = false;
+    }
+    if (!isValid) {
+      event.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
+    try {
+      // 把有改變且與原始數據不同的項目打包成一個新物件 updatedFields
+      const updatedFields = Object.keys(stallData).reduce((acc, key) => {
+        if (stallData[key] !== "" && stallData[key] !== stallProfile[key]) {
+          acc[key] = stallData[key];
+        }
+        return acc;
+      }, {});
+
+      console.log("Sending update request with:", updatedFields);
+      const response = await axios.put(
+        `http://localhost:3200/vendor/info/${stallProfile.vid}`,
+        updatedFields
+      );
+      console.log("Full response:", response);
+
+      // 根據響應決定是否導航
+      if (response.status === 200) {
+        console.log("Stall Data updated successfully:", response.data.message);
+        console.log("Updated fields:", response.data.updatedFields);
+
+        // 更新表單狀態
+        setStallData((prevState) => ({
+          ...prevState,
+          ...updatedFields,
+        }));
+
+        // 更新 stallProfile
+        if (typeof props.onProfileUpdate === "function") {
+          props.onProfileUpdate({ ...stallProfile, ...updatedFields });
+        }
+
+        alert("資料更新成功");
+        // 重新導回攤位資訊頁面 ==> 來不及抓到最新資料就渲染了 ==> 先不自動導回
+        // navigate(`/vendor/${stallProfile.vid}/vendorInfo`);
+      } else {
+        console.log("Unexpected response status:", response.status);
+      }
+    } catch (error) {
+      // 在這裡處理錯誤，例如顯示錯誤消息
+      console.error("Error updating data:", error);
+      if (error.response) {
+        console.log("Error response:", error.response.data);
+        console.log("Error status:", error.response.status);
+      }
+    }
   };
 
   return (
@@ -62,13 +175,6 @@ const EditStallProfile = (props) => {
         onSubmit={handleSubmit}
         className="my-5"
       >
-        <Form.Control
-          hidden
-          type="text"
-          name="vinfo"
-          value={stallProfile.vinfo}
-          onChange={handleInputChange}
-        />
         <Form.Group as={Row} controlId="validationCustom00" className="mb-3">
           <Form.Label column sm="2" className="text-end">
             品牌Logo
@@ -94,6 +200,7 @@ const EditStallProfile = (props) => {
               name="brand_name"
               value={stallData.brand_name}
               onChange={handleInputChange}
+              isInvalid={brandNameError}
             />
             <Form.Text muted>字數限30字以內</Form.Text>
             <Form.Control.Feedback type="invalid">
@@ -140,6 +247,7 @@ const EditStallProfile = (props) => {
                 name="tag1"
                 value={stallData.tag1}
                 onChange={handleInputChange}
+                isInvalid={tag1Error}
               />
               <Form.Control
                 type="text"
@@ -149,10 +257,11 @@ const EditStallProfile = (props) => {
                 name="tag2"
                 value={stallData.tag2}
                 onChange={handleInputChange}
+                isInvalid={tag2Error}
               />
             </InputGroup>
-            <Form.Text muted>至少需填寫一個，字數限6字以內</Form.Text>
-            <Form.Control.Feedback type="invalid">
+            <Form.Text muted>字數限6字以內</Form.Text>
+            <Form.Control.Feedback type="invalid" tooltip>
               請輸入6個字以內品牌標籤
             </Form.Control.Feedback>
           </Col>
@@ -171,7 +280,7 @@ const EditStallProfile = (props) => {
               onChange={handleInputChange}
             />
             <Form.Control.Feedback type="invalid">
-              請輸入FaceBook網址
+              網址過長，請先縮短網址至250字以內
             </Form.Control.Feedback>
           </Col>
         </Form.Group>
@@ -190,7 +299,7 @@ const EditStallProfile = (props) => {
                 onChange={handleInputChange}
               />
               <Form.Control.Feedback type="invalid">
-                請輸入Instagram網址
+                網址過長，請先縮短網址至250字以內
               </Form.Control.Feedback>
             </InputGroup>
           </Col>
@@ -208,9 +317,8 @@ const EditStallProfile = (props) => {
               value={stallData.web}
               onChange={handleInputChange}
             />
-            <Form.Text muted>FB、IG、官網至少需填寫一個</Form.Text>
             <Form.Control.Feedback type="invalid">
-              請輸入官網網址
+              網址過長，請先縮短網址至250字以內
             </Form.Control.Feedback>
           </Col>
         </Form.Group>
@@ -227,6 +335,7 @@ const EditStallProfile = (props) => {
               name="content"
               value={stallData.content}
               onChange={handleInputChange}
+              isInvalid={contentError}
             />
             <Form.Text muted>字數限300字以內</Form.Text>
             <Form.Control.Feedback type="invalid">
@@ -240,9 +349,7 @@ const EditStallProfile = (props) => {
           </Form.Label>
           <Col sm="6">
             <Form.Control type="file" multiple />
-            <Form.Text muted>
-              至少須提供一張，最多可上傳五張，檔案類型限PNG或JPG
-            </Form.Text>
+            <Form.Text muted>最多可上傳五張，檔案類型限PNG或JPG</Form.Text>
           </Col>
         </Form.Group>
 
@@ -252,7 +359,11 @@ const EditStallProfile = (props) => {
               <Button
                 className="me-5"
                 variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
-                type="reset"
+                type="button"
+                onClick={() => {
+                  alert("確定要取消變更嗎？");
+                  navigate(`/vendor/${stallProfile.vid}/vendorInfo`);
+                }}
               >
                 取消變更
               </Button>

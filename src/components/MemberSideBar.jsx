@@ -6,7 +6,10 @@ const MemberSideBar = () => {
         <div className="d-flex flex-column align-items-start">
           <h1 className="mb-5 fs-1">會員專區</h1>
           <div className={`w-100 ${styles.sideBarSubTitle}`}>
-            <a href="http://localhost:3000/member/1">
+            <a
+              className="text-decoration-none c-black"
+              href="http://localhost:3000/member/1"
+            >
               <h4>會員資料</h4>
             </a>
             <h4>我的訂單</h4>

@@ -5,6 +5,7 @@ const {
   queryAsync,
   updateVendorProfile,
   updateVendorPayment,
+  updateStallProfile,
 } = require("../src/utils/utils.js");
 var config = require("./databaseConfig.js");
 var conn = config.connection;
@@ -153,8 +154,19 @@ vendorRouter.get("/info/:vid", async (req, res) => {
 // 編輯攤位資訊
 vendorRouter.put("/info/:vid", async (req, res) => {
   try {
+    // 用 vid 取得 vinfo
+    const stallNumQuery = `
+    SELECT vi.vinfo, v.vid 
+    FROM vendor AS v 
+    INNER JOIN vendor_info 
+    AS vi ON vi.vinfo = v.vinfo 
+    WHERE vid = ?`;
+
+    const vid = req.params.vid;
+    const stallNum = await queryAsync(conn, stallNumQuery, [vid]);
+    const vinfo = stallNum[0].vinfo;
+
     const {
-      vinfo,
       logo_img,
       brand_name,
       brand_type,
@@ -170,7 +182,6 @@ vendorRouter.put("/info/:vid", async (req, res) => {
       brand_img04,
       brand_img05,
     } = req.body;
-    const vid = req.params.vid;
 
     // 有被填寫的欄位才會傳入 value
     let updateFields = {};

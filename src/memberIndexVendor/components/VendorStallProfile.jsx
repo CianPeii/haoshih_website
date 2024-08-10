@@ -4,13 +4,18 @@ import Col from "react-bootstrap/Col";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 import SubTitleYellow from "../../components/SubTitleYellow";
 
 const VendorStallProfile = (props) => {
   //   console.log(props.stallProfile);
   const stallProfile = props.stallProfile;
   //   console.log(stallProfile);
-  const navigate = useNavigate;
+  const navigate = useNavigate();
+  const createCleanHTML = (content) => {
+    const cleanContent = content.replace(/\r\n|\n|\r/g, "<br>");
+    return DOMPurify.sanitize(cleanContent);
+  };
 
   return (
     <>
@@ -27,12 +32,9 @@ const VendorStallProfile = (props) => {
             <Button
               className="me-5"
               variant=" bg-blueGray text-white rounded-pill px-4 py-2"
-              type="submit"
-              //   點下去會error
+              type="button"
               onClick={() => {
-                navigate(
-                  `http://localhost:3000/vendor/${stallProfile.vid}/edit`
-                );
+                navigate(`/vendor/${stallProfile.vid}/edit`);
               }}
             >
               編輯
@@ -40,9 +42,8 @@ const VendorStallProfile = (props) => {
             <Button
               variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
               type="button"
-              //   點下去會error
               onClick={() => {
-                navigate(`http://localhost:3000/shop/${stallProfile.vinfo}`);
+                navigate(`/shop/${stallProfile.vinfo}`);
               }}
             >
               查看我的攤位
@@ -94,12 +95,18 @@ const VendorStallProfile = (props) => {
           <Col sm="6">{stallProfile.web ? stallProfile.web : "無"}</Col>
         </Row>
 
-        <Row>
+        <Row className="mb-5">
           <Col sm="2" className="text-end">
             <p>品牌描述</p>
           </Col>
           {/* TODO: 需要解決排版問題 */}
-          <Col sm="6">{stallProfile.content}</Col>
+          <Col sm="6">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: createCleanHTML(stallProfile.content),
+              }}
+            />
+          </Col>
         </Row>
 
         <Row>
