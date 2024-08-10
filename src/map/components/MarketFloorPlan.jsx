@@ -101,6 +101,3 @@ const MarketFloorPlan = ({fetchData}) => {
 };
 
 export default MarketFloorPlan;
-
-
-//useEffect()
