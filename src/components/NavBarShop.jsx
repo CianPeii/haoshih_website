@@ -36,7 +36,7 @@ const NavBarShop = () => {
               <div>
                 <a
                   className="position-relative text-decoration-none link-dark"
-                  href="#"
+                  href="/ShopCart"
                 >
                   <div className="bi bi-cart h2 "></div>
                   <span

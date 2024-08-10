@@ -16,6 +16,7 @@ import Normal from "./SignUp/Normal";
 import SetStalls from "./setStalls/SetStalls";
 import Default from "./default/Default";
 import Chartroom from "./cartroom/Cartroom";
+import Step1 from "./checkOut/step/Step1";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -29,7 +30,7 @@ const Layout = () => {
     <div className="layout">
       <div className="position-relative">
         <div className={styles.background}>
-          <Routes location={location}>
+           <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/haoshih" element={<Home />} />
             <Route path="/news" element={<News />} />
@@ -40,11 +41,20 @@ const Layout = () => {
             <Route path="/SetStalls" element={<SetStalls />} />
             {/* TODO: default route  =- 已經在 default/Default.jsx */}
             <Route path="/member/:uid" element={<MemberIndexNormal />} />
+<<<<<<< HEAD
             <Route path="/vendor/:vid*" element={<MemberIndexVendor />} />
+=======
+            {/* <Route path="/vendor/:vid*" element={<MemberIndexVendor />} /> */}
+            <Route path="/Step1" element={<Step1 />} />
+            <Route path="/ShopCart" element={<ShopCart />} />
+            TODO: default route
+>>>>>>> main
           </Routes>
           {/* <ShopCart /> */}
-          {/* <Step1 /> */}
-          {/* <Normal /> */}
+          {/* <Step1 />
+          <Normal />
+          <AllVendors />
+          <Vendor /> */}
           {/* <Chartroom /> */}
         </div>
       </div>
