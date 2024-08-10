@@ -47,7 +47,10 @@ const NavBarShop = () => {
                 </a>
               </div>
 
-              <a href="http://localhost:3000/vendor/1">
+              <a
+                className="text-decoration-none c-black"
+                href="http://localhost:3000/vendor/1"
+              >
                 <div>會員專區</div>
               </a>
               <div>登出</div>
