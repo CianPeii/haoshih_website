@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const vendorRouter = express.Router();
 const {
   hashPW,
@@ -9,6 +10,8 @@ const {
 } = require("../src/utils/utils.js");
 var config = require("./databaseConfig.js");
 var conn = config.connection;
+// 設置 multer 用於處理文件上傳
+const upload = multer();
 
 // --------測試路由用----------
 // vendorRouter.get('/', function(req,res){res.send('OK')})
@@ -152,69 +155,77 @@ vendorRouter.get("/info/:vid", async (req, res) => {
 });
 
 // 編輯攤位資訊
-vendorRouter.put("/info/:vid", async (req, res) => {
-  try {
-    // 用 vid 取得 vinfo
-    const stallNumQuery = `
+vendorRouter.put(
+  "/info/:vid",
+  upload.fields([
+    { name: "logo_img", maxCount: 1 },
+    { name: "brand_img01", maxCount: 1 },
+    { name: "brand_img02", maxCount: 1 },
+    { name: "brand_img03", maxCount: 1 },
+    { name: "brand_img04", maxCount: 1 },
+    { name: "brand_img05", maxCount: 1 },
+  ]),
+  async (req, res) => {
+    try {
+      // 用 vid 取得 vinfo
+      const stallNumQuery = `
     SELECT vi.vinfo, v.vid 
     FROM vendor AS v 
     INNER JOIN vendor_info 
     AS vi ON vi.vinfo = v.vinfo 
     WHERE vid = ?`;
 
-    const vid = req.params.vid;
-    const stallNum = await queryAsync(conn, stallNumQuery, [vid]);
-    const vinfo = stallNum[0].vinfo;
+      const vid = req.params.vid;
+      const stallNum = await queryAsync(conn, stallNumQuery, [vid]);
+      const vinfo = stallNum[0].vinfo;
 
-    const {
-      logo_img,
-      brand_name,
-      brand_type,
-      tag1,
-      tag2,
-      fb,
-      ig,
-      web,
-      content,
-      brand_img01,
-      brand_img02,
-      brand_img03,
-      brand_img04,
-      brand_img05,
-    } = req.body;
+      const { brand_name, brand_type, tag1, tag2, fb, ig, web, content } =
+        req.body;
 
-    // 有被填寫的欄位才會傳入 value
-    let updateFields = {};
-    if (brand_name) updateFields.brand_name = brand_name;
-    if (brand_type) updateFields.brand_type = brand_type;
-    if (logo_img) updateFields.logo_img = logo_img;
-    if (tag1) updateFields.tag1 = tag1;
-    if (tag2) updateFields.tag2 = tag2;
-    if (fb) updateFields.fb = fb;
-    if (ig) updateFields.ig = ig;
-    if (web) updateFields.web = web;
-    if (content) updateFields.content = content;
-    if (brand_img01) updateFields.brand_img01 = brand_img01;
-    if (brand_img02) updateFields.brand_img02 = brand_img02;
-    if (brand_img03) updateFields.brand_img03 = brand_img03;
-    if (brand_img04) updateFields.brand_img04 = brand_img04;
-    if (brand_img05) updateFields.brand_img05 = brand_img05;
+      // 有被填寫的欄位才會傳入 value
+      let updateFields = {};
+      if (brand_name) updateFields.brand_name = brand_name;
+      if (brand_type) updateFields.brand_type = brand_type;
+      if (tag1) updateFields.tag1 = tag1;
+      if (tag2) updateFields.tag2 = tag2;
+      if (fb) updateFields.fb = fb;
+      if (ig) updateFields.ig = ig;
+      if (web) updateFields.web = web;
+      if (content) updateFields.content = content;
 
-    // 假如有欄位被填寫才會 update到資料庫，否則就是回到原畫面
-    if (Object.keys(updateFields).length > 0) {
-      await updateStallProfile(conn, vinfo, updateFields);
-      res.status(200).json({
-        message: "Stall Profile updated successfully",
-        updatedFields: Object.keys(updateFields),
+      // 處理圖片文件
+      const imageFields = [
+        "logo_img",
+        "brand_img01",
+        "brand_img02",
+        "brand_img03",
+        "brand_img04",
+        "brand_img05",
+      ];
+      imageFields.forEach((field) => {
+        if (req.files && req.files[field] && req.files[field][0]) {
+          updateFields[field] = req.files[field][0].buffer;
+        }
       });
-    } else {
-      res.status(200).json({ message: "No fields to update" });
+
+      // 假如有欄位被填寫才會 update到資料庫，否則就是回到原畫面
+      if (Object.keys(updateFields).length > 0) {
+        await updateStallProfile(conn, vinfo, updateFields);
+        res.status(200).json({
+          message: "Stall Profile updated successfully",
+          updatedFields: Object.keys(updateFields),
+        });
+      } else {
+        res.status(200).json({ message: "No fields to update" });
+      }
+    } catch (error) {
+      console.error("Error updating stall profile:", error);
+      res
+        .status(500)
+        .send("An error occurred while updating the stall profile");
     }
-  } catch (error) {
-    console.error("Error updating stall profile:", error);
-    res.status(500).send("An error occurred while updating the stall profile");
   }
-});
+);
 
 // 交易設定 API
 vendorRouter.get("/bankInfo/:vid", (req, res) => {

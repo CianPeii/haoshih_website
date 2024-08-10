@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -36,6 +36,74 @@ const EditStallProfile = (props) => {
     brand_img04: "",
     brand_img05: "",
   });
+
+  // 管理預覽圖片的狀態
+  const [previewImages, setPreviewImages] = useState({
+    brand_img01: null,
+    brand_img02: null,
+    brand_img03: null,
+    brand_img04: null,
+    brand_img05: null,
+  });
+  // 當 stallProfile 加載完成後，更新 previewImages
+  useEffect(() => {
+    setPreviewImages({
+      brand_img01: stallProfile.brand_img01 || null,
+      brand_img02: stallProfile.brand_img02 || null,
+      brand_img03: stallProfile.brand_img03 || null,
+      brand_img04: stallProfile.brand_img04 || null,
+      brand_img05: stallProfile.brand_img05 || null,
+    });
+  }, [stallProfile]);
+  // 點擊圖片區域來觸發文件選擇
+  const fileInputRefs = {
+    brand_img01: useRef(null),
+    brand_img02: useRef(null),
+    brand_img03: useRef(null),
+    brand_img04: useRef(null),
+    brand_img05: useRef(null),
+  };
+  // 創建一個預覽並更新 stallData 和 previewImages
+  const handleImageUpload = (event, fieldName) => {
+    const file = event.target.files[0];
+    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImages((prev) => ({ ...prev, [fieldName]: reader.result }));
+        setStallData((prev) => ({ ...prev, [fieldName]: file }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  // 為每個圖片欄位渲染上傳區域
+  const renderImageUpload = (fieldName) => {
+    return (
+      <div
+        className="position-relative"
+        style={{ width: "210px", height: "150px", cursor: "pointer" }}
+        onClick={() => fileInputRefs[fieldName].current.click()}
+      >
+        {previewImages[fieldName] ? (
+          <img
+            src={previewImages[fieldName]}
+            alt={`品牌視覺照 ${fieldName}`}
+            className="w-100 h-100 object-fit-cover rounded"
+          />
+        ) : (
+          <div className="w-100 h-100 bg-gray d-flex justify-content-center align-items-center rounded">
+            <i className="bi bi-plus-lg fs-1 c-white"></i>
+          </div>
+        )}
+        <input
+          type="file"
+          ref={fileInputRefs[fieldName]}
+          style={{ display: "none" }}
+          accept="image/png, image/jpeg"
+          onChange={(e) => handleImageUpload(e, fieldName)}
+        />
+      </div>
+    );
+  };
 
   // 表單是否已經被驗證
   const [validated, setValidated] = useState(false);
@@ -94,6 +162,38 @@ const EditStallProfile = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const formData = new FormData();
+
+    // 添加文本字段
+    formData.append("brand_name", stallData.brand_name);
+    formData.append("brand_type", stallData.brand_type);
+    formData.append("tag1", stallData.tag1);
+    formData.append("tag2", stallData.tag2);
+    formData.append("fb", stallData.fb);
+    formData.append("ig", stallData.ig);
+    formData.append("web", stallData.web);
+    formData.append("content", stallData.content);
+
+    // 添加文件字段
+    if (stallData.logo_img instanceof File) {
+      formData.append("logo_img", stallData.logo_img);
+    }
+    if (stallData.brand_img01 instanceof File) {
+      formData.append("brand_img01", stallData.brand_img01);
+    }
+    if (stallData.brand_img02 instanceof File) {
+      formData.append("brand_img02", stallData.brand_img02);
+    }
+    if (stallData.brand_img03 instanceof File) {
+      formData.append("brand_img03", stallData.brand_img03);
+    }
+    if (stallData.brand_img04 instanceof File) {
+      formData.append("brand_img04", stallData.brand_img04);
+    }
+    if (stallData.brand_img05 instanceof File) {
+      formData.append("brand_img05", stallData.brand_img05);
+    }
+
     let isValid = true;
 
     if (stallData.brand_name && !validateBrandName(stallData.brand_name)) {
@@ -130,7 +230,12 @@ const EditStallProfile = (props) => {
       console.log("Sending update request with:", updatedFields);
       const response = await axios.put(
         `http://localhost:3200/vendor/info/${stallProfile.vid}`,
-        updatedFields
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       console.log("Full response:", response);
 
@@ -348,7 +453,13 @@ const EditStallProfile = (props) => {
             品牌視覺照
           </Form.Label>
           <Col sm="6">
-            <Form.Control type="file" multiple />
+            <div className="d-flex flex-wrap gap-3">
+              {renderImageUpload("brand_img01")}
+              {renderImageUpload("brand_img02")}
+              {renderImageUpload("brand_img03")}
+              {renderImageUpload("brand_img04")}
+              {renderImageUpload("brand_img05")}
+            </div>
             <Form.Text muted>最多可上傳五張，檔案類型限PNG或JPG</Form.Text>
           </Col>
         </Form.Group>

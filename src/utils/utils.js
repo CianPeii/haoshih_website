@@ -90,7 +90,7 @@ exports.updateStallProfile = async function (conn, vinfo, stallData) {
     const keys = Object.keys(stallData);
     // 如果都沒填寫，就不執行動作
     if (keys.length === 0) {
-      resolve();
+      resolve({ message: "No fields to update" });
       return;
     }
     // 依照有填寫的欄位動態生成 SQL語法
@@ -101,9 +101,14 @@ exports.updateStallProfile = async function (conn, vinfo, stallData) {
     // 更新資料庫
     conn.query(sql, params, (err, result) => {
       if (err) {
+        console.error("Error in updateStallProfile:", err);
         reject(err);
       } else {
-        resolve(result);
+        resolve({
+          message: "Stall Profile updated successfully",
+          affectedRows: result.affectedRows,
+          changedRows: result.changedRows,
+        });
       }
     });
   });

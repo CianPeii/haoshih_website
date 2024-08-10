@@ -30,7 +30,7 @@ const Layout = () => {
     <div className="layout">
       <div className="position-relative">
         <div className={styles.background}>
-           <Routes location={location}>
+          <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/haoshih" element={<Home />} />
             <Route path="/news" element={<News />} />
@@ -41,14 +41,13 @@ const Layout = () => {
             <Route path="/SetStalls" element={<SetStalls />} />
             {/* TODO: default route  =- 已經在 default/Default.jsx */}
             <Route path="/member/:uid" element={<MemberIndexNormal />} />
-<<<<<<< HEAD
+            {/* <<<<<<< HEAD */}
             <Route path="/vendor/:vid*" element={<MemberIndexVendor />} />
-=======
-            {/* <Route path="/vendor/:vid*" element={<MemberIndexVendor />} /> */}
+            {/* ======= */}
             <Route path="/Step1" element={<Step1 />} />
             <Route path="/ShopCart" element={<ShopCart />} />
             TODO: default route
->>>>>>> main
+            {/* >>>>>>> main */}
           </Routes>
           {/* <ShopCart /> */}
           {/* <Step1 />
