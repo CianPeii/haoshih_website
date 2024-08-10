@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAxios from "axios-hooks";
+import SubTitleYellow from "../components/SubTitleYellow";
 
 function MemberForm(props) {
   // 重新導向功能
@@ -197,219 +198,222 @@ function MemberForm(props) {
 
   // TO-DO: 把應該要改成 * 的部分用 string method 轉換成 *
   return (
-    <Form noValidate validated={validated} onSubmit={handleSubmit}>
-      <Row className=" my-5 ">
-        <Col sm="2" className="text-end">
-          <p className="c-gray">一般會員</p>
-        </Col>
-        <Col sm="6">
-          <div className="f-start">
-            <h2 className="me-2">{props.profile.last_name}</h2>
-            <h2 className="me-3">{props.profile.first_name}</h2>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm="2" className="text-end">
-          <p>身份字號</p>
-        </Col>
-        <Col sm="6">{props.profile.tw_id}</Col>
-      </Row>
-      <Row>
-        <Col sm="2" className="text-end">
-          <p>會員帳號</p>
-        </Col>
-        <Col sm="6">{props.profile.account}</Col>
-      </Row>
+    <>
+      <SubTitleYellow title="會員資料" />
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Row className=" my-5 ">
+          <Col sm="2" className="text-end">
+            <p className="c-gray">一般會員</p>
+          </Col>
+          <Col sm="6">
+            <div className="f-start">
+              <h2 className="me-2">{props.profile.last_name}</h2>
+              <h2 className="me-3">{props.profile.first_name}</h2>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm="2" className="text-end">
+            <p>身份字號</p>
+          </Col>
+          <Col sm="6">{props.profile.tw_id}</Col>
+        </Row>
+        <Row>
+          <Col sm="2" className="text-end">
+            <p>會員帳號</p>
+          </Col>
+          <Col sm="6">{props.profile.account}</Col>
+        </Row>
 
-      <Form.Group as={Row} className="mb-3">
-        <Form.Label column sm="2" className="text-end">
-          會員姓名
-        </Form.Label>
-        <Col sm="2">
-          <Form.Control
-            type="text"
-            placeholder={props.profile.last_name}
-            name="last_name"
-            value={formData.last_name}
-            onChange={handleInputChange}
-            id="validationCustomLastName"
-          />
-        </Col>
-        <Col sm="4">
-          <Form.Control
-            type="text"
-            placeholder={props.profile.first_name}
-            name="first_name"
-            value={formData.first_name}
-            onChange={handleInputChange}
-            id="validationCustomFirstName"
-          />
-          <Form.Control.Feedback type="invalid">
-            請輸入正確姓名
-          </Form.Control.Feedback>
-        </Col>
-      </Form.Group>
-
-      <Form.Group as={Row} controlId="validationCustom01" className="mb-3">
-        <Form.Label column sm="2" className="text-end">
-          會員暱稱
-        </Form.Label>
-        <Col sm="6">
-          <Form.Control
-            type="text"
-            placeholder={props.profile.nickname}
-            name="nickname"
-            value={formData.nickname}
-            onChange={handleInputChange}
-            isInvalid={nicknameError}
-          />
-          <Form.Control.Feedback type="invalid">
-            請輸入六個字以內的暱稱
-          </Form.Control.Feedback>
-        </Col>
-      </Form.Group>
-
-      {/* 手機號碼 ==> 已加入驗證邏輯 */}
-      <Form.Group as={Row} controlId="validationCustom02" className="mb-3">
-        <Form.Label column sm="2" className="text-end">
-          手機號碼
-        </Form.Label>
-        <Col sm="6">
-          <Form.Control
-            type="tel"
-            placeholder={props.profile.phone}
-            name="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
-            isInvalid={phoneError}
-          />
-          <Form.Control.Feedback type="invalid">
-            請輸入有效的手機號碼（格式：09xxxxxxxx）
-          </Form.Control.Feedback>
-        </Col>
-      </Form.Group>
-
-      <Form.Group as={Row} controlId="validationCustom03" className="mb-3">
-        <Form.Label column sm="2" className="text-end">
-          電子信箱
-        </Form.Label>
-        <Col sm="6">
-          <Form.Control
-            type="email"
-            placeholder={props.profile.email}
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            isInvalid={emailError}
-          />
-          <Form.Control.Feedback type="invalid">
-            請輸入正確格式之電子信箱
-          </Form.Control.Feedback>
-        </Col>
-      </Form.Group>
-
-      <Form.Group as={Row} controlId="validationCustom04" className="mb-5">
-        <Form.Label column sm="2" className="text-end">
-          通訊地址
-        </Form.Label>
-        <Col sm="6">
-          <Form.Control
-            type="address"
-            placeholder={props.profile.address}
-            name="address"
-            value={formData.address}
-            onChange={handleInputChange}
-          />
-          <Form.Control.Feedback type="invalid">
-            請輸入正確地址
-          </Form.Control.Feedback>
-        </Col>
-      </Form.Group>
-
-      <Form.Group as={Row} controlId="validationCustom05" className="mb-3">
-        <Form.Label column sm="2" className="text-end">
-          修改密碼
-        </Form.Label>
-        <Col sm="6">
-          <InputGroup>
+        <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm="2" className="text-end">
+            會員姓名
+          </Form.Label>
+          <Col sm="2">
             <Form.Control
-              type={showPassword ? "text" : "password"}
-              placeholder="請輸入新密碼"
-              name="password"
-              value={formData.password}
+              type="text"
+              placeholder={props.profile.last_name}
+              name="last_name"
+              value={formData.last_name}
               onChange={handleInputChange}
-              isInvalid={pwError}
+              id="validationCustomLastName"
             />
-            <Button
-              variant="outline-secondary"
-              onClick={() => setShowPassword(!showPassword)}
-              style={{
-                borderColor: "#ced4da",
-                backgroundColor: "#B7EFE0",
-                borderTopRightRadius: "0.25rem",
-                borderBottomRightRadius: "0.25rem",
-              }}
-            >
-              <i
-                className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
-              ></i>
-            </Button>
-            <Form.Control.Feedback type="invalid" tooltip>
-              請輸入8-12位密碼，可包含大小寫字母、數字和特殊符號
+          </Col>
+          <Col sm="4">
+            <Form.Control
+              type="text"
+              placeholder={props.profile.first_name}
+              name="first_name"
+              value={formData.first_name}
+              onChange={handleInputChange}
+              id="validationCustomFirstName"
+            />
+            <Form.Control.Feedback type="invalid">
+              請輸入正確姓名
             </Form.Control.Feedback>
-          </InputGroup>
-        </Col>
-      </Form.Group>
+          </Col>
+        </Form.Group>
 
-      <Form.Group as={Row} controlId="validationCustom06" className="mb-5">
-        <Form.Label column sm="2" className="text-end">
-          確認密碼
-        </Form.Label>
-        <Col sm="6">
-          <Form.Control
-            type="password"
-            placeholder="請再次輸入新密碼"
-            name="doubleCheck"
-            value={formData.doubleCheck || ""}
-            onChange={handleInputChange}
-            isInvalid={dbCheckError}
-            required={!!formData.password}
-          />
-          <Form.Control.Feedback type="invalid">
-            請輸入相同密碼
-          </Form.Control.Feedback>
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} controlId="validationCustom01" className="mb-3">
+          <Form.Label column sm="2" className="text-end">
+            會員暱稱
+          </Form.Label>
+          <Col sm="6">
+            <Form.Control
+              type="text"
+              placeholder={props.profile.nickname}
+              name="nickname"
+              value={formData.nickname}
+              onChange={handleInputChange}
+              isInvalid={nicknameError}
+            />
+            <Form.Control.Feedback type="invalid">
+              請輸入六個字以內的暱稱
+            </Form.Control.Feedback>
+          </Col>
+        </Form.Group>
 
-      <Row>
-        <Col sm="8">
-          <div className="d-flex justify-content-center">
-            <Button
-              className="me-5"
-              variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
-              type="button"
-              onClick={() => {
-                navigate(`/member/${props.profile.uid}`); // 然後導航
-              }}
-            >
-              取消變更
-            </Button>
-            <Button
-              className="ms-5"
-              variant=" bg-blueGray text-white rounded-pill px-4 py-2"
-              type="submit"
-              onClick={async () => {
-                await refetch(); // 先執行 refetch
-                navigate(`/member/${props.profile.uid}`); // 然後導航
-              }}
-            >
-              儲存變更
-            </Button>
-          </div>
-        </Col>
-      </Row>
-    </Form>
+        {/* 手機號碼 ==> 已加入驗證邏輯 */}
+        <Form.Group as={Row} controlId="validationCustom02" className="mb-3">
+          <Form.Label column sm="2" className="text-end">
+            手機號碼
+          </Form.Label>
+          <Col sm="6">
+            <Form.Control
+              type="tel"
+              placeholder={props.profile.phone}
+              name="phone"
+              value={formData.phone}
+              onChange={handleInputChange}
+              isInvalid={phoneError}
+            />
+            <Form.Control.Feedback type="invalid">
+              請輸入有效的手機號碼（格式：09xxxxxxxx）
+            </Form.Control.Feedback>
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} controlId="validationCustom03" className="mb-3">
+          <Form.Label column sm="2" className="text-end">
+            電子信箱
+          </Form.Label>
+          <Col sm="6">
+            <Form.Control
+              type="email"
+              placeholder={props.profile.email}
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              isInvalid={emailError}
+            />
+            <Form.Control.Feedback type="invalid">
+              請輸入正確格式之電子信箱
+            </Form.Control.Feedback>
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} controlId="validationCustom04" className="mb-5">
+          <Form.Label column sm="2" className="text-end">
+            通訊地址
+          </Form.Label>
+          <Col sm="6">
+            <Form.Control
+              type="address"
+              placeholder={props.profile.address}
+              name="address"
+              value={formData.address}
+              onChange={handleInputChange}
+            />
+            <Form.Control.Feedback type="invalid">
+              請輸入正確地址
+            </Form.Control.Feedback>
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} controlId="validationCustom05" className="mb-3">
+          <Form.Label column sm="2" className="text-end">
+            修改密碼
+          </Form.Label>
+          <Col sm="6">
+            <InputGroup>
+              <Form.Control
+                type={showPassword ? "text" : "password"}
+                placeholder="請輸入新密碼"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                isInvalid={pwError}
+              />
+              <Button
+                variant="outline-secondary"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  borderColor: "#ced4da",
+                  backgroundColor: "#B7EFE0",
+                  borderTopRightRadius: "0.25rem",
+                  borderBottomRightRadius: "0.25rem",
+                }}
+              >
+                <i
+                  className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
+                ></i>
+              </Button>
+              <Form.Control.Feedback type="invalid" tooltip>
+                請輸入8-12位密碼，可包含大小寫字母、數字和特殊符號
+              </Form.Control.Feedback>
+            </InputGroup>
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} controlId="validationCustom06" className="mb-5">
+          <Form.Label column sm="2" className="text-end">
+            確認密碼
+          </Form.Label>
+          <Col sm="6">
+            <Form.Control
+              type="password"
+              placeholder="請再次輸入新密碼"
+              name="doubleCheck"
+              value={formData.doubleCheck || ""}
+              onChange={handleInputChange}
+              isInvalid={dbCheckError}
+              required={!!formData.password}
+            />
+            <Form.Control.Feedback type="invalid">
+              請輸入相同密碼
+            </Form.Control.Feedback>
+          </Col>
+        </Form.Group>
+
+        <Row className="mb-5">
+          <Col sm="8">
+            <div className="d-flex justify-content-center">
+              <Button
+                className="me-5 bg-white"
+                variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
+                type="button"
+                onClick={() => {
+                  navigate(`/member/${props.profile.uid}`); // 然後導航
+                }}
+              >
+                取消變更
+              </Button>
+              <Button
+                className="ms-5"
+                variant=" bg-blueGray text-white rounded-pill px-4 py-2"
+                type="submit"
+                onClick={async () => {
+                  await refetch(); // 先執行 refetch
+                  navigate(`/member/${props.profile.uid}`); // 然後導航
+                }}
+              >
+                儲存變更
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </Form>
+    </>
   );
 }
 

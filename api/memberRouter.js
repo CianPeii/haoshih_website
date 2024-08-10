@@ -113,7 +113,7 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
   try {
     // 抓這個 uid 的訂單資料 => vid 找到 vendor table => vinfo 找到 vendor_info table
     const orderQuery = `
-      SELECT o.*, vi.brand_name 
+      SELECT o.*, vi.brand_name, vi.vinfo 
       FROM orderList o 
       JOIN vendor v ON o.vid = v.vid 
       JOIN vendor_info vi ON v.vinfo = vi.vinfo 
@@ -121,8 +121,7 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
     `;
     const orders = await queryAsync(conn, orderQuery, [req.params.uid]);
 
-    // 將交易狀態轉為文字訊息、格式化日期
-    // todo: 把商品編號 pid 連結到 product table
+    // 將交易狀態轉為文字訊息
     function getStatusText(status) {
       switch (status) {
         case 0:
@@ -135,6 +134,20 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
           return "已完成";
         default:
           return "等待接單";
+      }
+    }
+
+    // 將付款方式轉為文字
+    function getPaymentText(payment) {
+      switch (payment) {
+        case 0:
+          return "Line Pay";
+        case 1:
+          return "信用卡";
+        case 2:
+          return "轉帳";
+        default:
+          return "其他";
       }
     }
 
@@ -188,10 +201,10 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
 
       return {
         ...order,
-        detailObj: detailObj,
-        productData: productData[0],
+        detail: { ...detailObj, payment: getPaymentText(detailObj.payment) },
+        productData: productData,
         productImage: productImage,
-        statusText: getStatusText(order.status),
+        status: getStatusText(order.status),
         formatted_order_time: new Date(order.order_time).toLocaleString(
           "zh-TW",
           {
@@ -209,7 +222,6 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
     const formattedOrders = await Promise.all(formattedOrdersPromises);
 
     res.json(formattedOrders);
-    res.send(orders);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Fail to provide data" });

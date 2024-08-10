@@ -1,12 +1,12 @@
 import NavBarShop from "../components/NavBarShop";
 import MemberSideBar from "../components/MemberSideBar";
-import SubTitleYellow from "../components/SubTitleYellow";
 import MemberForm from "../components/MemberForm";
+import MemberOrderNormal from "../MemberOrderNormal/MemberOrderNormal";
 import ChatBtn from "../components/ChatBtn";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
 import Footer from "../components/Footer";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useParams, Routes, Route, Outlet } from "react-router-dom";
 
 const MemberIndexNormal = (props) => {
   const [memberData, setMemberData] = useState(null);
@@ -14,9 +14,6 @@ const MemberIndexNormal = (props) => {
   const updateProfileData = (newData) => {
     setMemberData(newData);
   };
-
-  // 現在可以使用 uid 變數
-  // console.log("User ID:", uid);
 
   useEffect(() => {
     const fetchMemberData = async () => {
@@ -30,31 +27,60 @@ const MemberIndexNormal = (props) => {
         console.error("Error fetching member data:", error);
       }
     };
-
     fetchMemberData();
   }, [uid]); // 空陣列表示這個效果只在組件首次渲染時運行
 
-  // console.log("Current memberData state:", memberData); // 每次重新渲染時顯示當前的 memberData 狀態
+  const [orderData, setOrderData] = useState(null);
+
+  useEffect(() => {
+    const fetchOrderData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3200/member/orderList/${uid}`
+        );
+        setOrderData(response.data);
+      } catch (error) {
+        console.error("Error fetching order data:", error);
+      }
+    };
+    fetchOrderData();
+  }, [uid]);
 
   return (
     <>
       <NavBarShop />
-      <div class="row mw-100 bg-white">
+      <div class="row mw-100">
         <div className="col-3  border-end border-3">
           <MemberSideBar />
         </div>
-        <div className="col-9 ">
-          <SubTitleYellow title="會員資料" />
-
-          {memberData ? (
-            <MemberForm
-              profile={memberData}
-              onProfileUpdate={updateProfileData}
+        <div className="col-9 bg-white">
+          <Routes>
+            <Route
+              index
+              element={
+                memberData ? (
+                  <MemberForm
+                    profile={memberData}
+                    onProfileUpdate={updateProfileData}
+                  />
+                ) : (
+                  <p>Loading...</p>
+                )
+              }
             />
-          ) : (
-            <p>Loading...</p>
-          )}
-
+            <Route
+              path="order"
+              element={
+                orderData ? (
+                  <MemberOrderNormal orderData={orderData} />
+                ) : (
+                  <p>Loading...</p>
+                )
+              }
+            />
+            {/* <Route path="like" element={<MemberLike />} /> */}
+          </Routes>
+          <Outlet />
           <ChatBtn />
         </div>
       </div>

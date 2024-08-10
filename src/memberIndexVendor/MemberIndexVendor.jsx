@@ -7,7 +7,6 @@ import SubTitleYellow from "../components/SubTitleYellow";
 import VendorForm from "../components/VendorForm";
 import ChatBtn from "../components/ChatBtn";
 import Footer from "../components/Footer";
-// import VendorStallInfo from "./components/VendorStallInfo";
 import VendorStallProfile from "./components/VendorStallProfile";
 import EditStallProfile from "./components/EditStallProfile";
 import VendorPaymentSettings from "./components/VendorPaymentSettings";
