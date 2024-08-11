@@ -53,10 +53,34 @@ cartRouter.get('/:uid', function(req, res) {
     )
 })
 
+cartRouter.delete('/:uid/:pid', function(req, res) {
+    const { uid, pid } = req.params;
+    conn.query("DELETE FROM carts WHERE uid = ? AND pid = ?",
+        [uid, pid],
+        function(err, result) {
+    if (err) {
+        return res.status(500).send('Delete error');
+        }
+        res.send('Delete OK!');
+    });
+});
+
+// 從購物車頁面按下結帳後跳轉到結帳頁面Step1，獲取剛剛勾選的商品
 cartRouter.get('/products/:pid/:uid', function(req, res) {
     conn.query(
         "SELECT product.name, quantity, price, img01, vendor_info.vinfo, brand_name FROM product JOIN vendor ON product.vid = vendor.vid JOIN vendor_info ON vendor.vinfo = vendor_info.vinfo WHERE pid = ? ",
         [req.params.pid],
+        function(err, result) {
+            res.json(result);
+        }
+    )
+})
+
+// 在vendorCard那邊 攤販要獲取自己的商品
+cartRouter.get('/vendorProducts/:vid', function(req, res) {
+    conn.query(
+        "SELECT product.name, content, quantity, price, img01, is_show, launch FROM vendor JOIN product ON vendor.vid = product.vid WHERE vendor.vid = ? ",
+        [req.params.vid],
         function(err, result) {
             res.json(result);
         }

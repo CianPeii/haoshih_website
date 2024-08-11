@@ -42,7 +42,7 @@ const NavBarShop = () => {
                   <span
                     className={`c-white rounded-circle  bg-gray c-black fw-bolder cursor-pointerer; ${styles.ShopQuantity}`}
                   >
-                    0
+                    1
                   </span>
                 </a>
               </div>

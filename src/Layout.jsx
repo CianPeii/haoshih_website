@@ -17,6 +17,9 @@ import SetStalls from "./setStalls/SetStalls";
 import Default from "./default/Default";
 import Chartroom from "./cartroom/Cartroom";
 import Step1 from "./checkOut/step/Step1";
+import Step2 from "./checkOut/step/Step2";
+import Step3 from "./checkOut/step/Step3";
+import Step4 from "./checkOut/step/Step4";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -30,7 +33,7 @@ const Layout = () => {
     <div className="layout">
       <div className="position-relative">
         <div className={styles.background}>
-           <Routes location={location}>
+          <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/haoshih" element={<Home />} />
             <Route path="/news" element={<News />} />
@@ -43,10 +46,12 @@ const Layout = () => {
             <Route path="/member/:uid" element={<MemberIndexNormal />} />
             {/* <Route path="/vendor/:vid*" element={<MemberIndexVendor />} /> */}
             <Route path="/Step1" element={<Step1 />} />
+            <Route path="/Step2" element={<Step2 />} />
+            <Route path="/Step3" element={<Step3 />} />
+            <Route path="/Step4" element={<Step4 />} />
             <Route path="/ShopCart" element={<ShopCart />} />
             TODO: default route
           </Routes>
-          {/* <ShopCart /> */}
           {/* <Step1 />
           <Normal />
           <AllVendors />

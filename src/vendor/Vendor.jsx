@@ -31,7 +31,7 @@ function VendorCarousel() {
 const Vendor = () => {
   const [vendor, setVendor] = useState([])
   const params = useParams();
-  console.log(params) // can get vid
+  // console.log(params) // can get vid
   const fetchVendorData = async () => {
     var url = "http://localhost:3200/shop/vendor/"+params.vid
     try {
@@ -204,18 +204,7 @@ const Vendor = () => {
       <div className="mb-5">
         <div className="container">
           <div className="row row-gap-4">
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
+            <VendorCard params={params} />
           </div>
         </div>
       </div>

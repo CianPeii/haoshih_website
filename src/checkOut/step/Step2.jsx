@@ -1,15 +1,35 @@
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import NavBarShop from "../../components/NavBarShop";
 import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
-
-import React from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
 const Step2 = () => {
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const navigate = useNavigate();
+
+  const handleNextStep = () => {
+    const checkoutData = JSON.parse(localStorage.getItem('checkoutData'));
+    // checkoutData 是前面的結帳商品的資訊
+    const contactInfo = {
+      fullName,
+      phone,
+      address,
+    };
+
+    // 將聯絡訊息和 checkoutData 一起儲存到 localStorage 中
+    localStorage.setItem('contactInfo', JSON.stringify(contactInfo));
+    localStorage.setItem('checkoutData', JSON.stringify(checkoutData));
+    navigate('/Step3');
+  };
+  
   return (
     <>
       <NavBarShop />
@@ -26,7 +46,13 @@ const Step2 = () => {
               收件人全名
             </Form.Label>
             <Col sm="8">
-              <Form.Control type="text" placeholder="" name="" />
+              <Form.Control 
+                type="text" 
+                placeholder="" 
+                name="" 
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                />
             </Col>
           </Form.Group>
 
@@ -35,7 +61,13 @@ const Step2 = () => {
               收件人電話
             </Form.Label>
             <Col sm="8">
-              <Form.Control type="tel" placeholder="" name="phone" />
+              <Form.Control 
+              type="tel" 
+              placeholder="" 
+              name="phone" 
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              />
             </Col>
           </Form.Group>
 
@@ -48,6 +80,8 @@ const Step2 = () => {
                 type="textarea"
                 placeholder="免郵遞區號"
                 name="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
               />
             </Col>
           </Form.Group>
@@ -58,6 +92,7 @@ const Step2 = () => {
             className="bg-white border border-red me-3"
             variant="border border-2 rounded-pill px-4"
             type="button"
+            onClick={() => navigate('/Step1')}
           >
             回上一步
           </Button>
@@ -65,6 +100,7 @@ const Step2 = () => {
             className="bg-red c-white"
             variant="border border-2 rounded-pill px-4"
             type="button"
+            onClick={handleNextStep}
           >
             下一步
           </Button>
