@@ -18,7 +18,12 @@ const MemberSideBar = () => {
             >
               <h4>我的訂單</h4>
             </a>
-            <h4>按讚攤位</h4>
+            <a
+              className="text-decoration-none c-black"
+              href="http://localhost:3000/member/1/like"
+            >
+              <h4>按讚攤位</h4>
+            </a>
             <h4>聊天室</h4>
           </div>
         </div>

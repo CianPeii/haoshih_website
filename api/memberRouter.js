@@ -239,7 +239,7 @@ memberRouter.get("/like/:uid", async (req, res) => {
     // console.log(`likes: ${JSON.stringify(likes)}`);
 
     if (likes.length === 0 || !likes[0].list) {
-      return res.render("memberLike.ejs", {
+      return res.josn({
         uid: req.params.uid,
         likes: likes,
       });
@@ -249,7 +249,7 @@ memberRouter.get("/like/:uid", async (req, res) => {
     // console.log(`likesNumArr: ${likesNumArr}`); // 1,2
 
     const likesQuery = `
-    SELECT v.vid, vi.brand_name, vi.logo_img, vi.brand_img01, vi.brand_img02, vi.brand_img03 
+    SELECT v.vid, vi.vinfo, vi.brand_name, vi.tag1, vi.tag2,vi.content, vi.brand_img01 
     FROM vendor v 
     JOIN vendor_info vi ON v.vinfo = vi.vinfo 
     WHERE v.vid = ?
@@ -273,20 +273,13 @@ memberRouter.get("/like/:uid", async (req, res) => {
     likedBrandArr = likedBrandArr.map((brand) => {
       return {
         ...brand,
-        logo_img: brand.logo_img ? brand.logo_img.toString("base64") : null,
         brand_img01: brand.brand_img01
           ? brand.brand_img01.toString("base64")
-          : null,
-        brand_img02: brand.brand_img02
-          ? brand.brand_img02.toString("base64")
-          : null,
-        brand_img03: brand.brand_img03
-          ? brand.brand_img03.toString("base64")
           : null,
       };
     });
 
-    res.json([likedBrandArr[0], likes[0]]);
+    res.json(likedBrandArr);
   } catch (error) {
     console.error("Error in /member/like/:uid:", error);
     res.status(500).send("Internal Server Error");
