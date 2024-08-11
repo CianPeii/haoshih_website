@@ -9,6 +9,11 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 
 const Step3 = () => {
+  const checkoutData = JSON.parse(localStorage.getItem('checkoutData'));
+  const contactInfo = JSON.parse(localStorage.getItem('contactInfo'));
+  console.log(checkoutData);
+  console.log(contactInfo);
+  
   return (
     <>
       <NavBarShop />

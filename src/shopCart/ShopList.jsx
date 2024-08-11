@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import React from "react";
 import { Form, Button, Image, InputGroup } from "react-bootstrap";
 import { turnPrice } from "../utils/turnPrice";
 import { Buffer } from 'buffer';
@@ -18,7 +18,7 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
     console.log(`uid: ${uid}, pid: ${pid}`)
     if (window.confirm("確定要刪除此商品嗎？")) {
       try {
-        const response = await fetch(`http://localhost:5000/index/1/${pid}`, {
+        const response = await fetch(`http://localhost:3200/carts/1/${pid}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
