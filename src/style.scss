@@ -121,6 +121,13 @@ $layouts: (
   justify-content: center;
 }
 
+.f-row-end {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }

@@ -114,5 +114,10 @@
     transform: scale(1.05);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 0 10px rgba(0, 0, 0, 0.1);
   }
+  .tagSpan {
+    border: none;
+    border-radius: 50%;
+    background-color: #b7efe0;
+  }
 }
   

@@ -26,7 +26,7 @@ const VendorDetail = ({data_from_parent}) => {
     //選擇按鈕、圖片容器元素
     const indicatorsContainer = document.getElementById("carousel-indicators");
     const imageContainer = document.getElementById("carousel-inner");
-
+   
     if (!indicatorsContainer) return;
     //每次動態生成前先清空容器內容
     indicatorsContainer.innerHTML = "";
@@ -51,8 +51,6 @@ const VendorDetail = ({data_from_parent}) => {
       ];
     }
     
-    console.log(data_from_parent[0]);
-    console.log(data.data_from_server[0]);
     //使用forEach迴圈生成輪播按鈕、圖片
     imageList.forEach((image, index) => {
       if (image !== null) {
@@ -92,9 +90,33 @@ const VendorDetail = ({data_from_parent}) => {
   if (!data) {
     return <p>Loading</p>;
   }
+  
+   //攤位tag
+  var tagList = [
+    data.data_from_server[0].tag1,
+    data.data_from_server[0].tag2
+  ];
+  
+  if(data_from_parent.length != 0) {
+    tagList = [
+      data_from_parent[0].tag1,
+      data_from_parent[0].tag2
+    ];
+  };
+
+  const tagContainer = document.getElementById("tagContainer");
+  tagList.forEach(tag => {
+    if(tag != null) {
+      const brand_tag = document.createElement('span');
+      brand_tag.className = 'tagSpan';
+      brand_tag.innerText = tag;
+      tagContainer.appendChild(brand_tag);
+    };
+  });
+
 
   //攤位名稱
-  var brandName =  + data.data_from_server[0].brand_name;
+  var brandName = data.data_from_server[0].brand_name;
   if (data_from_parent.length != 0) {
     brandName = data_from_parent[0].brand_name;
   }
@@ -112,6 +134,7 @@ const VendorDetail = ({data_from_parent}) => {
     'pet':'寵物',
     'others':'其他'
   }
+ 
   var brandType = data.data_from_server[0].brand_type;
   if (data_from_parent.length != 0) {
     brandType = data_from_parent[0].brand_type;
@@ -119,7 +142,7 @@ const VendorDetail = ({data_from_parent}) => {
 
   return (
     <div id="shop">
-      <div className="f-row-center" id="shop_nav">
+      <div className="f-row-center" id="shopnav">
         <h3 className="c-blueGray fw-bold flex-5" id="brand_name">
           {brandName}
         </h3>
@@ -127,7 +150,7 @@ const VendorDetail = ({data_from_parent}) => {
           {brandTypeList[`${brandType}`]}
         </h5>
       </div>
-      <div>
+      <div className="f-row-end" id="tagContainer">
         1
       </div>
       <br />
