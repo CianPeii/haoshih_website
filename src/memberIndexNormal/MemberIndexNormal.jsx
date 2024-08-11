@@ -4,6 +4,7 @@ import MemberForm from "../components/MemberForm";
 import MemberOrderNormal from "../MemberOrderNormal/MemberOrderNormal";
 import ChatBtn from "../components/ChatBtn";
 import Footer from "../components/Footer";
+import SubTitleYellow from "../components/SubTitleYellow";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, Routes, Route, Outlet } from "react-router-dom";
@@ -46,28 +47,27 @@ const MemberIndexNormal = (props) => {
     fetchOrderData();
   }, [uid]);
 
+  const MemberProfile = () => (
+    <>
+      <SubTitleYellow title="會員資料" />
+      {memberData ? (
+        <MemberForm profile={memberData} onProfileUpdate={updateProfileData} />
+      ) : (
+        <p>Loading...</p>
+      )}
+    </>
+  );
+
   return (
     <>
       <NavBarShop />
-      <div class="row mw-100">
+      <div class="row mw-100 bg-white">
         <div className="col-3  border-end border-3">
           <MemberSideBar />
         </div>
         <div className="col-9 bg-white">
           <Routes>
-            <Route
-              index
-              element={
-                memberData ? (
-                  <MemberForm
-                    profile={memberData}
-                    onProfileUpdate={updateProfileData}
-                  />
-                ) : (
-                  <p>Loading...</p>
-                )
-              }
-            />
+            <Route index element={<MemberProfile />} />
             <Route
               path="order"
               element={

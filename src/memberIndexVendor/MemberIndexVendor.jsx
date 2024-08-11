@@ -68,11 +68,11 @@ const MemberIndexVendor = () => {
   return (
     <>
       <NavBarShop />
-      <div class="row mw-100 bg-white">
+      <div class="row mw-100">
         <div className="col-3  border-end border-3">
           <MemberVenderSideBar />
         </div>
-        <div className="col-9 ">
+        <div className="col-9 bg-white ">
           <Routes>
             {/* http://localhost:3000/vendor/1 */}
             <Route index element={<VendorProfile />} />

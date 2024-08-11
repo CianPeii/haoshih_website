@@ -118,6 +118,7 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
       JOIN vendor v ON o.vid = v.vid 
       JOIN vendor_info vi ON v.vinfo = vi.vinfo 
       WHERE o.uid = ?
+      ORDER BY o.order_time DESC
     `;
     const orders = await queryAsync(conn, orderQuery, [req.params.uid]);
 
