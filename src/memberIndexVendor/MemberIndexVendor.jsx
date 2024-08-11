@@ -72,7 +72,7 @@ const MemberIndexVendor = () => {
         <div className="col-3  border-end border-3">
           <MemberVenderSideBar />
         </div>
-        <div className="col-9 bg-white ">
+        <div className="col-9">
           <Routes>
             {/* http://localhost:3000/vendor/1 */}
             <Route index element={<VendorProfile />} />

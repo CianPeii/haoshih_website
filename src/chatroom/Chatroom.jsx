@@ -32,13 +32,14 @@ const Chatroom = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [showStickers, setShowStickers] = useState(false);
   const [username] = useState(
-    "豬肉" + Math.floor(Math.random() * 1000) + "號:"
+    "使用者" + Math.floor(Math.random() * 1000) + ":"
   );
   const [userColor] = useState(
     colors[Math.floor(Math.random() * colors.length)]
   );
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
     socket.on("chat message", (msg) => {
@@ -48,7 +49,10 @@ const Chatroom = () => {
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
   }, [messages]);
 
   const sendMessage = (type, content) => {
@@ -94,6 +98,7 @@ const Chatroom = () => {
               <div
                 className="card-body"
                 style={{ height: "400px", overflowY: "scroll" }}
+                ref={chatContainerRef}
               >
                 {messages.map((msg, index) => (
                   <Message key={index} msg={msg} />
@@ -167,65 +172,6 @@ const Chatroom = () => {
               </div>
             </div>
           </div>
-          {/* <div className="container mt-5" style={{ maxWidth: "600px" }}>
-            <div className="card">
-              <div
-                className="card-body"
-                style={{ height: "400px", overflowY: "scroll" }}
-              >
-                <div />
-              </div>
-              <div className="card-footer position-relative">
-                <form>
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="輸入訊息"
-                    />
-                    <div className="d-flex gap-2 mx-2 fs-3">
-                      <i
-                        className="bi bi-emoji-smile-fill"
-                        style={{ cursor: "pointer" }}
-                      />
-                      <i
-                        className="bi bi-image-fill"
-                        style={{ cursor: "pointer" }}
-                      />
-                      <input
-                        type="file"
-                        style={{ display: "none" }}
-                        accept="image/*"
-                      />
-                      <button type="submit" className="btn btn-secondary">
-                        送出
-                      </button>
-                    </div>
-                  </div>
-                </form>
-                <div
-                  className="position-absolute bg-white border rounded p-2"
-                  style={{
-                    bottom: "100%",
-                    right: "0",
-                    width: "255px",
-                    maxHeight: "200px",
-                    overflowY: "auto",
-                    zIndex: 1000,
-                  }}
-                >
-                  <img
-                    style={{
-                      width: "40px",
-                      cursor: "pointer",
-                      margin: "2px",
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div> */}
-          {/* end */}
         </Container>
       </div>
       <Footer />
