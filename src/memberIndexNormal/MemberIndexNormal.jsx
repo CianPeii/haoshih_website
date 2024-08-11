@@ -5,11 +5,12 @@ import MemberOrderNormal from "../MemberOrderNormal/MemberOrderNormal";
 import ChatBtn from "../components/ChatBtn";
 import Footer from "../components/Footer";
 import SubTitleYellow from "../components/SubTitleYellow";
+import MemberLike from "./components/MemberLike";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, Routes, Route, Outlet } from "react-router-dom";
 
-const MemberIndexNormal = (props) => {
+const MemberIndexNormal = () => {
   const [memberData, setMemberData] = useState(null);
   const { uid } = useParams();
   const updateProfileData = (newData) => {
@@ -47,6 +48,22 @@ const MemberIndexNormal = (props) => {
     fetchOrderData();
   }, [uid]);
 
+  const [likedData, setLikedData] = useState(null);
+
+  useEffect(() => {
+    const fetchLikedData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3200/member/like/${uid}`
+        );
+        setLikedData(response.data);
+      } catch (error) {
+        console.error("Error fetching liked data:", error);
+      }
+    };
+    fetchLikedData();
+  }, [uid]);
+
   const MemberProfile = () => (
     <>
       <SubTitleYellow title="會員資料" />
@@ -78,7 +95,16 @@ const MemberIndexNormal = (props) => {
                 )
               }
             />
-            {/* <Route path="like" element={<MemberLike />} /> */}
+            <Route
+              path="like"
+              element={
+                likedData ? (
+                  <MemberLike likedData={likedData} />
+                ) : (
+                  <p>還沒有按讚的攤位喔</p>
+                )
+              }
+            />
           </Routes>
           <Outlet />
           <ChatBtn />
