@@ -7,7 +7,7 @@ function OrderCard(props) {
   const navigate = useNavigate();
   const { orderData } = props;
   const productData = orderData.productData;
-  console.log(orderData);
+  // console.log(orderData);
   return (
     <Container className="mt-4">
       <Card>
@@ -25,6 +25,10 @@ function OrderCard(props) {
               >
                 查看賣場
               </Button>
+              <p className="c-gray ms-auto me-3 mb-0">
+                訂購日期：{orderData.formatted_order_time}
+              </p>
+              <p className="c-gray mb-0">訂單編號：{orderData.oid}</p>
             </Col>
           </Row>
         </Card.Header>
