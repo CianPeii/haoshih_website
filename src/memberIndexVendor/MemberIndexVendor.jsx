@@ -68,7 +68,7 @@ const MemberIndexVendor = () => {
   return (
     <>
       <NavBarShop />
-      <div class="row mw-100">
+      <div className="row mw-100">
         <div className="col-3  border-end border-3">
           <MemberVenderSideBar />
         </div>

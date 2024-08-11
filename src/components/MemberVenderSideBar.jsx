@@ -14,7 +14,7 @@ const MemberVenderSideBar = () => {
             </a>
             <h4>我要擺攤</h4>
             <h4>
-              攤位管理 <span class="bi bi-chevron-down fs-5" />
+              攤位管理 <span className="bi bi-chevron-down fs-5" />
             </h4>
             <div className="py-1 ps-3 ">
               <a
@@ -32,7 +32,11 @@ const MemberVenderSideBar = () => {
               <h5>商品管理</h5>
             </div>
             <h4>訂單管理</h4>
-            <h4>聊天室</h4>
+            <h4>
+              <a className="text-decoration-none c-black" href="/chatroom">
+                聊天室
+              </a>
+            </h4>
           </div>
         </div>
         <h5>登出</h5>
