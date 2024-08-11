@@ -94,7 +94,7 @@ const VendorDetail = ({data_from_parent}) => {
   }
 
   //攤位名稱
-  var brandName = data.data_from_server[0].brand_name;
+  var brandName =  + data.data_from_server[0].brand_name;
   if (data_from_parent.length != 0) {
     brandName = data_from_parent[0].brand_name;
   }
@@ -103,8 +103,15 @@ const VendorDetail = ({data_from_parent}) => {
   if (data_from_parent.length != 0) {
     vendorContent = data_from_parent[0].content;
   }
-  //攤位類別，英文轉中文
-  const brandTypeList = ["服飾", "飾品", "手作", "美食", "寵物", "其他"];
+  //攤位類別，中英對照表
+  const brandTypeList = {
+    'clothing':'服飾',
+    'accessories':'飾品',
+    'handmade':'手作',
+    'food':'美食',
+    'pet':'寵物',
+    'others':'其他'
+  }
   var brandType = data.data_from_server[0].brand_type;
   if (data_from_parent.length != 0) {
     brandType = data_from_parent[0].brand_type;
@@ -117,8 +124,11 @@ const VendorDetail = ({data_from_parent}) => {
           {brandName}
         </h3>
         <h5 className="c-gray fw-500 flex-1" id="brand_type">
-          {brandType}
+          {brandTypeList[`${brandType}`]}
         </h5>
+      </div>
+      <div>
+        1
       </div>
       <br />
       {/* //輪播圖 */}
