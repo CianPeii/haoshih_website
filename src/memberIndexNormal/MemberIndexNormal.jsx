@@ -78,11 +78,11 @@ const MemberIndexNormal = () => {
   return (
     <>
       <NavBarShop />
-      <div class="row mw-100 bg-white">
+      <div className="row mw-100">
         <div className="col-3  border-end border-3">
           <MemberSideBar />
         </div>
-        <div className="col-9 bg-white">
+        <div className="col-9">
           <Routes>
             <Route index element={<MemberProfile />} />
             <Route

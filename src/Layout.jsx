@@ -15,7 +15,7 @@ import ShopCart from "./shopCart/ShopCart";
 import Normal from "./SignUp/Normal";
 import SetStalls from "./setStalls/SetStalls";
 import Default from "./default/Default";
-import Chartroom from "./cartroom/Cartroom";
+import Chatroom from "./chatroom/Chatroom";
 import Step1 from "./checkOut/step/Step1";
 
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -46,6 +46,7 @@ const Layout = () => {
             {/* ======= */}
             <Route path="/Step1" element={<Step1 />} />
             <Route path="/ShopCart" element={<ShopCart />} />
+            <Route path="/chatroom" element={<Chatroom />} />
             TODO: default route
             {/* >>>>>>> main */}
           </Routes>
@@ -54,7 +55,7 @@ const Layout = () => {
           <Normal />
           <AllVendors />
           <Vendor /> */}
-          {/* <Chartroom /> */}
+          {/* <Chatroom /> */}
         </div>
       </div>
       {/* <Login /> */}
