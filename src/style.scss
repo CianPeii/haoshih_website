@@ -21,6 +21,9 @@ $colors: (
   "black": #333,
   "pink": #ebbcbc,
   "red": #f06f5f,
+  "blue": #5a79ba,
+  "brown": #a58f86,
+  "gress": #c3d825,
 );
 
 .bg-glass {
@@ -76,7 +79,7 @@ $layouts: (
     }
   }
 }
-// 以下是flex設定，在className輸入flex-任何
+// 以下是flex設定，在className輸入flex-數字1~10
 @mixin flex($value) {
   flex: $value;
 }
@@ -86,7 +89,20 @@ $layouts: (
     @include flex($i);
   }
 }
-// 以上是flex設定
+// 以下是padding設定，在className輸入pad-數字1~100
+
+@mixin pad($value) {
+  padding: $value;
+}
+
+@for $i from 1 through 100 {
+  .pad-#{$i} {
+    @include pad(#{$i}px);
+  }
+}
+
+
+
 
 .f-end-end {
   display: flex;
@@ -127,7 +143,9 @@ $layouts: (
   align-items: center;
   justify-content: end;
 }
-
+.f-right {
+  text-align: right;
+}
 .cursor-pointer {
   cursor: pointer;
 }
@@ -161,6 +179,7 @@ $layouts: (
   }
 }
 
+
 //forVendorDetail
 .fs-content {
   font-size: larger;
@@ -170,5 +189,5 @@ $layouts: (
   display: -webkit-box;
   line-clamp: 3;
   -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: vertical; 
 }
