@@ -1,10 +1,12 @@
 const ChatBtn = () => {
   return (
     <>
-      <i
-        className="rounded-circle position-fixed p-3 c-white bg-blueGray d-inline bi bi-chat-dots fs-3 opacity-75"
-        style={{ bottom: "10%", right: "2%" }}
-      ></i>
+      <a href="/chatroom">
+        <i
+          className="rounded-circle position-fixed  c-white bg-blueGray d-inline bi bi-chat-dots fs-3 opacity-75 cursor-pointer "
+          style={{ bottom: "10%", right: "2%", padding: "1% 1.4%" }}
+        ></i>
+      </a>
     </>
   );
 };
