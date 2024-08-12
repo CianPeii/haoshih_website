@@ -1,6 +1,6 @@
 const express = require('express');
 const session = require('express-session');
-var loginRouter = express.Router()
+const loginRouter = express.Router()
 const bcrypt = require('bcrypt');
 const path = require('path');
 // const secretGenerator = require('./public/secretGenerator');
@@ -22,8 +22,8 @@ var conn = config.connection
 // 2. google登入的路徑
 // 3. secretGenerator檔案上傳到專案並改引用路徑
 
-loginRouter.set('view engine', 'ejs');
-loginRouter.set('views', path.join(__dirname, 'views'));
+// loginRouter.set('view engine', 'ejs');
+// loginRouter.set('views', path.join(__dirname, 'views'));
 
 loginRouter.use(express.urlencoded({ extended: true }));
 loginRouter.use(express.json());
@@ -50,12 +50,12 @@ loginRouter.get('/test', function (req, res) {
 //     secretGenerator.saveSecretToFile(secret, secretFile);
 // }
 
-loginRouter.use(session({
-    secret: secret,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-}));
+// loginRouter.use(session({
+//     secret: secret,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: false }
+// }));
 
 // 設置 multer
 const storage = multer.diskStorage({
@@ -75,14 +75,7 @@ const upload = multer({
             cb(new Error("只接受 PNG 和 JPG 格式的圖片"), false);
         }
     }
-}).fields([
-    { name: 'logo_img', maxCount: 1 },
-    { name: 'brand_img01', maxCount: 1 },
-    { name: 'brand_img02', maxCount: 1 },
-    { name: 'brand_img03', maxCount: 1 },
-    { name: 'brand_img04', maxCount: 1 },
-    { name: 'brand_img05', maxCount: 1 }
-]); 
+})
 // // 首頁
 loginRouter.get('/home', (req, res) => {
     if (req.session.loggedin) {
@@ -354,148 +347,152 @@ loginRouter.use((err, req, res, next) => {
     next();
 });
 
-// 設置 Passport(google)
-passport.use(new GoogleStrategy({
-   
-    
-    prompt: 'select_account',
-    passReqToCallback: true
-},
-function (req, accessToken, refreshToken, profile, cb) {
-    // 在這裡處理用戶登入邏輯
-    // 您需要檢查用戶是否已存在，如果不存在則創建新用戶
-    const { id, displayName, emails } = profile;
-    const email = emails && emails.length > 0 ? emails[0].value : null;
-    if (!email) {
-        return cb(new Error('google信箱失敗'));
-    }
+// // 設置 Passport(google)
+// const clientID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+// const clientSecret = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
+// const callbackURL = process.env.REACT_APP_GOOGLE_CALLBACK_URL;
+// passport.use(new GoogleStrategy({
+//     clientID: clientID,
+//     clientSecret: clientSecret,
+//     callbackURL: callbackURL,
+//     prompt: 'select_account',
+//     passReqToCallback: true
+// },
+//     function (req, accessToken, refreshToken, profile, cb) {
+//         // 在這裡處理用戶登入邏輯
+//         // 您需要檢查用戶是否已存在，如果不存在則創建新用戶
+//         const { id, displayName, emails } = profile;
+//         const email = emails && emails.length > 0 ? emails[0].value : null;
+//         if (!email) {
+//             return cb(new Error('google信箱失敗'));
+//         }
 
-    const userType = req.session.googleAuthUserType || 'member';  // 默認為會員
-    const table = userType === 'member' ? 'member' : 'vendor';
+//         const userType = req.session.googleAuthUserType || 'member';  // 默認為會員
+//         const table = userType === 'member' ? 'member' : 'vendor';
 
-    // 使用 email 查找或建立用戶
-    conn.query(`SELECT * FROM ${table} WHERE email = ?`, [email], (err, results) => {
-        if (err) return cb(err);
+//         // 使用 email 查找或建立用戶
+//         conn.query(`SELECT * FROM ${table} WHERE email = ?`, [email], (err, results) => {
+//             if (err) return cb(err);
 
-        if (results.length > 0) {
-            const existingUser = results[0];
-            if (existingUser.account.startsWith(userType)) {
-                // 帳號通過，返回
-                return cb(null, { ...existingUser, userType });
-            } else {
-                // 帳戶已申請為其他用戶，送出錯誤訊息
-                return cb(null, { error: 'account_exists', message: '此帳號已申請為其他使用身分' });
-            }
-        } else {
-            // 創建新用戶
-            const newUser = {
-                account: email,
-                email: email,
-                first_name: profile.name && profile.name.givenName ? profile.name.givenName : '',
-                last_name: profile.name && profile.name.familyName ? profile.name.familyName : '',
-                // 其他欄位設置為空字串
-            };
+//             if (results.length > 0) {
+//                 const existingUser = results[0];
+//                 if (existingUser.account.startsWith(userType)) {
+//                     // 帳號通過，返回
+//                     return cb(null, { ...existingUser, userType });
+//                 } else {
+//                     // 帳戶已申請為其他用戶，送出錯誤訊息
+//                     return cb(null, { error: 'account_exists', message: '此帳號已申請為其他使用身分' });
+//                 }
+//             } else {
+//                 // 創建新用戶
+//                 const newUser = {
+//                     account: email,
+//                     email: email,
+//                     first_name: profile.name && profile.name.givenName ? profile.name.givenName : '',
+//                     last_name: profile.name && profile.name.familyName ? profile.name.familyName : '',
+//                     // 其他欄位設置為空字串
+//                 };
 
-            conn.query(`INSERT INTO ${userType === 'member' ? 'member' : 'vendor'} SET ?`, newUser, (err, result) => {
-                if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
-                        return cb(null, { error: 'account_exists', message: '此帳號已申請為其他使用身分' });
-                    }
-                    return cb(err);
-                }
-                newUser.id = result.insertId;
-                newUser.userType = userType;
-                return cb(null, newUser);
-            });
-        }
-    });
-}));
+//                 conn.query(`INSERT INTO ${userType === 'member' ? 'member' : 'vendor'} SET ?`, newUser, (err, result) => {
+//                     if (err) {
+//                         if (err.code === 'ER_DUP_ENTRY') {
+//                             return cb(null, { error: 'account_exists', message: '此帳號已申請為其他使用身分' });
+//                         }
+//                         return cb(err);
+//                     }
+//                     newUser.id = result.insertId;
+//                     newUser.userType = userType;
+//                     return cb(null, newUser);
+//                 });
+//             }
+//         });
+//     }));
 
-// 初始化 Passport
-loginRouter.use(passport.initialize());
-loginRouter.use(passport.session());
+// // 初始化 Passport
+// loginRouter.use(passport.initialize());
+// loginRouter.use(passport.session());
 
-// Google 登入路由
-loginRouter.get('/auth/google', (req, res, next) => {
-    req.session.googleAuthUserType = req.query.userType;
-    next();
-},
-passport.authenticate('google', { scope: ['profile', 'email'] }));
+// // Google 登入路由
+// loginRouter.get('/auth/google', (req, res, next) => {
+//     req.session.googleAuthUserType = req.query.userType;
+//     next();
+// },
+//     passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-loginRouter.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }),
-    function (req, res) {
-        console.log('Google 回調觸發，用戶數據:', req.user)
-        if (!req.user) {
-            return res.redirect('http://localhost:3000/login?error=登入失敗');
-        }
+// loginRouter.get('/auth/google/callback',
+//     passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }),
+//     function (req, res) {
+//         console.log('Google 回調觸發，用戶數據:', req.user)
+//         if (!req.user) {
+//             return res.redirect('http://localhost:3000/login?error=登入失敗');
+//         }
 
-        if (req.user.error === 'account_exists') {
-            // 將錯誤消息儲存在 session 中
-            req.session.authError = req.user.message;
-            return res.redirect('http://localhost:3000/login?error=' + encodeURIComponent(req.user.message));
-        }
+//         if (req.user.error === 'account_exists') {
+//             // 將錯誤消息儲存在 session 中
+//             req.session.authError = req.user.message;
+//             return res.redirect('http://localhost:3000/login?error=' + encodeURIComponent(req.user.message));
+//         }
 
-        const userType = req.session.userType || 'member';  // 默認為會員
-         const userData = {
-            success: true,
-            userType: userType,
-            userName: req.user.account,
-            uid: req.user.id,
-            email: req.user.email,
-            firstName: req.user.first_name,
-            lastName: req.user.last_name
-        };
-
-
-        if (!email) {
-            return res.redirect('/');
-        }
-        // 根據用戶類型查詢相應的表
-        const table = userType === 'member' ? 'member' : 'vendor';
-
-        conn.query(`SELECT * FROM ${table} WHERE email = ?`, [email], (err, results) => {
-            if (err) {
-                console.error('Database error:', err);
-                return res.redirect('/');
-            }
-
-            if (results.length > 0) {
-                // 用戶存在，直接登入
-                req.session.loggedin = true;
-                req.session.userName = results[0].account;
-                req.session.userType = userType;
-                res.redirect('/');
-            } else {
-                // 用戶不存在，創建新用戶
-                const newUser = {
-                    account: email,
-                    email: email,
-                    first_name: req.user.name && req.user.name.givenName ? req.user.name.givenName : '',
-                    last_name: req.user.name && req.user.name.familyName ? req.user.name.familyName : '',
-                    // 其他欄位設置為默認值
-                };
-
-                conn.query(`INSERT INTO ${table} SET ?`, newUser, (err, result) => {
-                    if (err) {
-                        console.error('Error creating new user:', err);
-                        return res.redirect('/');
-                    }
-
-                    req.session.loggedin = true;
-                    req.session.userName = newUser.account;
-                    req.session.userType = userType;
-                    res.redirect('/');
-                });
-            }
-        });
-
-        // 將用戶數據作為 URL 參數傳遞
-        const userDataParam = encodeURIComponent(JSON.stringify(userData));
-        res.redirect(`http://localhost:3000/login?googleLoginData=${userDataParam}`);
-    }
-);
+//         const userType = req.session.userType || 'member';  // 默認為會員
+//         const userData = {
+//             success: true,
+//             userType: userType,
+//             userName: req.user.account,
+//             uid: req.user.id,
+//             email: req.user.email,
+//             firstName: req.user.first_name,
+//             lastName: req.user.last_name
+//         };
 
 
+//         if (!email) {
+//             return res.redirect('/');
+//         }
+//         // 根據用戶類型查詢相應的表
+//         const table = userType === 'member' ? 'member' : 'vendor';
 
-module.exports = loginRouter
+//         conn.query(`SELECT * FROM ${table} WHERE email = ?`, [email], (err, results) => {
+//             if (err) {
+//                 console.error('Database error:', err);
+//                 return res.redirect('/');
+//             }
+
+//             if (results.length > 0) {
+//                 // 用戶存在，直接登入
+//                 req.session.loggedin = true;
+//                 req.session.userName = results[0].account;
+//                 req.session.userType = userType;
+//                 res.redirect('/');
+//             } else {
+//                 // 用戶不存在，創建新用戶
+//                 const newUser = {
+//                     account: email,
+//                     email: email,
+//                     first_name: req.user.name && req.user.name.givenName ? req.user.name.givenName : '',
+//                     last_name: req.user.name && req.user.name.familyName ? req.user.name.familyName : '',
+//                     // 其他欄位設置為默認值
+//                 };
+
+//                 conn.query(`INSERT INTO ${table} SET ?`, newUser, (err, result) => {
+//                     if (err) {
+//                         console.error('Error creating new user:', err);
+//                         return res.redirect('/');
+//                     }
+
+//                     req.session.loggedin = true;
+//                     req.session.userName = newUser.account;
+//                     req.session.userType = userType;
+//                     res.redirect('/');
+//                 });
+//             }
+//         });
+
+//         // 將用戶數據作為 URL 參數傳遞
+//         const userDataParam = encodeURIComponent(JSON.stringify(userData));
+//         res.redirect(`http://localhost:3000/login?googleLoginData=${userDataParam}`);
+//     }
+// );
+
+
+
+module.exports = loginRouter;

@@ -48,7 +48,7 @@ const Login = () => {
 
   const doLogin = async (formData, userType) => {
     try {
-      const response = await axios.post('http://localhost:3200/', {
+      const response = await axios.post('http://localhost:3000/', {
         account: formData.account,
         password: formData.password,
         userType: userType

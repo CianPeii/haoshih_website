@@ -40,7 +40,7 @@ const NormalForm = ({ onRegSuccess }) => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:3200/register/member', formData, {
+      const response = await axios.post('http://localhost:3000/register/member', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
