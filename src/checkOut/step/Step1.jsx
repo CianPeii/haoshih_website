@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import Col from "react-bootstrap/Col";
 
 const Step1 = () => {
   const [productsData, setProductsData] = useState(null);
@@ -19,7 +20,7 @@ const Step1 = () => {
   const data = queryParams.get('data');
   // console.log(data);
   const navigate = useNavigate();
-  
+  const cartVisible = false;
 
   let products = [];
 
@@ -79,7 +80,7 @@ const Step1 = () => {
 
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible}/>
       <div className="f-space-around">
         <Arrow color="yellow" title="確認商品" />
         <Arrow color="white" title="寄送資訊" />
@@ -89,10 +90,21 @@ const Step1 = () => {
       <div className="container">
         <CheckOutCard groupedProducts={groupedProducts}/>
         <div className="f-end-end mt-5 gap-3 ">
-          <h4>總金額：NT{turnPrice(totalAmount)}</h4>
+        <Col className="d-flex justify-content-end align-items-end">
+          <div className="fs-4">總金額：NT{turnPrice(totalAmount)}</div>
+          <Button
+            className="bg-white border border-red me-3 ms-2"
+            variant="border border-2 rounded-pill px-4"
+            type="button"
+            onClick={() => navigate(-1)}
+          >
+            回上一步
+          </Button>
           <Button variant="danger rounded-pill px-4 py-2" onClick={handleCheckout}>
             前往結帳
           </Button>
+        </Col>
+
         </div>
       </div>
       <Footer />

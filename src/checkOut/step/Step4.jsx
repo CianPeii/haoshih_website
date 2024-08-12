@@ -9,9 +9,10 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 
 const Step3 = () => {
+  const cartVisible = false;
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible}/>
       <div className="f-space-around">
         <Arrow color="green" title="確認商品" />
         <Arrow color="green" title="寄送資訊" />

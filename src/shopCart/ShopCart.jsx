@@ -14,7 +14,7 @@ const ShopCart = () => {
   const [selectedProducts, setSelectedProducts] = useState(new Set());
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
-
+  const cartVisible = true;
   useEffect(() => {
     const fetchProductsData = async () => {
       try {
@@ -76,12 +76,16 @@ const ShopCart = () => {
       data: JSON.stringify(checkoutData)
     }).toString();
     // console.log(queryString);
-    navigate(`/Step1?${queryString}`);
+    if(checkoutData.length>0){
+      navigate(`/Step1?${queryString}`);
+    } else {
+      alert("請選擇商品!")
+    }
   };
 
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible}/>
       <div className="row">
         <div className="col-2 border-end border-3">
           <MemberSideBar />

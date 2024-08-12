@@ -16,6 +16,7 @@ const MemberIndexNormal = () => {
   const updateProfileData = (newData) => {
     setMemberData(newData);
   };
+  const cartVisible = 1;
 
   useEffect(() => {
     const fetchMemberData = async () => {
@@ -77,7 +78,7 @@ const MemberIndexNormal = () => {
 
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible}/>
       <div className="row mw-100">
         <div className="col-3  border-end border-3">
           <MemberSideBar />
