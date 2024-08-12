@@ -12,8 +12,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Buffer } from "buffer";
 
 function VendorCarousel() {
-
   useEffect(() => {
+
     const carouselElement = document.querySelector(
       "#carouselExampleIndicators"
     );
@@ -33,6 +33,11 @@ const Vendor = () => {
   const params = useParams();
   const [logoImgSrc, setLogoImgSrc] = useState('');
   // console.log(params) // can get vid
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const fetchVendorData = async () => {
     var url = "http://localhost:3200/shop/vendor/" + params.vid
     try {
