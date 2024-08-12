@@ -257,7 +257,9 @@ const EditStallProfile = (props) => {
 
         alert("資料更新成功");
         // 重新導回攤位資訊頁面 ==> 來不及抓到最新資料就渲染了 ==> 先不自動導回
-        // navigate(`/vendor/${stallProfile.vid}/vendorInfo`);
+        setTimeout(() => {
+          navigate(`/vendor/${stallProfile.vid}/vendorInfo`);
+        }, 500);
       } else {
         console.log("Unexpected response status:", response.status);
       }
