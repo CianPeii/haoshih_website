@@ -100,18 +100,12 @@ const ShopCart = () => {
               />
             )}
             <div className="f-end-end mt-5 gap-3">
-<<<<<<< HEAD
               <h4>總金額：NT${turnPrice(totalPrice)}</h4>
 
               <Button
                 variant="danger rounded-pill px-4 py-2"
                 onClick={handleCheckout}
               >
-=======
-              <h4>總金額：NT{turnPrice(totalPrice)}</h4>
-              
-              <Button variant="danger rounded-pill px-4 py-2" onClick={handleCheckout}>
->>>>>>> e7f4fd3bc431680b050f2c1649b6315178ce7642
                 前往結帳
               </Button>
             </div>

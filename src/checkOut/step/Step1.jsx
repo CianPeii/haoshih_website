@@ -20,10 +20,6 @@ const Step1 = () => {
   const data = queryParams.get("data");
 =======
   const data = queryParams.get('data');
-  // console.log(data);
-  const navigate = useNavigate();
-  
->>>>>>> e7f4fd3bc431680b050f2c1649b6315178ce7642
 
   let products = [];
 
@@ -40,13 +36,7 @@ const Step1 = () => {
       try {
         const fetchedData = [];
         for (let i = 0; i < products.length; i++) {
-<<<<<<< HEAD
-          const response = await axios.get(
-            `http://localhost:5000/index/carts/products/${products[i].pid}/1`
-          );
-=======
-          const response = await axios.get(`http://localhost:3200/carts/products/${products[i].pid}/1`);
->>>>>>> e7f4fd3bc431680b050f2c1649b6315178ce7642
+          const response = await axios.get(`http://localhost:5000/index/carts/products/${products[i].pid}/1`);
           fetchedData.push(response.data[0]); // 只取第一個元素
         }
         setProductsData(fetchedData);
@@ -103,13 +93,7 @@ const Step1 = () => {
         <CheckOutCard groupedProducts={groupedProducts} />
         <div className="f-end-end mt-5 gap-3 ">
           <h4>總金額：NT{turnPrice(totalAmount)}</h4>
-<<<<<<< HEAD
-          <Button className="bg-red c-white rounded-pill" variant=" px-4 py-2">
-=======
-          <Button variant="danger rounded-pill px-4 py-2" onClick={handleCheckout}>
->>>>>>> e7f4fd3bc431680b050f2c1649b6315178ce7642
-            前往結帳
-          </Button>
+          <Button variant="red rounded-pill px-4 py-2">前往結帳</Button>
         </div>
       </div>
       <Footer />
