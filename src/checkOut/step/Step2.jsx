@@ -30,11 +30,6 @@ const Step2 = () => {
     localStorage.setItem('checkoutData', JSON.stringify(checkoutData));
     navigate('/Step3');
   };
-  
-
-  const handleBack = () => {
-    navigate(-1);
-  }
 
   return (
     <>

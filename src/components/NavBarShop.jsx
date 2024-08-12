@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const NavBarShop = ({cartVisible}) => {
   const [productsData, setProductsData] = useState({});
-  console.log("cartVisible",cartVisible);
+  // console.log("cartVisible",cartVisible);
 
   useEffect(() => {
     const fetchProductsData = async () => {

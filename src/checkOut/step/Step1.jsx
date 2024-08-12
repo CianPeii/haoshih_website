@@ -4,9 +4,9 @@ import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 import CheckOutCard from "../CheckOutCard";
 import { Button } from "react-bootstrap";
-import {turnPrice} from "../../utils/turnPrice";
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { turnPrice } from "../../utils/turnPrice";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import Col from "react-bootstrap/Col";
@@ -17,6 +17,7 @@ const Step1 = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+
   const data = queryParams.get('data');
   // console.log(data);
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Step1 = () => {
       products = JSON.parse(data);
       // console.log(products);
     } catch (error) {
-      console.error('Error parsing data:', error);
+      console.error("Error parsing data:", error);
     }
   }
   useEffect(() => {
@@ -51,9 +52,12 @@ const Step1 = () => {
 
         setUseProducts(useProducts);
 
-              // 計算總金額
-      const total = useProducts.reduce((sum, product) => sum + (product.price * product.amount), 0);
-      setTotalAmount(total);
+        // 計算總金額
+        const total = useProducts.reduce(
+          (sum, product) => sum + product.price * product.amount,
+          0
+        );
+        setTotalAmount(total);
       } catch (error) {
         console.error("Error fetching Products Data:", error);
       }
@@ -88,7 +92,7 @@ const Step1 = () => {
         <Arrow color="white" title="完成訂單" />
       </div>
       <div className="container">
-        <CheckOutCard groupedProducts={groupedProducts}/>
+        <CheckOutCard groupedProducts={groupedProducts} />
         <div className="f-end-end mt-5 gap-3 ">
         <Col className="d-flex justify-content-end align-items-end">
           <div className="fs-4">總金額：NT{turnPrice(totalAmount)}</div>

@@ -126,15 +126,17 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
     function getStatusText(status) {
       switch (status) {
         case 0:
-          return "未出貨";
+          return "待付款";
         case 1:
-          return "已出貨";
+          return "待出貨";
         case 2:
-          return "待收貨";
+          return "已出貨";
         case 3:
+          return "待收貨";
+        case 4:
           return "已完成";
         default:
-          return "等待接單";
+          return "處理中";
       }
     }
 
@@ -144,9 +146,9 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
         case 0:
           return "Line Pay";
         case 1:
-          return "信用卡";
-        case 2:
           return "轉帳";
+        case 2:
+          return "貨到付款";
         default:
           return "其他";
       }

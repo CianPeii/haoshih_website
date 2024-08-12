@@ -4,8 +4,8 @@ const AllVendorsCard = ({ data , linkTo}) => {
   var imgBlob = Buffer.from(data.brand_img01).toString('base64')
   return (
     <>
-      <div className="col-3 cursor-pointer" onClick={()=>{linkTo(data.vinfo)}}>
-        <div className={`card p-3 mx-2  my-3 ${styles.cardBg}`}>
+      <div className="col-3" onClick={()=>{linkTo(data.vinfo)}}>
+        <div className={`card p-3 mx-2  my-3 ${styles.cardBg} cursor-pointer`}>
           <img
             className={styles.cardImg}
             src={"data:image/jpeg;base64,"+imgBlob}
