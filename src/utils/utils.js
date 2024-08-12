@@ -83,3 +83,33 @@ exports.updateVendorPayment = async function (conn, vid, bankInfo) {
     });
   });
 };
+
+// 資料庫更新函式 ==> 攤位資訊
+exports.updateStallProfile = async function (conn, vinfo, stallData) {
+  return new Promise((resolve, reject) => {
+    const keys = Object.keys(stallData);
+    // 如果都沒填寫，就不執行動作
+    if (keys.length === 0) {
+      resolve({ message: "No fields to update" });
+      return;
+    }
+    // 依照有填寫的欄位動態生成 SQL語法
+    let sql = `UPDATE vendor_info SET ${keys
+      .map((key) => `${key} = ?`)
+      .join(",")} WHERE vinfo = ?`;
+    let params = [...Object.values(stallData), vinfo];
+    // 更新資料庫
+    conn.query(sql, params, (err, result) => {
+      if (err) {
+        console.error("Error in updateStallProfile:", err);
+        reject(err);
+      } else {
+        resolve({
+          message: "Stall Profile updated successfully",
+          affectedRows: result.affectedRows,
+          changedRows: result.changedRows,
+        });
+      }
+    });
+  });
+};

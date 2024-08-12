@@ -30,6 +30,11 @@ const Step2 = () => {
     navigate('/Step3');
   };
   
+
+  const handleBack = () => {
+    navigate(-1);
+  }
+
   return (
     <>
       <NavBarShop />
@@ -92,7 +97,7 @@ const Step2 = () => {
             className="bg-white border border-red me-3"
             variant="border border-2 rounded-pill px-4"
             type="button"
-            onClick={() => navigate('/Step1')}
+            onClick={() => navigate(-1)}
           >
             回上一步
           </Button>

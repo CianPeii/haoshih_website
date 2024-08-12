@@ -60,30 +60,6 @@ const Step1 = () => {
     fetchProductsData();
   }, [data]);
 
-  // 如果是透過按鈕返回上一頁，需要儲存localStorage的資料，用以渲染網頁
-  useEffect(() => {
-    const savedProductsData = JSON.parse(localStorage.getItem('checkoutData'));
-    if (savedProductsData) {
-      // 根據已保存的資料進行合併等操作
-      const useProducts = savedProductsData.map((item) => ({
-        pid: item.pid,
-        amount: item.amount,
-        ...item,  // 假設fetchedData已經包含在savedProductsData中
-      }));
-      setProductsData(savedProductsData);
-      // console.log(savedProductsData);
-      setUseProducts(useProducts);
-      // console.log(useProducts);
-  
-      // 計算總金額
-      const total = useProducts.reduce((sum, product) => {
-        const validAmount = product.amount || 0; // 如果amount無效，則設置為0
-        return sum + (product.price * validAmount);
-      }, 0);
-      setTotalAmount(total);
-    }
-  }, []);
-  
 
   const groupedProducts = useProducts.reduce((acc, product) => {
     const { vinfo } = product;
