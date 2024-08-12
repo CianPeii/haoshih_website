@@ -13,6 +13,7 @@ const VendorCard = ({params}) => {
       try {
         const response = await axios.get(`http://localhost:3200/carts/vendorProducts/${params.vid}`);
         setVendorData(response.data);
+        console.log(response.data)
       } catch (error) {
         console.error("Error fetching Vendor Data:", error);
       }
@@ -40,9 +41,9 @@ const VendorCard = ({params}) => {
                 alt=""
               />
               <div className="card-body">
-                <h6 className={`card-title ${styles.cardTitle}`}>
-                  {product.content}
-                </h6>
+                <h5 className={`card-title ${styles.cardTitle} text-center`}>
+                  {product.name}
+                </h5>
                 <p className="card-text text-center text-red">NT{turnPrice(product.price)}</p>
               </div>
             </div>
