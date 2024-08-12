@@ -113,28 +113,44 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
   try {
     // 抓這個 uid 的訂單資料 => vid 找到 vendor table => vinfo 找到 vendor_info table
     const orderQuery = `
-      SELECT o.*, vi.brand_name 
+      SELECT o.*, vi.brand_name, vi.vinfo 
       FROM orderList o 
       JOIN vendor v ON o.vid = v.vid 
       JOIN vendor_info vi ON v.vinfo = vi.vinfo 
       WHERE o.uid = ?
+      ORDER BY o.order_time DESC
     `;
     const orders = await queryAsync(conn, orderQuery, [req.params.uid]);
 
-    // 將交易狀態轉為文字訊息、格式化日期
-    // todo: 把商品編號 pid 連結到 product table
+    // 將交易狀態轉為文字訊息
     function getStatusText(status) {
       switch (status) {
         case 0:
-          return "未出貨";
+          return "待付款";
         case 1:
-          return "已出貨";
+          return "待出貨";
         case 2:
-          return "待收貨";
+          return "已出貨";
         case 3:
+          return "待收貨";
+        case 4:
           return "已完成";
         default:
-          return "未知狀態";
+          return "處理中";
+      }
+    }
+
+    // 將付款方式轉為文字
+    function getPaymentText(payment) {
+      switch (payment) {
+        case 0:
+          return "Line Pay";
+        case 1:
+          return "轉帳";
+        case 2:
+          return "貨到付款";
+        default:
+          return "其他";
       }
     }
 
@@ -188,10 +204,10 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
 
       return {
         ...order,
-        detailObj: detailObj,
-        productData: productData[0],
+        detail: { ...detailObj, payment: getPaymentText(detailObj.payment) },
+        productData: productData,
         productImage: productImage,
-        statusText: getStatusText(order.status),
+        status: getStatusText(order.status),
         formatted_order_time: new Date(order.order_time).toLocaleString(
           "zh-TW",
           {
@@ -209,7 +225,6 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
     const formattedOrders = await Promise.all(formattedOrdersPromises);
 
     res.json(formattedOrders);
-    res.send(orders);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Fail to provide data" });
@@ -226,7 +241,7 @@ memberRouter.get("/like/:uid", async (req, res) => {
     // console.log(`likes: ${JSON.stringify(likes)}`);
 
     if (likes.length === 0 || !likes[0].list) {
-      return res.render("memberLike.ejs", {
+      return res.josn({
         uid: req.params.uid,
         likes: likes,
       });
@@ -236,7 +251,7 @@ memberRouter.get("/like/:uid", async (req, res) => {
     // console.log(`likesNumArr: ${likesNumArr}`); // 1,2
 
     const likesQuery = `
-    SELECT v.vid, vi.brand_name, vi.logo_img, vi.brand_img01, vi.brand_img02, vi.brand_img03 
+    SELECT v.vid, vi.vinfo, vi.brand_name, vi.tag1, vi.tag2,vi.content, vi.brand_img01 
     FROM vendor v 
     JOIN vendor_info vi ON v.vinfo = vi.vinfo 
     WHERE v.vid = ?
@@ -260,20 +275,13 @@ memberRouter.get("/like/:uid", async (req, res) => {
     likedBrandArr = likedBrandArr.map((brand) => {
       return {
         ...brand,
-        logo_img: brand.logo_img ? brand.logo_img.toString("base64") : null,
         brand_img01: brand.brand_img01
           ? brand.brand_img01.toString("base64")
-          : null,
-        brand_img02: brand.brand_img02
-          ? brand.brand_img02.toString("base64")
-          : null,
-        brand_img03: brand.brand_img03
-          ? brand.brand_img03.toString("base64")
           : null,
       };
     });
 
-    res.json([likedBrandArr[0], likes[0]]);
+    res.json(likedBrandArr);
   } catch (error) {
     console.error("Error in /member/like/:uid:", error);
     res.status(500).send("Internal Server Error");

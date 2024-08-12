@@ -39,15 +39,17 @@ const Step2 = () => {
             </Col>
           </Form.Group>
 
-          <Form.Group as={Row} className="container">
+          <Form.Group as={Row} className="mb-3">
             <Form.Label column sm="2" className="text-end">
               收件人地址
             </Form.Label>
             <Col sm="8">
               <Form.Control
                 type="textarea"
-                placeholder="免郵遞區號"
+                placeholder="請填寫郵遞區號"
                 name="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
               />
             </Col>
           </Form.Group>
@@ -58,6 +60,7 @@ const Step2 = () => {
             className="bg-white border border-red me-3"
             variant="border border-2 rounded-pill px-4"
             type="button"
+            onClick={() => navigate(-1)}
           >
             回上一步
           </Button>
@@ -65,6 +68,7 @@ const Step2 = () => {
             className="bg-red c-white"
             variant="border border-2 rounded-pill px-4"
             type="button"
+            onClick={handleNextStep}
           >
             下一步
           </Button>

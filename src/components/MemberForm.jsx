@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAxios from "axios-hooks";
+import SubTitleYellow from "../components/SubTitleYellow";
 
 function MemberForm(props) {
   // 重新導向功能
@@ -382,14 +383,15 @@ function MemberForm(props) {
         </Col>
       </Form.Group>
 
-      <Row>
+      <Row className="mb-5">
         <Col sm="8">
           <div className="d-flex justify-content-center">
             <Button
-              className="me-5"
+              className="me-5 bg-white"
               variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
               type="button"
               onClick={() => {
+                alert("確定要取消變更嗎？");
                 navigate(`/member/${props.profile.uid}`); // 然後導航
               }}
             >
@@ -401,7 +403,7 @@ function MemberForm(props) {
               type="submit"
               onClick={async () => {
                 await refetch(); // 先執行 refetch
-                navigate(`/member/${props.profile.uid}`); // 然後導航
+                navigate(`/member/2`); // 然後導航
               }}
             >
               儲存變更

@@ -176,7 +176,7 @@ const VendorForm = (props) => {
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <Row className=" my-5 ">
         <Col sm="2" className="text-end">
-          <p className="c-gray">一般會員</p>
+          <p className="c-gray">攤主會員</p>
         </Col>
         <Col sm="6">
           <div className="f-start">
@@ -339,14 +339,17 @@ const VendorForm = (props) => {
         </Col>
       </Form.Group>
 
-      <Row>
+      <Row className="mb-5">
         <Col sm="8">
           <div className="d-flex justify-content-center">
             <Button
-              className="me-5"
+              className="me-5 bg-white"
               variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
               type="button"
-              onClick={() => navigate(`/vendor/${props.profile.vid}`)}
+              onClick={() => {
+                alert("確定要取消變更嗎？");
+                navigate(`/vendor/${props.profile.vid}`);
+              }}
             >
               取消變更
             </Button>
