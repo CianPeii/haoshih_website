@@ -100,19 +100,19 @@
   }
 
   .toiletOnClick {
-    background-color: #f7ea57;
+    background-color: rgb(239, 225, 65);
     transform: scale(1.05);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(239, 225, 65, 0.6), 0 0 0 12px rgba(239, 225, 65, 0.3);
   }
   .benchOnClick {
-    background-color: #f8e7e5;
+    background-color: rgb(240, 158, 149);
     transform: scale(1.05);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(240, 158, 149, 0.8), 0 0 0 12px rgba(240, 158, 149, 0.3);
   }
   .trashOnClick {
-    background-color: #b7efe0;
+    background-color: rgb(93, 238, 199);
     transform: scale(1.05);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(93, 238, 199, 0.8), 0 0 0 10px rgba(93, 238, 199, 0.3);
   }
   .tagSpan {
     border: none;
