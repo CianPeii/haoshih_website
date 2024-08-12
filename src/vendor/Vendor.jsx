@@ -12,8 +12,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Buffer } from "buffer";
 
 function VendorCarousel() {
-  
   useEffect(() => {
+
     const carouselElement = document.querySelector(
       "#carouselExampleIndicators"
     );
@@ -33,29 +33,88 @@ const Vendor = () => {
   const params = useParams();
   const [logoImgSrc, setLogoImgSrc] = useState('');
   // console.log(params) // can get vid
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const fetchVendorData = async () => {
-    var url = "http://localhost:3200/shop/vendor/"+params.vid
+    var url = "http://localhost:3200/shop/vendor/" + params.vid
     try {
       const response = await axios.get(url);
       setVendor(response.data[0]);
       // 檢查用：數據首次被獲取時顯示
       // console.log("Vendors Data:", response.data[0]);
-      
+
       const base64String = `data:image/jpeg;base64,${Buffer.from(response.data[0].logo_img.data).toString('base64')}`;
       setLogoImgSrc(base64String);
+
+      // 渲染輪播圖
+      //選擇按鈕、圖片容器元素
+      const indicatorsContainer = document.getElementById("carousel-indicators");
+      const imageContainer = document.getElementById("carousel-inner");
+      if (!indicatorsContainer) return;
+      //每次動態生成前先清空容器內容
+      indicatorsContainer.innerHTML = "";
+      imageContainer.innerHTML = "";
+      var imageList = [
+        response.data[0].brand_img01,
+        response.data[0].brand_img02,
+        response.data[0].brand_img03,
+        response.data[0].brand_img04,
+        response.data[0].brand_img05,
+      ];
+      //使用forEach迴圈生成輪播按鈕、圖片
+      imageList.forEach((image, index) => {
+        if (image !== null) {
+          //生成輪播按鈕
+          const cbutton = document.createElement("button");
+          cbutton.type = "button";
+          cbutton.dataset.bsTarget = "#carouselExampleIndicators";
+          cbutton.dataset.bsSlideTo = index;
+          cbutton.ariaLabel = `Slide ${index + 1}`;
+          if (index === 0) {
+            cbutton.classList.add("active");
+            cbutton.ariaCurrent = "true";
+          }
+          //按鈕添加到容器
+          indicatorsContainer.appendChild(cbutton);
+
+          //生成輪播圖片
+          //圖片容器
+          const cimagecontainer = document.createElement("div");
+          cimagecontainer.className = "carousel-item";
+          if (index === 0) {
+            cimagecontainer.classList.add("active");
+          }
+          //圖片
+          const cimage = document.createElement("img");
+          cimage.src = `data:image/jpeg;base64,${Buffer.from(image.data).toString("base64")}`;
+          cimage.className = "d-block w-100 carousel";
+          cimage.alt = "...";
+          //圖片添加到容器
+          cimagecontainer.appendChild(cimage);
+          //圖片容器添加到父元素容器
+          imageContainer.appendChild(cimagecontainer);
+        }
+      });
     } catch (error) {
       console.error("Error fetching vendors data:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchVendorData();
     console.log(vendor)
   }, [params.vid]);
-  
+
   useEffect(() => {
+    if (!vendor) return;
     console.log("Vendor data updated:", vendor);
-  }, [vendor]);
+
+  }, [vendor, params.vid]);
+
+
   return (
     <>
       <NavBarShop />
@@ -104,8 +163,8 @@ const Vendor = () => {
             data-bs-ride="carousel"
             data-bs-interval="3000" //控制播放
           >
-            <div className="carousel-indicators">
-              <button
+            <div className="carousel-indicators" id="carousel-indicators">
+              {/* <button
                 type="button"
                 data-bs-target="#carouselExampleIndicators"
                 data-bs-slide-to="0"
@@ -124,11 +183,11 @@ const Vendor = () => {
                 data-bs-target="#carouselExampleIndicators"
                 data-bs-slide-to="2"
                 aria-label="Slide 3"
-              ></button>
+              ></button> */}
             </div>
             {/* 輪播圖片 */}
-            <div className="carousel-inner ">
-              <div className="carousel-item active">
+            <div className="carousel-inner " id="carousel-inner">
+              {/* <div className="carousel-item active">
                 <img
                   src="https://img.shoplineapp.com/media/image_clips/65d469e5d9c0de4d368479df/original.jpg?1708419556"
                   className="d-block w-100"
@@ -148,7 +207,7 @@ const Vendor = () => {
                   className="d-block w-100 "
                   alt="..."
                 />
-              </div>
+              </div> */}
             </div>
             {/*  */}
             <button
@@ -213,22 +272,11 @@ const Vendor = () => {
       <div className="mb-5">
         <div className="container">
           <div className="row row-gap-4">
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
+            <VendorCard params={params} />
           </div>
         </div>
       </div>
-      <PageBtn />
+      {/* <PageBtn /> */}
       <Footer />
       <ChatBtn />
     </>
