@@ -17,6 +17,9 @@ import SetStalls from "./setStalls/SetStalls";
 import Default from "./default/Default";
 import Chatroom from "./chatroom/Chatroom";
 import Step1 from "./checkOut/step/Step1";
+import Step2 from "./checkOut/step/Step2";
+import Step3 from "./checkOut/step/Step3";
+import Step4 from "./checkOut/step/Step4";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -45,12 +48,14 @@ const Layout = () => {
             <Route path="/vendor/:vid/*" element={<MemberIndexVendor />} />
             {/* ======= */}
             <Route path="/Step1" element={<Step1 />} />
+            <Route path="/Step2" element={<Step2 />} />
+            <Route path="/Step3" element={<Step3 />} />
+            <Route path="/Step4" element={<Step4 />} />
             <Route path="/ShopCart" element={<ShopCart />} />
             <Route path="/chatroom" element={<Chatroom />} />
             TODO: default route
             {/* >>>>>>> main */}
           </Routes>
-          {/* <ShopCart /> */}
           {/* <Step1 />
           <Normal />
           <AllVendors />
