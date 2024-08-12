@@ -121,6 +121,13 @@ $layouts: (
   justify-content: center;
 }
 
+.f-row-end {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -154,7 +161,6 @@ $layouts: (
   }
 }
 
-
 //forVendorDetail
 .fs-content {
   font-size: larger;
@@ -164,5 +170,5 @@ $layouts: (
   display: -webkit-box;
   line-clamp: 3;
   -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical; 
+  -webkit-box-orient: vertical;
 }

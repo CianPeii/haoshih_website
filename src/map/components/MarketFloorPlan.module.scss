@@ -40,6 +40,8 @@
     aspect-ratio: 1;
     border: 1px solid #000;
     margin: 0 1%;
+    text-align: center;
+    align-content: center;
   }
 
   .dot {
@@ -60,7 +62,7 @@
   }
 
   .dotBlue {
-    background-color: #a1cae3;
+    background-color: #b7efe0;
   }
 
   .dotRed {
@@ -95,6 +97,27 @@
   .stall:hover {
     background-color: #a1cae3;
     cursor: pointer;
+  }
+
+  .toiletOnClick {
+    background-color: #f7ea57;
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .benchOnClick {
+    background-color: #f8e7e5;
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .trashOnClick {
+    background-color: #b7efe0;
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .tagSpan {
+    border: none;
+    border-radius: 50%;
+    background-color: #b7efe0;
   }
 }
   
