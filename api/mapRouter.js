@@ -29,4 +29,17 @@ mapRouter.get('/getdata', function(request, response) {
         )
 }) 
 
+mapRouter.get('/seasondata/:season', function(request, response) {
+    const season = request.params.season;
+        conn.query(
+            "SELECT * FROM map WHERE season = ?",    
+            [season],  
+            function(err, result) {
+                if(err) {
+                    return response.status(500).send('Database query failed.');
+                }
+                response.json({season_data: result});
+            }
+        )
+}) 
 module.exports = mapRouter
