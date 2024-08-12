@@ -34,7 +34,7 @@ const VendorCard = ({params}) => {
 
         return (
           <div className="col-3" key={index}>
-            <div className={`card ${styles.cardBg}`}>
+            <div className={`card ${styles.cardBg} cursor-pointer`}>
               <img
                 className="rounded-3 overflow-hidden mx-3 mt-3"
                 src={imgSrc}
