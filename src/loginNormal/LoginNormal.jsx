@@ -13,7 +13,7 @@ const LoginNormal = () => {
     console.log("LoginNormal handleSubmit", formData);
     // 登入邏輯
     try {
-      const response = await axios.post('http://localhost:3000/', {
+      const response = await axios.post('http://localhost:3200/login', {
         account: formData.account,
         password: formData.password,
         userType: 'member'

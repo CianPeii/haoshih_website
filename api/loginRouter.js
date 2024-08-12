@@ -3,14 +3,15 @@ const session = require('express-session');
 const loginRouter = express.Router()
 const bcrypt = require('bcrypt');
 const path = require('path');
-// const secretGenerator = require('./public/secretGenerator');
+const secretGenerator = require('../public/secretGenerator.js');
 const multer = require('multer');
-// // const fs = require('fs');
+const fs = require('fs');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-
+const cors = require('cors');
 var config = require("./databaseConfig.js")
 var conn = config.connection
+
 // change: 
 // 1. body-parser -> express
 // 2. db -> conn
@@ -41,41 +42,62 @@ loginRouter.get('/test', function (req, res) {
 
 
 
-// // 設置 session
-// let secret;
-// const secretFile = 'session_secret.txt';
-// secret = secretGenerator.readSecretFromFile(secretFile);
-// if (!secret) {
-//     secret = secretGenerator.generateSecret();
-//     secretGenerator.saveSecretToFile(secret, secretFile);
-// }
+// 設置 session
+let secret;
+const secretFile = 'session_secret.txt';
+secret = secretGenerator.readSecretFromFile(secretFile);
+if (!secret) {
+        secret = secretGenerator.generateSecret();
+        secretGenerator.saveSecretToFile(secret, secretFile);
+    }
+    
+loginRouter.use(session({
+    secret: secret,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
 
-// loginRouter.use(session({
-//     secret: secret,
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { secure: false }
-// }));
+const uploadDir = path.join(__dirname, 'uploads');
+
+// 確保上傳目錄存在
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 
 // 設置 multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/')  // 確保此目錄存在
+        cb(null, uploadDir)  
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
     }
 });
 
-const upload = multer({
-    storage: storage, fileFilter: function (req, file, cb) {
-        if (file.mimetype === "image/png" || file.mimetype === "image/jpeg") {
-            cb(null, true);
-        } else {
-            cb(new Error("只接受 PNG 和 JPG 格式的圖片"), false);
-        }
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === "image/png" || file.mimetype === "image/jpeg") {
+        cb(null, true);
+    } else {
+        cb(new Error("只接受 PNG 和 JPG 格式的圖片"), false);
     }
+};
+
+const upload = multer({
+    storage: storage,
+    fileFilter: fileFilter
 })
+
+const uploadFields = upload.fields([
+    { name: 'logo_img', maxCount: 1 },
+    { name: 'brand_img01', maxCount: 1 },
+    { name: 'brand_img02', maxCount: 1 },
+    { name: 'brand_img03', maxCount: 1 },
+    { name: 'brand_img04', maxCount: 1 },
+    { name: 'brand_img05', maxCount: 1 }
+]);
+
 // // 首頁
 loginRouter.get('/home', (req, res) => {
     if (req.session.loggedin) {
@@ -102,39 +124,33 @@ loginRouter.get('/register', (req, res) => {
 });
 
 // 註冊
-loginRouter.post('/register/:userType', upload.fields([
-    { name: 'logo_img', maxCount: 1 },
-    { name: 'brand_img', maxCount: 5 }
-]), (req, res) => {
+loginRouter.post('/register/:userType', uploadFields
+, (req, res) => {
     // console.log('收到註冊請求:', req.body);
     const { userType } = req.params;
+    try {
+        const {
+            user_type, first_name, last_name, nickname, tw_id, account,
+            phone, email, address, password, doubleCheck,
+            brand_name, brand_type, content, fb, ig, web // 攤販特有
+        } = req.body;
 
-    const { user_type, account, email, password, confirm_password, first_name, last_name, phone, address, tw_id } = req.body;
+        // 詳細驗證
+        let errors = [];
 
-    const logo_img = req.files['logo_img'] ? req.files['logo_img'][0].path : null;
-    const brand_img01 = req.files['brand_img01'] ? req.files['brand_img01'][0].path : null;
-    const brand_img02 = req.files['brand_img02'] ? req.files['brand_img02'][0].path : null;
-    const brand_img03 = req.files['brand_img03'] ? req.files['brand_img03'][0].path : null;
-    const brand_img04 = req.files['brand_img04'] ? req.files['brand_img04'][0].path : null;
-    const brand_img05 = req.files['brand_img05'] ? req.files['brand_img05'][0].path : null;
+        // 通用驗證
+        if (!account || !/^[a-zA-Z0-9]{8,12}$/.test(account)) {
+            errors.push('帳號需要 8-12 個英數字');
+        }
 
+        if (!password || !/^[a-zA-Z0-9!@#$%^&*()]{8,12}$/.test(password)) {
+            errors.push('密碼需要 8-12 個字符');
+        }
 
-    // 詳細驗證
-    let errors = [];
+        if (password !== doubleCheck) {
+            errors.push('密碼和確認密碼不相同');
+        }
 
-    if (!account || !/^[a-zA-Z0-9]{8,12}$/.test(account)) {
-        errors.push('帳號至少需要 8 個字符');
-    }
-
-    if (!password || !/^[a-zA-Z0-9!@#$%^&*()]{8,12}$/.test(password)) {
-        errors.push('密碼需要 8~12 個字符');
-    }
-
-    if (password !== confirm_password) {
-        errors.push('密碼和確認密碼不相同');
-    }
-
-    if (userType === 'member') {
         if (!first_name || !/^[\u4e00-\u9fa5]+$/.test(first_name)) {
             errors.push('名字只能填寫中文');
         }
@@ -143,128 +159,141 @@ loginRouter.post('/register/:userType', upload.fields([
             errors.push('姓氏只能填寫中文');
         }
 
+        if (!nickname || !/^[\u4e00-\u9fa5]{1,8}$/.test(nickname)) {
+            errors.push('暱稱中文8個字內');
+        }
+
         if (!tw_id || !/^[A-Z](1|2)\d{8}$/.test(tw_id)) {
-            errors.push('請輸入台灣身分證字號');
+            errors.push('請輸入有效的台灣身分證字號');
         }
 
         if (!phone || !/^09\d{8}$/.test(phone)) {
-            errors.push('請輸入手機號碼');
+            errors.push('請輸入有效的手機號碼');
         }
 
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            errors.push('請輸入電子信箱地址');
+            errors.push('請輸入有效的電子信箱地址');
         }
 
         if (!address) {
             errors.push('地址為必填項目');
         }
-    } else if (userType === 'vendor') {
+
         // 攤販特定驗證
-        const { brand_name, brand_type } = req.body;
-        if (!brand_name) {
-            errors.push('品牌名稱為必填項目');
-        }
-
-    }
-
-    // 檢查所有欄位是否包含空格
-    if (/\s/.test(account + password + first_name + last_name + phone + tw_id)) {
-        errors.push('欄位不能包含空格');
-        console.log('欄位包含空格');
-    }
-
-    if (errors.length > 0) {
-        console.log('驗證錯誤:', errors);
-        return res.status(400).json({ success: false, error: errors });
-    }
-
-    console.log('所有驗證通過');
-
-    // 檢查帳號是否已存在
-    const checkAccountQuery = 'SELECT * FROM member WHERE account = ? OR email = ? UNION SELECT * FROM vendor WHERE account = ? OR email = ?';
-    conn.query(checkAccountQuery, [account, email, account, email], (err, results) => {
-        if (err) {
-            return res.status(500).json({ success: false, error: '數據庫錯誤，請稍後再試' });
-        }
-        if (results.length > 0) {
-            return res.status(400).json({ success: false, error: '此帳號已存在' });
-        }
-
-        // 密碼加密
-        bcrypt.hash(password, 10, (err, hash) => {
-            if (err) {
-                return res.render('register', { error: '密碼錯誤，請稍後再試' });
+        if (user_type === 'vendor') {
+            if (!brand_name) {
+                errors.push('品牌名稱為必填項目');
+            }
+            if (!brand_type) {
+                errors.push('品牌類型為必填項目');
+            }
+            if (errors.length > 0) {
+                console.log('驗證錯誤:', errors);
+                return res.status(400).json({ success: false, error: errors });
             }
 
+        }
 
-            if (userType === 'vendor') {
-                const { brand_name, brand_type, content, fb, ig, web } = req.body;
 
-                const logo_img = req.files['logo_img'] ? req.files['logo_img'][0].path : '';
-                const brand_imgs = req.files['brand_img'] ? req.files['brand_img'].map(file => file.path) : [];
-                // 確保有 5 個品牌圖片路徑，如果不足則填充空字串
-                while (brand_imgs.length < 5) {
-                    brand_imgs.push('');
+        console.log('所有驗證通過');
+
+        // 檢查帳號是否已存在
+        const checkAccountQuery = `
+        SELECT 'member' as type FROM member WHERE account = ? OR email = ?
+        UNION ALL
+        SELECT 'vendor' as type FROM vendor WHERE account = ? OR email = ?`;
+        conn.query(checkAccountQuery, [account, email, account, email], (err, results) => {
+            if (err) {
+                console.error('檢查帳號時發生錯誤:', err);
+                return res.status(500).json({ success: false, error: '數據庫錯誤，請稍後再試' });
+            }
+            if (results.length > 0) {
+                return res.status(400).json({ success: false, error: '此帳號或電子郵件已存在' });
+            }
+
+            // 密碼加密
+            bcrypt.hash(password, 10, (err, hash) => {
+                if (err) {
+                    console.error('密碼加密錯誤:', err);
+                    return res.status(500).json({ success: false, error: '密碼加密錯誤，請稍後再試' });
                 }
 
-                const insertVendorInfoQuery = `
-                INSERT INTO vendor_info 
-                (brand_name, brand_type, logo_img, brand_img01, brand_img02, brand_img03, brand_img04, brand_img05, content, fb, ig, web) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                `;
+                if (userType === 'vendor') {
+                    handleVendorRegistration(req, res, hash);
+                } else {
+                    handleMemberRegistration(req, res, hash);
+                }
+            });
+        });
+    } catch (error) {
+        console.error('註冊過程中發生錯誤:', error);
+        res.status(500).json({ success: false, error: '伺服器錯誤，請稍後再試' });
+    }
+});
 
-                conn.query(insertVendorInfoQuery, [
-                    brand_name, brand_type, logo_img, brand_imgs[0], brand_imgs[1], brand_imgs[2], brand_imgs[3], brand_imgs[4],
-                    content, fb || '', ig || '', web || ''
-                ], (err, infoResult) => {
-                    if (err) {
-                        console.error('攤販資訊註冊錯誤:', err);
-                        return res.status(500).json({ success: false, error: '攤販註冊錯誤，請稍後再試' });
-                    }
+// 處理攤販註冊
+function handleVendorRegistration(req, res, hash) {
+    const {
+        account, first_name, last_name, phone, address, email, tw_id,
+        brand_name, brand_type, content, fb, ig, web
+    } = req.body;
 
-                    const vinfoId = infoResult.insertId;
+    const logo_img = req.files['logo_img'] ? req.files['logo_img'][0].path : '';
+    const brand_imgs = ['brand_img01', 'brand_img02', 'brand_img03', 'brand_img04', 'brand_img05'].map(field => 
+        req.files[field] ? req.files[field][0].path : ''
+    );
 
-                    // 註冊攤主，包括 vinfoId
-                    const insertVendor = 'INSERT INTO vendor (account, password, first_name, last_name, phone, address, email, tw_id, vinfo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                    bcrypt.hash(password, 10, (err, hash) => {
-                        if (err) {
-                            return res.status(500).json({ success: false, error: '密碼加密錯誤，請稍後再試' });
-                        }
+    const insertVendorInfoQuery = `
+    INSERT INTO vendor_info 
+    (brand_name, brand_type, logo_img, brand_img01, brand_img02, brand_img03, brand_img04, brand_img05, content, fb, ig, web) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-                        conn.query(insertVendor, [account, hash, first_name, last_name, phone, address, email, tw_id, vinfoId], (err, vendorResult) => {
-                            if (err) {
-                                console.error('攤販註冊錯誤:', err);
-                                // 如果 vendor 插入失敗，我們應該刪除剛才插入的 vendor_info 記錄
-                                conn.query('DELETE FROM vendor_info WHERE vinfo = ?', [vinfoId], (deleteErr) => {
-                                    if (deleteErr) console.error('刪除失敗的 vendor_info 記錄時出錯:', deleteErr);
-                                });
-                                return res.status(500).json({ success: false, error: '攤販註冊錯誤，請稍後再試' });
-                            }
+    conn.query(insertVendorInfoQuery, [
+        brand_name, brand_type, logo_img, ...brand_imgs,
+        content || '', fb || '', ig || '', web || ''
+    ], (err, infoResult) => {
+        if (err) {
+            console.error('攤販資訊註冊錯誤:', err);
+            return res.status(500).json({ success: false, error: '攤販註冊錯誤，請稍後再試' });
+        }
 
-                            console.log('攤販註冊成功:', account);
-                            res.json({ success: true, message: '註冊成功' });
-                        });
-                    });
+        const vinfoId = infoResult.insertId;
+
+        const insertVendor = 'INSERT INTO vendor (account, password, first_name, last_name, phone, address, email, tw_id, vinfo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        conn.query(insertVendor, [account, hash, first_name, last_name, phone, address, email, tw_id, vinfoId], (err, vendorResult) => {
+            if (err) {
+                console.error('攤販註冊錯誤:', err);
+                conn.query('DELETE FROM vendor_info WHERE vinfo = ?', [vinfoId], (deleteErr) => {
+                    if (deleteErr) console.error('刪除失敗的 vendor_info 記錄時出錯:', deleteErr);
                 });
-            } else {
-                // 一般會員註冊
-                const insertMemberQuery = 'INSERT INTO member (account, password, first_name, last_name, phone, address, email, tw_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-                conn.query(insertMemberQuery, [account, hash, first_name, last_name, phone, address, email, tw_id], (err, result) => {
-                    if (err) {
-                        console.error('會員註冊錯誤:', err);
-                        return res.status(500).json({ success: false, error: '會員註冊錯誤，請稍後再試' });
-                    }
-                    console.log('會員註冊成功:', account);
-                    res.json({ success: true, message: '註冊成功' });
-                });
+                return res.status(500).json({ success: false, error: '攤販註冊錯誤，請稍後再試' });
             }
+
+            console.log('攤販註冊成功:', account);
+            res.json({ success: true, message: '註冊成功' });
         });
     });
-});
+}
+
+// 處理會員註冊
+function handleMemberRegistration(req, res, hash) {
+    const { account, first_name, last_name, nickname, phone, address, email, tw_id } = req.body;
+
+    const insertMemberQuery = 'INSERT INTO member (account, password, first_name, last_name, nickname, phone, address, email, tw_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    conn.query(insertMemberQuery, [account, hash, first_name, last_name, nickname || '', phone, address, email, tw_id], (err, result) => {
+        if (err) {
+            console.error('會員註冊錯誤:', err);
+            return res.status(500).json({ success: false, error: '會員註冊錯誤，請稍後再試' });
+        }
+        console.log('會員註冊成功:', account);
+        res.json({ success: true, message: '註冊成功' });
+    });
+}
 
 
 // 登入
-loginRouter.post('/login', (req, res) => {
+loginRouter.post('/', (req, res) => {
     const { account, password, userType } = req.body;
     console.log(`收到 ${userType} 類型的登入請求，帳號：`, account);
 
@@ -288,33 +317,24 @@ loginRouter.post('/login', (req, res) => {
                     req.session.userName = results[0].account;
                     req.session.userType = userType;
                     console.log(`${userType} 登入成功:`, results[0].account);
-
-                    const userInfo = {
+                    return res.json({
                         success: true,
                         userType: userType,
                         userName: results[0].account,
-                        uid: results[0].id, // 添加用戶ID
+                        uid: results[0].uid,
                         email: results[0].email,
                         firstName: results[0].first_name,
                         lastName: results[0].last_name,
-                        phone: results[0].phone
-                    };
-
-                    // 如果是攤販，添加額外的攤販信息
-                    if (userType === 'vendor') {
-                        userInfo.vendorName = results[0].brand_name;
-                        userInfo.vinfoId = results[0].vinfo;
-                    }
-
-                    return res.json(userInfo);
-
+                        phone: results[0].phone,
+                        vendorName: userType === 'vendor' ? results[0].brand_name : null,
+                        vid:userType === 'vendor' ? results[0].vid : null,
+                    });
                 } else {
                     console.log(`${userType} 密碼錯誤:`, account);
                     return res.status(401).json({ success: false, error: '帳號或密碼錯誤' });
                 }
             });
-        }
-        else {
+        } else {
             console.log('找不到帳號:', account);
             return res.status(401).json({ success: false, error: '帳號或密碼錯誤' });
         }

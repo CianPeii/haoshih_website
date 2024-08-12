@@ -11,15 +11,17 @@ const LoginVendor = () => {
 
   const handleVendorSubmit = async (formData) => {
     try {
-      console.log('準備發送的登入數據：', { ...formData, userType: 'vendor' });
-      const response = await axios.post('http://localhost:3200/', {
-        ...formData,
+      // console.log('準備發送的登入數據：', { ...formData, userType: 'vendor' });
+      const response = await axios.post('http://localhost:3200/login', {
+        account: formData.account,
+        password: formData.password,
         userType: 'vendor'
       });
       if (response.data.success) {
         console.log('攤販登入成功:', response.data);
-        // 
-        navigate(`/vendor/${response.data.vid}`);
+        const { vid, userType, userName } = response.data;
+        localStorage.setItem('user', JSON.stringify(response.data));
+        navigate(`/${userType}/${vid}`);
       } else {
         // 登入失敗
         setError(response.data.error || '登入失敗，請檢查您的帳號和密碼')

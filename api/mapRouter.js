@@ -15,37 +15,31 @@ var conn = config.connection
 // --------測試路由用----------
 
 //渲染市集地圖頁面，預設抓vinfo=1的資料
-mapRouter.get('/map', function(req, res) {
-    const vinfo = req.query.vinfo; 
+mapRouter.get('/getdata', function(request, response) {
+    const vinfo = request.query.vinfo; 
         conn.query(
             "SELECT * FROM vendor_info WHERE vinfo = ?",
             [vinfo || '1'],  
             function(err, result) {
                 if(err) {
-                    return res.status(500).send('Database query failed.');
+                    return response.status(500).send('Database query failed.');
                 }
-                res.render('map.ejs',{data_from_server: result});
-            }
-        )
-})
-//點擊更新資料
-mapRouter.get('/data', function(req, res) {
-    const vinfo = req.query.vinfo; 
-        conn.query(
-            "SELECT * FROM vendor_info WHERE vinfo = ?",
-            [vinfo],  
-            function(err, result) {
-                if(err) {
-                    return res.status(500).send('Database query failed.');
-                }
-                res.json({data_from_server: result});
+                response.json({data_from_server: result});
             }
         )
 }) 
-
-//我要擺攤
-mapRouter.get("/rentVendor", function (req, res) {
-    res.render('rentVendor.ejs', {});
-})
-
+//取得季度資料
+mapRouter.get('/seasondata/:season', function(request, response) {
+    const season = request.params.season;
+        conn.query(
+            "SELECT * FROM map WHERE season = ?",    
+            [season],  
+            function(err, result) {
+                if(err) {
+                    return response.status(500).send('Database query failed.');
+                }
+                response.json({season_data: result});
+            }
+        )
+}) 
 module.exports = mapRouter

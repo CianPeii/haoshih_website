@@ -14,9 +14,9 @@ const EditStallProfile = (props) => {
   // 重新導向功能
   const navigate = useNavigate();
   // refetch功能
-  const [{ data, loading, error }, refetch] = useAxios(
-    `http://localhost:3200/vendor/info/${props.stallProfile.vid}`
-  );
+  // const [{ data, loading, error }, refetch] = useAxios(
+  //   `http://localhost:3200/vendor/info/${props.stallProfile.vid}`
+  // );
   // 資料庫抓出來的資料
   const stallProfile = props.stallProfile;
   // 新填寫的表單資料
@@ -257,7 +257,9 @@ const EditStallProfile = (props) => {
 
         alert("資料更新成功");
         // 重新導回攤位資訊頁面 ==> 來不及抓到最新資料就渲染了 ==> 先不自動導回
-        // navigate(`/vendor/${stallProfile.vid}/vendorInfo`);
+        setTimeout(() => {
+          navigate(`/vendor/${stallProfile.vid}/vendorInfo`);
+        }, 500);
       } else {
         console.log("Unexpected response status:", response.status);
       }
@@ -468,7 +470,7 @@ const EditStallProfile = (props) => {
           <Col sm="8">
             <div className="d-flex justify-content-center">
               <Button
-                className="me-5"
+                className="me-5 bg-white"
                 variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
                 type="button"
                 onClick={() => {

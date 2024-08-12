@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Carousel } from "bootstrap";
 
 import NavBarShop from "../components/NavBarShop";
@@ -7,24 +7,100 @@ import VendorCard from "./components/VendorCardYellow";
 import PageBtn from "../components/PageBtn";
 import Footer from "../components/Footer";
 import ChatBtn from "../components/ChatBtn";
+import axios from 'axios';
+import { useNavigate, useParams } from "react-router-dom";
+import { Buffer } from "buffer";
 
-function VendorCarousel() {
-  useEffect(() => {
-    const carouselElement = document.querySelector(
-      "#carouselExampleIndicators"
-    );
-    const carousel = new Carousel(carouselElement, {
-      interval: 3000, // 自動播放間隔
-      wrap: true, // 是否循環播放
-    });
 
-    return () => {
-      carousel.dispose(); // 组件卸載清理
-    };
-  }, []);
-}
 
 const Vendor = () => {
+  const [vendor, setVendor] = useState({})
+  const params = useParams();
+  const [logoImgSrc, setLogoImgSrc] = useState('');
+  // console.log(params) // can get vid
+  const [editingShow, setEditingShow] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const fetchVendorData = async () => {
+    var url = "http://localhost:3200/shop/vendor/" + params.vid
+    try {
+      const response = await axios.get(url);
+      setVendor(response.data[0]);
+      // 檢查用：數據首次被獲取時顯示
+      // console.log("Vendors Data:", response.data[0]);
+
+      const base64String = `data:image/jpeg;base64,${Buffer.from(response.data[0].logo_img.data).toString('base64')}`;
+      setLogoImgSrc(base64String);
+
+      // 渲染輪播圖
+      //選擇按鈕、圖片容器元素
+      const indicatorsContainer = document.getElementById("carousel-indicators");
+      const imageContainer = document.getElementById("carousel-inner");
+      if (!indicatorsContainer) return;
+      //每次動態生成前先清空容器內容
+      indicatorsContainer.innerHTML = "";
+      imageContainer.innerHTML = "";
+      var imageList = [
+        response.data[0].brand_img01,
+        response.data[0].brand_img02,
+        response.data[0].brand_img03,
+        response.data[0].brand_img04,
+        response.data[0].brand_img05,
+      ];
+      //使用forEach迴圈生成輪播按鈕、圖片
+      imageList.forEach((image, index) => {
+        if (image !== null) {
+          //生成輪播按鈕
+          const cbutton = document.createElement("button");
+          cbutton.type = "button";
+          cbutton.dataset.bsTarget = "#carouselExampleIndicators";
+          cbutton.dataset.bsSlideTo = index;
+          cbutton.ariaLabel = `Slide ${index + 1}`;
+          if (index === 0) {
+            cbutton.classList.add("active");
+            cbutton.ariaCurrent = "true";
+          }
+          //按鈕添加到容器
+          indicatorsContainer.appendChild(cbutton);
+
+          //生成輪播圖片
+          //圖片容器
+          const cimagecontainer = document.createElement("div");
+          cimagecontainer.className = "carousel-item";
+          if (index === 0) {
+            cimagecontainer.classList.add("active");
+          }
+          //圖片
+          const cimage = document.createElement("img");
+          cimage.src = `data:image/jpeg;base64,${Buffer.from(image.data).toString("base64")}`;
+          cimage.className = "d-block w-100 carousel";
+          cimage.alt = "...";
+          //圖片添加到容器
+          cimagecontainer.appendChild(cimage);
+          //圖片容器添加到父元素容器
+          imageContainer.appendChild(cimagecontainer);
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching vendors data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchVendorData();
+    console.log(vendor)
+  }, [params.vid]);
+
+  useEffect(() => {
+    if (!vendor) return;
+    console.log("Vendor data updated:", vendor);
+
+  }, [vendor, params.vid]);
+
+
   return (
     <>
       <NavBarShop />
@@ -37,29 +113,28 @@ const Vendor = () => {
           <div className=" w-25">
             <img
               className="rounded-circle w-100 object-fit-contain "
-              src="https://rhinoshield.tw/cdn/shop/collections/dttofriends-logo.jpg?v=1701837247"
+              // src="https://rhinoshield.tw/cdn/shop/collections/dttofriends-logo.jpg?v=1701837247"
+              src={logoImgSrc}
             />
           </div>
           <div className=" w-75">
             {/*攤販資訊} */}
             <div className="d-flex align-items-center">
-              <h3>攤販名稱</h3>
+              <h3>{vendor.brand_name}</h3>
               <i className=" fs-5 bi bi-heart px-3 text-black-50"></i>
             </div>
             <p className={`${styles.headerText} overflow-hidden`}>
-              攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數攤販販介紹資料庫有限制字數
-              攤販販介紹資料庫有限制字數攤販販攤販販介紹資料庫有限制字數介紹資料庫有限制字數
-              攤販販介紹資料！！這最後！！
+              {vendor.content}
             </p>
             {/* 攤販link */}
             <div className=" d-flex justify-content-end fs-3 d-grid gap-3 ">
-              <a className="text-black-50" href="#">
+              <a className="text-black-50" href={vendor.fb} target="_blank">
                 <i className="bi bi-facebook"></i>
               </a>
-              <a className="text-black-50" href="#">
+              <a className="text-black-50" href={vendor.ig} target="_blank">
                 <i className="bi bi-instagram "></i>
               </a>
-              <a className="text-black-50" href="#">
+              <a className="text-black-50" href={vendor.web} target="_blank">
                 <i className="bi bi-globe"></i>
               </a>
             </div>
@@ -74,51 +149,12 @@ const Vendor = () => {
             data-bs-ride="carousel"
             data-bs-interval="3000" //控制播放
           >
-            <div className="carousel-indicators">
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to="0"
-                className="active"
-                aria-current="true"
-                aria-label="Slide 1"
-              ></button>
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to="1"
-                aria-label="Slide 2"
-              ></button>
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to="2"
-                aria-label="Slide 3"
-              ></button>
+            <div className="carousel-indicators" id="carousel-indicators">
+              
             </div>
             {/* 輪播圖片 */}
-            <div className="carousel-inner ">
-              <div className="carousel-item active">
-                <img
-                  src="https://img.shoplineapp.com/media/image_clips/65d469e5d9c0de4d368479df/original.jpg?1708419556"
-                  className="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div className="carousel-item">
-                <img
-                  src="https://img.shoplineapp.com/media/image_clips/65d4540c2d35da001728d489/original.jpg?1708413963"
-                  className="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div className="carousel-item">
-                <img
-                  src="https://shoplineimg.com/63ea08419b3adf00d260f645/66389b952935cb00147d9b78/1296x.webp?source_format=jpg"
-                  className="d-block w-100 "
-                  alt="..."
-                />
-              </div>
+            <div className="carousel-inner " id="carousel-inner">
+              
             </div>
             {/*  */}
             <button
@@ -183,22 +219,11 @@ const Vendor = () => {
       <div className="mb-5">
         <div className="container">
           <div className="row row-gap-4">
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
+            <VendorCard params={params} />
           </div>
         </div>
       </div>
-      <PageBtn />
+      {/* <PageBtn /> */}
       <Footer />
       <ChatBtn />
     </>

@@ -10,7 +10,7 @@ const NavBarShop = () => {
             <a href="/">
               <img
                 className={styles.logo}
-                src="images/img/logo.png"
+                src="/images/img/logo.png"
                 alt="logo"
               />
             </a>
@@ -36,18 +36,23 @@ const NavBarShop = () => {
               <div>
                 <a
                   className="position-relative text-decoration-none link-dark"
-                  href="#"
+                  href="/ShopCart"
                 >
                   <div className="bi bi-cart h2 "></div>
                   <span
                     className={`c-white rounded-circle  bg-gray c-black fw-bolder cursor-pointerer; ${styles.ShopQuantity}`}
                   >
-                    0
+                    1
                   </span>
                 </a>
               </div>
 
-              <div>煞氣a明</div>
+              <a
+                className="text-decoration-none c-black"
+                href="http://localhost:3000/vendor/1"
+              >
+                <div>會員專區</div>
+              </a>
               <div>登出</div>
             </div>
           </div>

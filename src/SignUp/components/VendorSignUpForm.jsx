@@ -181,7 +181,7 @@ const VendorRegistrationForm = () => {
                 }
             }
 
-            const response = await axios.post('http://localhost:3000/register/vendor', formDataToSend, {
+            const response = await axios.post('http://localhost:3200/login/register/vendor', formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

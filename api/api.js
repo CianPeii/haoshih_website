@@ -1,26 +1,67 @@
 var express = require("express");
+const http = require("http");
 var cors = require("cors");
+const { Server } = require("socket.io");
 var app = express();
-app.listen(3200);
+
+// TODO: remove -> 這樣會起一個獨立的 http server，socketio 沒辦法共用 server
+// app.listen(3200);
+
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true, 
+  methods: ['GET', 'POST']
+}));
 
-var cartRouter = require("./cartRouter.js")
-app.use("/carts", cartRouter)
+// create http server
+const server = http.createServer(app);
+// create socket server and set cors
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", // 允許來自 React 應用的連接
+    methods: ["GET", "POST"],
+  },
+});
 
-var loginRouter = require("./loginRouter.js")
-app.use("/login", loginRouter)
+// set Socket.IO
+io.on("connection", (socket) => {
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg);
+  });
 
-var mapRouter = require("./mapRouter.js")
-app.use("/map", mapRouter)
+  socket.on("disconnect", () => {
+    // TODO: disconnect
+  });
+});
 
-// var memberRouter = require("./memberRouter.js")
-// app.use("/member", memberRouter)
+// add io instance to app for using router
+app.set("io", io);
 
-// var shopRouter = require("./shopRouter.js")
-// app.use("/shop", shopRouter)
+var cartRouter = require("./cartRouter.js");
+app.use("/carts", cartRouter);
 
-// var vendorRouter = require("./vendorRouter.js")
-// app.use("/vendor", vendorRouter)
+var loginRouter = require("./loginRouter.js");
+app.use("/login", loginRouter);
+
+var mapRouter = require("./mapRouter.js");
+app.use("/map", mapRouter);
+
+var memberRouter = require("./memberRouter.js");
+app.use("/member", memberRouter);
+
+var shopRouter = require("./shopRouter.js");
+app.use("/shop", shopRouter);
+
+var vendorRouter = require("./vendorRouter.js");
+app.use("/vendor", vendorRouter);
+
+var chatroomRouter = require("./chatroomRouter.js");
+app.use("/chatroom", chatroomRouter);
+
+const PORT = 3200;
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
