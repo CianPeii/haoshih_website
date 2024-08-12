@@ -63,7 +63,7 @@ const AllVendors = () => {
       </div>
       {/* <PageBtn /> */}
       <Footer />
-      <ChatBtn />
+      {/* <ChatBtn /> */}
     </>
   );
 };
