@@ -12,7 +12,7 @@ import { Col, Form } from "react-bootstrap";
 
 const Map = () => {
   const [data_from_parent, setVinfo] = useState([]);
-
+  const [season_data, setSeason] = useState([]);
   const fetchData = async (vinfo) => {
     try {
       const response = await axios.get("http://localhost:3200/map/getdata", {
@@ -23,11 +23,26 @@ const Map = () => {
       console.log("Error fetching data", error);
     }
   };
+  
+  const fetchSeasonData = async (season) => {
+    try {
+      const response = await axios.get(`http://localhost:3200/map/seasondata/${season}`, {
+      });
+      setSeason(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log("Error fetching data", error);
+    }
+  };
   //確保dataFromParent資料已動態更新
   useEffect(() => {
     console.log(data_from_parent);
   }, [data_from_parent]);
-
+  
+  //確保seasondata資料已動態更新
+  useEffect(() => {
+    console.log(season_data);
+  }, [season_data])
   return (
     <>
       <NavBar />
@@ -42,9 +57,9 @@ const Map = () => {
                   <ThirdTitle title="市集平面圖" />
                 </Col>
                 <Col xs="auto">
-                  <Form.Select size="sm">
-                    <option value="1">2024/07-2024/09</option>
-                    <option value="2">2024/10-2024/12</option>
+                  <Form.Select size="sm" onChange={(event) => fetchSeasonData(event.target.value)}>
+                    <option value="3">2024/07-2024/09</option>
+                    <option value="4">2024/10-2024/12</option>
                   </Form.Select>
                 </Col>
               </div>
