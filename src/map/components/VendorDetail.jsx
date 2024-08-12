@@ -3,8 +3,11 @@ import axios from "axios";
 import { Buffer } from "buffer";
 import styles from "./VendorDetail.module.scss";
 
+
+
 const VendorDetail = ({data_from_parent}) => {
   var [data, setData] = useState();
+
   //useEffect用於畫面上有變化時動態更新資料
   useEffect(() => {
     const getData = async (vinfo) => {
@@ -20,18 +23,16 @@ const VendorDetail = ({data_from_parent}) => {
     getData();
   }, []);
 
-  //輪播容器
+  //輪播、標籤設置
   useEffect(() => {
     if (!data) return;
-    //選擇按鈕、圖片容器元素
+    //選擇按鈕、圖片容器
     const indicatorsContainer = document.getElementById("carousel-indicators");
     const imageContainer = document.getElementById("carousel-inner");
-   
     if (!indicatorsContainer) return;
     //每次動態生成前先清空容器內容
     indicatorsContainer.innerHTML = "";
     imageContainer.innerHTML = "";
-
     //圖片src清單
     var imageList = [
       data.data_from_server[0].brand_img01,
@@ -40,7 +41,6 @@ const VendorDetail = ({data_from_parent}) => {
       data.data_from_server[0].brand_img04,
       data.data_from_server[0].brand_img05,
     ];
-
     if (data_from_parent.length != 0) {
       imageList = [
         data_from_parent[0].brand_img01,
@@ -50,7 +50,6 @@ const VendorDetail = ({data_from_parent}) => {
         data_from_parent[0].brand_img05,
       ];
     }
-    
     //使用forEach迴圈生成輪播按鈕、圖片
     imageList.forEach((image, index) => {
       if (image !== null) {
@@ -85,36 +84,59 @@ const VendorDetail = ({data_from_parent}) => {
         imageContainer.appendChild(cimagecontainer);
       }
     });
+
+    //選擇標籤容器
+    const tagContainer = document.getElementById("tagContainer");
+    //每次動態生成前先清空元素內容
+    tagContainer.innerHTML = "";
+    //攤位標籤清單
+    var tagList = [
+      data.data_from_server[0].tag1,
+      data.data_from_server[0].tag2
+    ];
+    if(data_from_parent.length != 0) {
+      tagList = [
+        data_from_parent[0].tag1,
+        data_from_parent[0].tag2
+      ];
+    };
+
+    const colorPalette = [
+      "#00a381",  // 顏色 1
+      "#b7efe0",  // 顏色 2
+      "#f8e7e5",  // 顏色 3
+      "#9e9e9e",  // 顏色 4
+      "#f7ea57",  // 顏色 5
+      "#5a79ba",  // 顏色 6
+      "#a58f86",  // 顏色 7
+      "#b8cd1d",  // 顏色 8
+    ];
+    
+    function getRandomColorFromPalette() {
+      const randomIndex = Math.floor(Math.random() * colorPalette.length);
+      return colorPalette[randomIndex];
+    }
+
+    //使用forEach迴圈生成攤位標籤
+      tagList.forEach(tag => {
+        if(tag != null) {
+          const brand_tag = document.createElement('span');
+          const randomColor = getRandomColorFromPalette();
+          
+          console.log(brand_tag);
+          brand_tag.className = `${styles.tagSpan}`;
+          brand_tag.innerText = `#${tag}`;
+          brand_tag.style.setProperty('--tag-background-color', randomColor); 
+          brand_tag.style.backgroundColor = randomColor; 
+          tagContainer.appendChild(brand_tag);
+        };
+      });
   }, [data, data_from_parent]);
 
   if (!data) {
     return <p>Loading</p>;
   }
   
-   //攤位tag
-  var tagList = [
-    data.data_from_server[0].tag1,
-    data.data_from_server[0].tag2
-  ];
-  
-  if(data_from_parent.length != 0) {
-    tagList = [
-      data_from_parent[0].tag1,
-      data_from_parent[0].tag2
-    ];
-  };
-
-  const tagContainer = document.getElementById("tagContainer");
-  tagList.forEach(tag => {
-    if(tag != null) {
-      const brand_tag = document.createElement('span');
-      brand_tag.className = 'tagSpan';
-      brand_tag.innerText = tag;
-      tagContainer.appendChild(brand_tag);
-    };
-  });
-
-
   //攤位名稱
   var brandName = data.data_from_server[0].brand_name;
   if (data_from_parent.length != 0) {
@@ -134,24 +156,40 @@ const VendorDetail = ({data_from_parent}) => {
     'pet':'寵物',
     'others':'其他'
   }
- 
+  //攤位類別
   var brandType = data.data_from_server[0].brand_type;
   if (data_from_parent.length != 0) {
     brandType = data_from_parent[0].brand_type;
   }
-
+  //攤位vinfo
+  var brandVinfo = data.data_from_server[0].vinfo;
+  if (data_from_parent.length != 0) {
+    brandVinfo = data_from_parent[0].vinfo
+  }
+  //攤位社群連結FB、IG、網頁
+  var brandFB = data.data_from_server[0].fb;
+  if (data_from_parent.length != 0) {
+    brandFB = data_from_parent[0].fb
+  }
+  var brandIG = data.data_from_server[0].ig;
+  if (data_from_parent.length != 0) {
+    brandIG = data_from_parent[0].ig
+  }
+  var brandWeb = data.data_from_server[0].web;
+  if (data_from_parent.length != 0) {
+    brandWeb = data_from_parent[0].web
+  }
   return (
     <div id="shop">
       <div className="f-row-center" id="shopnav">
-        <h3 className="c-blueGray fw-bold flex-5" id="brand_name">
+        <h2 className="c-blueGray fw-bold flex-5 pad-5" id="brand_name">
           {brandName}
-        </h3>
-        <h5 className="c-gray fw-500 flex-1" id="brand_type">
+        </h2>
+        <h5 className="c-gray fw-600 flex-1 f-right" id="brand_type">
           {brandTypeList[`${brandType}`]}
         </h5>
       </div>
       <div className="f-row-end" id="tagContainer">
-        1
       </div>
       <br />
       {/* //輪播圖 */}
@@ -196,7 +234,22 @@ const VendorDetail = ({data_from_parent}) => {
       <div id="shop_detail">
         <p className="fs-content fw-530">{vendorContent}</p>
       </div>
-      <div id="shop_btn"></div>
+      <div id="shop_link">
+        <a className={styles.seeMore} href={`http://localhost:3000/shop/${brandVinfo}`}>
+          <p className="fw-500">查看攤位→</p>
+        </a>
+      </div>
+      <div className=" d-flex justify-content-end fs-3 d-grid gap-3 ">
+              <a className="text-black-50" href={brandFB} target="_blank">
+                <i className="bi bi-facebook"></i>
+              </a>
+              <a className="text-black-50" href={brandIG} target="_blank">
+                <i className="bi bi-instagram "></i>
+              </a>
+              <a className="text-black-50" href={brandWeb} target="_blank">
+                <i className="bi bi-globe"></i>
+              </a>
+      </div>
     </div>
   );
 };

@@ -343,7 +343,7 @@ const VendorForm = (props) => {
         <Col sm="8">
           <div className="d-flex justify-content-center">
             <Button
-              className="me-5"
+              className="me-5 bg-white"
               variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
               type="button"
               onClick={() => {
