@@ -29,25 +29,33 @@ function VendorCarousel() {
 }
 
 const Vendor = () => {
-  const [vendor, setVendor] = useState([])
+  const [vendor, setVendor] = useState({})
   const params = useParams();
-  console.log(params) // can get vid
+  const [logoImgSrc, setLogoImgSrc] = useState('');
+  // console.log(params) // can get vid
   const fetchVendorData = async () => {
     var url = "http://localhost:3200/shop/vendor/"+params.vid
     try {
       const response = await axios.get(url);
       setVendor(response.data[0]);
       // 檢查用：數據首次被獲取時顯示
-      console.log("Vendors Data:", response.data);
-      console.log(vendor)
+      // console.log("Vendors Data:", response.data[0]);
+      
+      const base64String = `data:image/jpeg;base64,${Buffer.from(response.data[0].logo_img.data).toString('base64')}`;
+      setLogoImgSrc(base64String);
     } catch (error) {
       console.error("Error fetching vendors data:", error);
     }
   };
+  
   useEffect(() => {
     fetchVendorData();
-  }, []);
+    console.log(vendor)
+  }, [params.vid]);
   
+  useEffect(() => {
+    console.log("Vendor data updated:", vendor);
+  }, [vendor]);
   return (
     <>
       <NavBarShop />
@@ -60,7 +68,8 @@ const Vendor = () => {
           <div className=" w-25">
             <img
               className="rounded-circle w-100 object-fit-contain "
-              src="https://rhinoshield.tw/cdn/shop/collections/dttofriends-logo.jpg?v=1701837247"
+              // src="https://rhinoshield.tw/cdn/shop/collections/dttofriends-logo.jpg?v=1701837247"
+              src={logoImgSrc}
             />
           </div>
           <div className=" w-75">

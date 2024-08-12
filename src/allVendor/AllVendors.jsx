@@ -28,6 +28,8 @@ const AllVendors = () => {
     }
     try {
       const response = await axios.get(url);
+      console.log(response.data);
+
       setVendors(response.data);
       // 檢查用：數據首次被獲取時顯示
       // console.log("Vendors Data:", response.data);

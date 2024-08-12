@@ -312,7 +312,7 @@ const VendorPaymentSettings = () => {
               <Col sm={{ span: 9, offset: 3 }}>
                 <div className="d-flex">
                   <Button
-                    variant="bg-white border border-2 c-gray rounded-pill px-4 py-2"
+                    variant="bg-white border border-2  rounded-pill px-4 py-2"
                     type="reset"
                   >
                     取消變更

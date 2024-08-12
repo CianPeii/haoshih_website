@@ -24,7 +24,11 @@ const MemberSideBar = () => {
             >
               <h4>按讚攤位</h4>
             </a>
-            <h4>聊天室</h4>
+            <h4>
+              <a className="text-decoration-none c-black" href="/chatroom">
+                聊天室
+              </a>
+            </h4>
           </div>
         </div>
         <h5>登出</h5>
