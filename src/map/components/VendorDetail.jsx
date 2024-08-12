@@ -3,8 +3,11 @@ import axios from "axios";
 import { Buffer } from "buffer";
 import styles from "./VendorDetail.module.scss";
 
+
+
 const VendorDetail = ({data_from_parent}) => {
   var [data, setData] = useState();
+
   //useEffect用於畫面上有變化時動態更新資料
   useEffect(() => {
     const getData = async (vinfo) => {
@@ -106,7 +109,7 @@ const VendorDetail = ({data_from_parent}) => {
       "#f7ea57",  // 顏色 5
       "#5a79ba",  // 顏色 6
       "#a58f86",  // 顏色 7
-      "#c3d825",  // 顏色 8
+      "#b8cd1d",  // 顏色 8
     ];
     
     function getRandomColorFromPalette() {
@@ -122,7 +125,7 @@ const VendorDetail = ({data_from_parent}) => {
           
           console.log(brand_tag);
           brand_tag.className = `${styles.tagSpan}`;
-          brand_tag.innerText = tag;
+          brand_tag.innerText = `#${tag}`;
           brand_tag.style.setProperty('--tag-background-color', randomColor); 
           brand_tag.style.backgroundColor = randomColor; 
           tagContainer.appendChild(brand_tag);
@@ -153,12 +156,29 @@ const VendorDetail = ({data_from_parent}) => {
     'pet':'寵物',
     'others':'其他'
   }
-
+  //攤位類別
   var brandType = data.data_from_server[0].brand_type;
   if (data_from_parent.length != 0) {
     brandType = data_from_parent[0].brand_type;
   }
-
+  //攤位vinfo
+  var brandVinfo = data.data_from_server[0].vinfo;
+  if (data_from_parent.length != 0) {
+    brandVinfo = data_from_parent[0].vinfo
+  }
+  //攤位社群連結FB、IG、網頁
+  var brandFB = data.data_from_server[0].fb;
+  if (data_from_parent.length != 0) {
+    brandFB = data_from_parent[0].fb
+  }
+  var brandIG = data.data_from_server[0].ig;
+  if (data_from_parent.length != 0) {
+    brandIG = data_from_parent[0].ig
+  }
+  var brandWeb = data.data_from_server[0].web;
+  if (data_from_parent.length != 0) {
+    brandWeb = data_from_parent[0].web
+  }
   return (
     <div id="shop">
       <div className="f-row-center" id="shopnav">
@@ -214,7 +234,22 @@ const VendorDetail = ({data_from_parent}) => {
       <div id="shop_detail">
         <p className="fs-content fw-530">{vendorContent}</p>
       </div>
-      <div id="shop_btn"></div>
+      <div id="shop_link">
+        <a className={styles.seeMore} href={`http://localhost:3000/shop/${brandVinfo}`}>
+          <p className="fw-500">查看攤位→</p>
+        </a>
+      </div>
+      <div className=" d-flex justify-content-end fs-3 d-grid gap-3 ">
+              <a className="text-black-50" href={brandFB} target="_blank">
+                <i className="bi bi-facebook"></i>
+              </a>
+              <a className="text-black-50" href={brandIG} target="_blank">
+                <i className="bi bi-instagram "></i>
+              </a>
+              <a className="text-black-50" href={brandWeb} target="_blank">
+                <i className="bi bi-globe"></i>
+              </a>
+      </div>
     </div>
   );
 };
