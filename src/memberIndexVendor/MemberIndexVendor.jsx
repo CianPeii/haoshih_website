@@ -10,7 +10,7 @@ import Footer from "../components/Footer";
 import VendorStallProfile from "./components/VendorStallProfile";
 import EditStallProfile from "./components/EditStallProfile";
 import VendorPaymentSettings from "./components/VendorPaymentSettings";
-// import VendorProducts from './components/VendorProducts';
+import VendorProducts from "./components/VendorProducts";
 // import VendorOrders from './components/VendorOrders';
 
 const MemberIndexVendor = () => {
@@ -99,7 +99,7 @@ const MemberIndexVendor = () => {
             {/* http://localhost:3000/vendor/1/payment */}
             <Route path="payment" element={<VendorPaymentSettings />} />
 
-            {/* <Route path="products" element={<VendorProducts />} /> */}
+            <Route path="products" element={<VendorProducts />} />
 
             {/* <Route path="orders" element={<VendorOrders />} /> */}
           </Routes>

@@ -8,6 +8,7 @@ import { turnPrice } from "../../utils/turnPrice";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Step1 = () => {
   const [productsData, setProductsData] = useState(null);
@@ -15,7 +16,14 @@ const Step1 = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+<<<<<<< HEAD
   const data = queryParams.get("data");
+=======
+  const data = queryParams.get('data');
+  // console.log(data);
+  const navigate = useNavigate();
+  
+>>>>>>> e7f4fd3bc431680b050f2c1649b6315178ce7642
 
   let products = [];
 
@@ -32,9 +40,13 @@ const Step1 = () => {
       try {
         const fetchedData = [];
         for (let i = 0; i < products.length; i++) {
+<<<<<<< HEAD
           const response = await axios.get(
             `http://localhost:5000/index/carts/products/${products[i].pid}/1`
           );
+=======
+          const response = await axios.get(`http://localhost:3200/carts/products/${products[i].pid}/1`);
+>>>>>>> e7f4fd3bc431680b050f2c1649b6315178ce7642
           fetchedData.push(response.data[0]); // 只取第一個元素
         }
         setProductsData(fetchedData);
@@ -61,6 +73,7 @@ const Step1 = () => {
     fetchProductsData();
   }, [data]);
 
+
   const groupedProducts = useProducts.reduce((acc, product) => {
     const { vinfo } = product;
     if (!acc[vinfo]) {
@@ -69,7 +82,13 @@ const Step1 = () => {
     acc[vinfo].push(product);
     return acc;
   }, {});
-  // console.log(groupedProducts);
+
+  const handleCheckout = () => {
+    localStorage.setItem('checkoutData', JSON.stringify(productsData));
+    navigate('/Step2');
+  };
+  
+  // console.log("Step1:",typeof productsData);
 
   return (
     <>
@@ -84,7 +103,11 @@ const Step1 = () => {
         <CheckOutCard groupedProducts={groupedProducts} />
         <div className="f-end-end mt-5 gap-3 ">
           <h4>總金額：NT{turnPrice(totalAmount)}</h4>
+<<<<<<< HEAD
           <Button className="bg-red c-white rounded-pill" variant=" px-4 py-2">
+=======
+          <Button variant="danger rounded-pill px-4 py-2" onClick={handleCheckout}>
+>>>>>>> e7f4fd3bc431680b050f2c1649b6315178ce7642
             前往結帳
           </Button>
         </div>
