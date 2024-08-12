@@ -38,13 +38,13 @@ const [selectedPayment, setSelectedPayment] = useState("");
     setCouponCode(e.target.value);
   };
 
-=======
+
   const checkoutData = JSON.parse(localStorage.getItem('checkoutData'));
   const contactInfo = JSON.parse(localStorage.getItem('contactInfo'));
   console.log(checkoutData);
   console.log(contactInfo);
   
->>>>>>> e7f4fd3bc431680b050f2c1649b6315178ce7642
+
   return (
     <>
       <NavBarShop />

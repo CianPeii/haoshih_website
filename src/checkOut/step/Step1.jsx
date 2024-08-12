@@ -16,10 +16,9 @@ const Step1 = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-<<<<<<< HEAD
-  const data = queryParams.get("data");
-=======
+
   const data = queryParams.get('data');
+  const navigate = useNavigate;
 
   let products = [];
 
