@@ -32,6 +32,7 @@ const Vendor = () => {
   const [vendor, setVendor] = useState({})
   const params = useParams();
   const [logoImgSrc, setLogoImgSrc] = useState('');
+  const cartVisible = 1;
   // console.log(params) // can get vid
   const fetchVendorData = async () => {
     var url = "http://localhost:3200/shop/vendor/"+params.vid
@@ -58,7 +59,7 @@ const Vendor = () => {
   }, [vendor]);
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible}/>
       {/* vendorHeader */}
       <div
         className={`p-4 d-flex justify-content-center align-items-center d-grid gap-4 ${styles.header}`}

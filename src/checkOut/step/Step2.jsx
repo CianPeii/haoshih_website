@@ -14,6 +14,7 @@ const Step2 = () => {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const navigate = useNavigate();
+  const cartVisible = false;
 
   const handleNextStep = () => {
     const checkoutData = JSON.parse(localStorage.getItem('checkoutData'));
@@ -37,7 +38,7 @@ const Step2 = () => {
 
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible}/>
       <div className="f-space-around">
         <Arrow color="green" title="確認商品" />
         <Arrow color="yellow" title="寄送資訊" />

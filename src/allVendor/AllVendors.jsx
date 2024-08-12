@@ -13,6 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 const AllVendors = () => {
   const [vendors, setVendors] = useState([]);
   const [type, setType] = useState("all");
+  const cartVisible = 1;
 
   let navigate = useNavigate();
 
@@ -43,7 +44,7 @@ const AllVendors = () => {
 
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible}/>
       <MainBg title="市集商城" page="allVendors" />
       <Sections
         type={type}
