@@ -29,7 +29,12 @@ const MemberVenderSideBar = () => {
               >
                 <h5>交易設定</h5>
               </a>
-              <h5>商品管理</h5>
+              <a
+                className="text-decoration-none c-black"
+                href="http://localhost:3000/vendor/1/products"
+              >
+                <h5>商品管理</h5>
+              </a>
             </div>
             <h4>訂單管理</h4>
             <h4>

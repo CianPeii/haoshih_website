@@ -241,7 +241,7 @@ memberRouter.get("/like/:uid", async (req, res) => {
     // console.log(`likes: ${JSON.stringify(likes)}`);
 
     if (likes.length === 0 || !likes[0].list) {
-      return res.josn({
+      return res.json({
         uid: req.params.uid,
         likes: likes,
       });

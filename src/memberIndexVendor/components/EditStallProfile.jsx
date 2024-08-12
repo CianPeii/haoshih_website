@@ -7,7 +7,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import useAxios from "axios-hooks";
+// import useAxios from "axios-hooks";
 import SubTitleYellow from "../../components/SubTitleYellow";
 
 const EditStallProfile = (props) => {
@@ -244,6 +244,8 @@ const EditStallProfile = (props) => {
         console.log("Stall Data updated successfully:", response.data.message);
         console.log("Updated fields:", response.data.updatedFields);
 
+        const updatedStallProfile = { ...stallProfile, ...updatedFields };
+
         // 更新表單狀態
         setStallData((prevState) => ({
           ...prevState,
@@ -252,7 +254,7 @@ const EditStallProfile = (props) => {
 
         // 更新 stallProfile
         if (typeof props.onProfileUpdate === "function") {
-          props.onProfileUpdate({ ...stallProfile, ...updatedFields });
+          props.onProfileUpdate(updatedStallProfile);
         }
 
         alert("資料更新成功");
@@ -454,7 +456,7 @@ const EditStallProfile = (props) => {
           <Form.Label column sm="2" className="text-end">
             品牌視覺照
           </Form.Label>
-          <Col sm="6">
+          <Col sm="10">
             <div className="d-flex flex-wrap gap-3">
               {renderImageUpload("brand_img01")}
               {renderImageUpload("brand_img02")}
