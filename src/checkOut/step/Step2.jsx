@@ -78,7 +78,7 @@ const Step2 = () => {
             <Col sm="8">
               <Form.Control
                 type="textarea"
-                placeholder="免郵遞區號"
+                placeholder="請填寫郵遞區號"
                 name="address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
