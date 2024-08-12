@@ -276,7 +276,7 @@ const Vendor = () => {
           </div>
         </div>
       </div>
-      <PageBtn />
+      {/* <PageBtn /> */}
       <Footer />
       <ChatBtn />
     </>
