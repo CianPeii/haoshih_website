@@ -6,8 +6,8 @@ import ShopCartForm from "./ShopCartForm";
 import Footer from "../components/Footer";
 import { turnPrice } from "../utils/turnPrice";
 import { useState, useEffect } from "react";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ShopCart = () => {
   const [productsData, setProductsData] = useState(null);
@@ -28,18 +28,17 @@ const ShopCart = () => {
     fetchProductsData();
   }, []);
 
-
   useEffect(() => {
     if (productsData) {
       const newTotal = productsData
-        .filter(product => selectedProducts.has(product.pid))
-        .reduce((total, product) => total + (product.amount * product.price), 0);
+        .filter((product) => selectedProducts.has(product.pid))
+        .reduce((total, product) => total + product.amount * product.price, 0);
       setTotalPrice(newTotal);
     }
   }, [productsData, selectedProducts]);
 
   const handleProductCheckChange = (pid, checked) => {
-    setSelectedProducts(prevSelected => {
+    setSelectedProducts((prevSelected) => {
       const newSelected = new Set(prevSelected);
       if (checked) {
         newSelected.add(pid);
@@ -51,16 +50,18 @@ const ShopCart = () => {
   };
 
   const handleProductAmountChange = (pid, newAmount) => {
-    setProductsData(prevData =>
-      prevData.map(product =>
+    setProductsData((prevData) =>
+      prevData.map((product) =>
         product.pid === pid ? { ...product, amount: newAmount } : product
       )
     );
   };
 
   const handleProductDelete = (pid) => {
-    setProductsData(prevData => prevData.filter(product => product.pid !== pid));
-    setSelectedProducts(prevSelected => {
+    setProductsData((prevData) =>
+      prevData.filter((product) => product.pid !== pid)
+    );
+    setSelectedProducts((prevSelected) => {
       const newSelected = new Set(prevSelected);
       newSelected.delete(pid);
       return newSelected;
@@ -69,11 +70,11 @@ const ShopCart = () => {
 
   const handleCheckout = () => {
     const checkoutData = productsData
-      .filter(product => selectedProducts.has(product.pid))
-      .map(product => ({ pid: product.pid, amount: product.amount }));
+      .filter((product) => selectedProducts.has(product.pid))
+      .map((product) => ({ pid: product.pid, amount: product.amount }));
 
     const queryString = new URLSearchParams({
-      data: JSON.stringify(checkoutData)
+      data: JSON.stringify(checkoutData),
     }).toString();
     // console.log(queryString);
     navigate(`/Step1?${queryString}`);
@@ -90,8 +91,8 @@ const ShopCart = () => {
           <SubTitleYellow title="購物車" />
           <div className="container">
             {productsData && (
-              <ShopCartForm 
-                productsData={productsData} 
+              <ShopCartForm
+                productsData={productsData}
                 selectedProducts={selectedProducts}
                 onProductCheckChange={handleProductCheckChange}
                 onProductAmountChange={handleProductAmountChange}
@@ -100,11 +101,13 @@ const ShopCart = () => {
             )}
             <div className="f-end-end mt-5 gap-3">
               <h4>總金額：NT${turnPrice(totalPrice)}</h4>
-              
-              <Button variant="danger rounded-pill px-4 py-2" onClick={handleCheckout}>
+
+              <Button
+                variant="danger rounded-pill px-4 py-2"
+                onClick={handleCheckout}
+              >
                 前往結帳
               </Button>
-              
             </div>
           </div>
         </div>

@@ -1,14 +1,29 @@
+import React, { useState, useEffect } from "react";
+import { Button, Col, Form, Modal, Container, Card } from "react-bootstrap";
 import NavBarShop from "../../components/NavBarShop";
 import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 
-import React from "react";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
+const Step4 = () => {
+  const [paymentStatus, setPaymentStatus] = useState("processing");
+  const [showErrorModal, setShowErrorModal] = useState(false);
 
-const Step3 = () => {
+  useEffect(() => {
+    // 模擬付款過程
+    const simulatePayment = setTimeout(() => {
+      const isSuccessful = Math.random() > 0.3; // 70% 成功率
+      setPaymentStatus(isSuccessful ? "success" : "failed");
+      if (!isSuccessful) {
+        setShowErrorModal(true);
+      }
+    }, 3000);
+
+    return () => clearTimeout(simulatePayment);
+  }, []);
+
+  const handleCloseErrorModal = () => setShowErrorModal(false);
+
   return (
     <>
       <NavBarShop />
@@ -18,29 +33,76 @@ const Step3 = () => {
         <Arrow color="green" title="付款方式" />
         <Arrow color="yellow" title="完成訂單" />
       </div>
-      <div className="container">
-        <Form className="border p-5 my-5 "></Form>
+      <Container>
+        <Card className="border p-5 my-5">
+          {paymentStatus === "processing" && (
+            <div className="text-center">
+              <h2>正在處理您的付款...</h2>
+              <p>請稍候，不要關閉或重新整理頁面。</p>
+            </div>
+          )}
+          {paymentStatus === "success" && (
+            <div className="text-center">
+              <h2 className="text-success">付款成功！</h2>
+              <p>感謝您的購買。您的訂單已經成功完成。</p>
+              <p>
+                訂單編號：ORD-
+                {Math.random().toString(36).substr(2, 9).toUpperCase()}
+              </p>
+              <p>我們將盡快處理您的訂單並安排發貨。</p>
+            </div>
+          )}
+          {paymentStatus === "failed" && (
+            <div className="text-center">
+              <h2 className="text-danger">付款失敗</h2>
+              <p>很抱歉，您的付款未能成功處理。</p>
+              <p>請檢查您的付款資訊並重試，或選擇其他付款方式。</p>
+            </div>
+          )}
+        </Card>
 
         <Col className="f-end">
+          {paymentStatus === "failed" && (
+            <Button
+              className="bg-white border border-red me-3"
+              variant="border border-2 rounded-pill px-4"
+              type="button"
+              onClick={() => window.history.back()}
+            >
+              回上一步
+            </Button>
+          )}
           <Button
-            className="bg-white border border-red me-3"
+            className="bg-red"
             variant="border border-2 rounded-pill px-4"
             type="button"
           >
-            回上一步
-          </Button>
-          <Button
-            className="bg-red c-white"
-            variant="border border-2 rounded-pill px-4"
-            type="button"
-          >
-            回到首頁
+            <a href="/" className="c-white text-decoration-none">
+              回到首頁
+            </a>
           </Button>
         </Col>
-      </div>
-      <Footer />;
+      </Container>
+      <Footer />
       <ChatBtn />
+
+      <Modal show={showErrorModal} onHide={handleCloseErrorModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>付款失敗</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          很抱歉，您的付款未能成功處理。請檢查您的付款資訊並重試，或選擇其他付款方式。
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseErrorModal}>
+            關閉
+          </Button>
+          <Button variant="primary" onClick={() => window.history.back()}>
+            返回付款頁面
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
-export default Step3;
+export default Step4;

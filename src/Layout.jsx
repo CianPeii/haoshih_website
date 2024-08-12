@@ -51,10 +51,11 @@ const Layout = () => {
             {/* >>>>>>> main */}
           </Routes>
           {/* <ShopCart /> */}
-          {/* <Step1 />
-          <Normal />
-          <AllVendors />
-          <Vendor /> */}
+          {/* <Step1 /> */}
+
+          {/* <Normal /> */}
+          {/* <AllVendors /> */}
+          {/* <Vendor /> */}
           {/* <Chatroom /> */}
         </div>
       </div>
