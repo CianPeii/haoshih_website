@@ -41,10 +41,10 @@ const VendorCard = ({params}) => {
                 alt=""
               />
               <div className="card-body">
-                <h5 className={`card-title ${styles.cardTitle} text-center`}>
+                <h5 className={`fw-bold card-title ${styles.cardTitle} text-center`}>
                   {product.name}
                 </h5>
-                <p className="card-text text-center text-red">NT{turnPrice(product.price)}</p>
+                <p className="fw-bold card-text text-center c-red">NT{turnPrice(product.price)}</p>
               </div>
             </div>
           </div>
