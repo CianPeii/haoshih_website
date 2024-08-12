@@ -11,28 +11,14 @@ import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import { Buffer } from "buffer";
 
-function VendorCarousel() {
-  useEffect(() => {
 
-    const carouselElement = document.querySelector(
-      "#carouselExampleIndicators"
-    );
-    const carousel = new Carousel(carouselElement, {
-      interval: 3000, // 自動播放間隔
-      wrap: true, // 是否循環播放
-    });
-
-    return () => {
-      carousel.dispose(); // 组件卸載清理
-    };
-  }, []);
-}
 
 const Vendor = () => {
   const [vendor, setVendor] = useState({})
   const params = useParams();
   const [logoImgSrc, setLogoImgSrc] = useState('');
   // console.log(params) // can get vid
+  const [editingShow, setEditingShow] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
