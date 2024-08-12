@@ -19,7 +19,25 @@ const MarketFloorPlan = ({fetchData}) => {
   };
   const position = ["A", "B", "C", "D"];
   const vendor_unmber = ["01", "02", "03", "04", "05"];
-  
+
+  const find_toilet = () => {
+    var toilets = document.querySelectorAll('.toilet');
+    toilets.forEach((toilet) => {
+      toilet.classList.toggle(`${styles.toiletOnClick}`);
+    })
+  }
+  const find_bench = () => {
+    var toilets = document.querySelectorAll('.bench');
+    toilets.forEach((bench) => {
+      bench.classList.toggle(`${styles.benchOnClick}`);
+    })
+  }
+  const find_trash = () => {
+    var toilets = document.querySelectorAll('.trash');
+    toilets.forEach((trash) => {
+      trash.classList.toggle(`${styles.trashOnClick}`);
+    })
+  }
   return (
     <Container fluid className={styles.containerSize}>
       <Row className={styles.floorPlanRow}>
@@ -45,15 +63,15 @@ const MarketFloorPlan = ({fetchData}) => {
             <div>
               <div>
                 <span
-                  className={`${styles.dot2} ${styles.dotYellow}`}
+                  className={`${styles.dot2} ${styles.dotYellow} toilet`}
                   style={{ left: "5%", top: "10%" }}
                 />
                 <span
-                  className={`${styles.dot2} ${styles.dotBlue}`}
+                  className={`${styles.dot2} ${styles.dotBlue} trash`}
                   style={{ left: "5%", bottom: "10%" }}
                 />
                 <span
-                  className={`${styles.dot2} ${styles.dotYellow}`}
+                  className={`${styles.dot2} ${styles.dotYellow} toilet`}
                   style={{ right: "5%", bottom: "10%" }}
                 />
               </div>
@@ -62,14 +80,14 @@ const MarketFloorPlan = ({fetchData}) => {
             {[...Array(3)].map((_, index) => (
               <span
                 key={index}
-                className={`${styles.dot} ${styles.dotRed}`}
+                className={`${styles.dot} ${styles.dotRed} bench`}
                 style={{ left: `${30 + index * 20}%`, top: "10%" }}
               />
             ))}
             {[...Array(3)].map((_, index) => (
               <span
                 key={index}
-                className={`${styles.dot2} ${styles.dotRed}`}
+                className={`${styles.dot2} ${styles.dotRed} bench`}
                 style={{ left: `${30 + index * 20}%`, bottom: "10%" }}
               />
             ))}
@@ -85,13 +103,20 @@ const MarketFloorPlan = ({fetchData}) => {
           <Button
             size="sm"
             className={`bg-secondary border-0 ${styles.iconButton}`}
+            onClick={find_toilet}
           >
             <img src="images/icon/Toilet.png" alt="" />
           </Button>
-          <Button size="sm" className={`bg-pink border-0 ${styles.iconButton}`}>
+          <Button 
+            size="sm" 
+            className={`bg-pink border-0 ${styles.iconButton}`}
+            onClick={find_bench}>
             <img src="images/icon/Bench.png" alt="" />
           </Button>
-          <Button size="sm" className={`bg-lake border-0 ${styles.iconButton}`}>
+          <Button 
+            size="sm" 
+              className={`bg-lake border-0 ${styles.iconButton}`}
+              onClick={find_trash}>
             <img src="images/icon/Trash.png" alt="" />
           </Button>
         </Col>
@@ -101,6 +126,3 @@ const MarketFloorPlan = ({fetchData}) => {
 };
 
 export default MarketFloorPlan;
-
-
-//useEffect()
