@@ -3,15 +3,17 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import { useNavigate } from 'react-router-dom';
 
-function LoginForm({ onSubmit, buttonText = "登入" }) {
-  console.log('LoginForm 接收到的 props', { onSubmit, buttonText });
+function LoginForm({ onSubmit, buttonText = "登入" ,userType}) {
+  console.log('LoginForm 接收到的', { onSubmit, buttonText });
 
   const [validated, setValidated] = useState(false);
   const [formData, setFormData] = useState({
     account: '',
     password: ''
   });
+  const navigate = useNavigate();
 
   const doSubmit = (event) => {
     event.preventDefault();
@@ -36,6 +38,16 @@ function LoginForm({ onSubmit, buttonText = "登入" }) {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const doRegister = () => {
+    const path = userType === 'vendor' ? '/register/vendor' : '/register/member';
+    navigate(path);
+  };
+
+  const doGoogleLogin = (e) => {
+    e.preventDefault();
+    window.location.href = `http://localhost:3200/auth/google?userType=${userType}`;
   };
 
   return (
@@ -77,7 +89,7 @@ function LoginForm({ onSubmit, buttonText = "登入" }) {
           <div className="f-start border-top p-3 mt-4 gap-3 w-100">
             <div className="fs-6"> 其他登入</div>
             <div className="f-center gap-4 w-25">
-              <img className="w-25" src="images/icon/google.png" alt="google" />
+              <img className="w-25" src="images/icon/google.png" alt="google" onClick={doGoogleLogin}/>
               <img
                 className="w-25"
                 src="images/icon/facebook.png"
@@ -98,6 +110,7 @@ function LoginForm({ onSubmit, buttonText = "登入" }) {
           className="bg-white"
           variant="c-gray border border-2 rounded-pill px-4 py-2 w-25"
           type="button"
+          onClick={doRegister}
         >
           註冊
         </Button>

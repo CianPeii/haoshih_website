@@ -1,31 +1,62 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate,useLocation } from 'react-router-dom';
+import LoginNormal from '../loginNormal/LoginNormal';
+import LoginVendor from '../loginVendor/LoginVendor';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import LoginForm from '../components/LoginForm';
 
 const Login = () => {
-  console.log('Login 組件開始渲染');
-
   const [error, setError] = useState('');
+  const [loginType, setLoginType] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    console.log('Login 組件掛載完成');
-    return () => {
-      console.log('Login 組件卸載');
-    };
-  }, []);
+    const searchParams = new URLSearchParams(location.search);
+    const googleLoginData = searchParams.get('googleLoginData');
+    const errorMessage = searchParams.get('error');
+
+    if (googleLoginData) {
+      try {
+        const userData = JSON.parse(decodeURIComponent(googleLoginData));
+        handleLoginSuccess(userData);
+      } catch (error) {
+        console.error('解析 Google 登入數據時出錯:', error);
+        setError('登入過程中發生錯誤');
+      }
+    } else if (errorMessage) {
+      setError(decodeURIComponent(errorMessage));
+    }
+  }, [location]);
+
+
+  const doMemberClick = () => {
+    setLoginType('member');
+  };
+
+  const doVendorClick = () => {
+    setLoginType('vendor');
+  };
+
+  const renderLoginForm = () => {
+    if (loginType === 'member') {
+      return <LoginNormal />;
+    } else if (loginType === 'vendor') {
+      return <LoginVendor />;
+    }
+    return null;
+  };
 
   const doLogin = async (formData, userType) => {
     try {
-      const response = await axios.post('http://localhost:3200/login', {
+      const response = await axios.post('http://localhost:3200/', {
         account: formData.account,
         password: formData.password,
         userType: userType
       });
       if (response.data.success) {
         console.log('登入成功', response.data);
-        const uid = response.data.uid;
+        const { uid, userType, userName } = response.data;
+        localStorage.setItem('user', JSON.stringify(response.data));
         navigate(`/${userType}/${uid}`);
       } else {
         setError(response.data.error || '登入失敗');
@@ -46,29 +77,43 @@ const Login = () => {
     await doLogin(formData, 'vendor');
   };
 
-  console.log('Login組件渲染', { doMemberSubmit, doVendorSubmit });
+  // console.log('Login渲染');
 
+  const handleLoginSuccess = (userData) => {
+    // 儲存用戶信息到 localStorage 或 state management 系統
+    localStorage.setItem('user', JSON.stringify(userData));
+    
+    // 根據用戶類型導到相應頁面
+    if (userData.userType === 'member') {
+      navigate(`/member/${userData.uid}`);
+    } else if (userData.userType === 'vendor') {
+      navigate(`/vendor/${userData.uid}`);
+    }
+  };
   return (
-    <div className="p-5 ">
-      <div className=" d-flex rounded-5 overflow-hidden font-special">
-        <div className="bg-primary w-50 f-col-center p-5 ">
-          <img className="w-50 f-center" src="images/img/normal.png" alt="" />
-          <LoginForm
-            onSubmit={doMemberSubmit}
-            buttonText="我是顧客"
-          />
-           {console.log('顧客 LoginForm 渲染', { onSubmit: doMemberSubmit })}
-        </div>
-        <div className="bg-lake w-50 f-col-center p-5 ">
-          <img className="w-50 f-center" src="images/img/vendor.png" alt="" />
-          <LoginForm
-            onSubmit={doVendorSubmit}
-            buttonText="我是攤主"
-          />
+    <>
+      <div className="p-5 ">
+        <div className=" d-flex rounded-5 overflow-hidden font-special">
+          {/* 一般用戶 */}
+          <div className="bg-primary w-50 f-col-center p-5 ">
+            <img className="w-50 f-center" src="images/img/normal.png" alt="" />
+            <button className="w-50 fs-medium border border-4 bg-white   hover-bg-pink px-1 py-2 m-5 rounded-pill " onClick={doMemberClick}>
+              我是顧客
+            </button>
+          </div>
+
+          {/* 攤主 */}
+
+          <div className="bg-lake w-50 f-col-center p-5 ">
+            <img className="w-50 f-center" src="images/img/vendor.png" alt="" />
+            <button className="w-50 fs-medium border border-3 bg-white hover-bg-secondary px-1 py-2 m-5 rounded-pill" onClick={doVendorClick}>
+              我是攤主
+            </button>
+          </div>
         </div>
       </div>
-      {error && <div className="text-danger mt-3">{error}</div>}
-    </div>
+      {renderLoginForm()}
+    </>
   );
 };
 export default Login;

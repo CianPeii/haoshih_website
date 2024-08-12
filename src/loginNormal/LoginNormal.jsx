@@ -1,6 +1,6 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import LoginForm from "../components/LoginForm";
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -16,20 +16,20 @@ const LoginNormal = () => {
       const response = await axios.post('http://localhost:3200/', {
         account: formData.account,
         password: formData.password,
-        userType: 'member'  
+        userType: 'member'
       });
-      
+
       if (response.data.success) {
         console.log('登入成功', response.data);
-        const uid = response.data.uid;
-        // 成功登錄後導到會員頁面
-        navigate(`/member/${uid}`);
+        const { uid, userType, userName } = response.data;
+        localStorage.setItem('user', JSON.stringify(response.data));
+        navigate(`/${userType}/${uid}`);
       } else {
         setError(response.data.error || '登入失敗');
       }
     } catch (error) {
       console.error('登入失敗:', error);
-      setError('登入過程發生錯誤，請稍後再試');
+      setError('帳號或密碼錯誤，請重新輸入');
     }
   };
   return (
@@ -56,7 +56,8 @@ const LoginNormal = () => {
           {/* 登入 */}
 
           <div className="w-50 f-col-center p-5 bg-glass">
-            <LoginForm onSubmit={handleSubmit} buttonText="登入" />
+            {error && <div className="error-message">{error}</div>}
+            <LoginForm onSubmit={handleSubmit} buttonText="登入" userType="member" />
           </div>
         </div>
       </div>

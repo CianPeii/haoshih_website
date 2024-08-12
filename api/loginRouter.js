@@ -6,8 +6,8 @@ const path = require('path');
 // const secretGenerator = require('./public/secretGenerator');
 const multer = require('multer');
 // // const fs = require('fs');
-// const passport = require('passport');
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 var config = require("./databaseConfig.js")
 var conn = config.connection
@@ -67,7 +67,22 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+    storage: storage, fileFilter: function (req, file, cb) {
+        if (file.mimetype === "image/png" || file.mimetype === "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(new Error("只接受 PNG 和 JPG 格式的圖片"), false);
+        }
+    }
+}).fields([
+    { name: 'logo_img', maxCount: 1 },
+    { name: 'brand_img01', maxCount: 1 },
+    { name: 'brand_img02', maxCount: 1 },
+    { name: 'brand_img03', maxCount: 1 },
+    { name: 'brand_img04', maxCount: 1 },
+    { name: 'brand_img05', maxCount: 1 }
+]); 
 // // 首頁
 loginRouter.get('/home', (req, res) => {
     if (req.session.loggedin) {
@@ -94,11 +109,12 @@ loginRouter.get('/register', (req, res) => {
 });
 
 // 註冊
-loginRouter.post('/register', upload.fields([
+loginRouter.post('/register/:userType', upload.fields([
     { name: 'logo_img', maxCount: 1 },
     { name: 'brand_img', maxCount: 5 }
 ]), (req, res) => {
     // console.log('收到註冊請求:', req.body);
+    const { userType } = req.params;
 
     const { user_type, account, email, password, confirm_password, first_name, last_name, phone, address, tw_id } = req.body;
 
@@ -125,7 +141,7 @@ loginRouter.post('/register', upload.fields([
         errors.push('密碼和確認密碼不相同');
     }
 
-    if (user_type === 'member') {
+    if (userType === 'member') {
         if (!first_name || !/^[\u4e00-\u9fa5]+$/.test(first_name)) {
             errors.push('名字只能填寫中文');
         }
@@ -149,7 +165,7 @@ loginRouter.post('/register', upload.fields([
         if (!address) {
             errors.push('地址為必填項目');
         }
-    } else if (user_type === 'vendor') {
+    } else if (userType === 'vendor') {
         // 攤販特定驗證
         const { brand_name, brand_type } = req.body;
         if (!brand_name) {
@@ -188,7 +204,7 @@ loginRouter.post('/register', upload.fields([
             }
 
 
-            if (user_type === 'vendor') {
+            if (userType === 'vendor') {
                 const { brand_name, brand_type, content, fb, ig, web } = req.body;
 
                 const logo_img = req.files['logo_img'] ? req.files['logo_img'][0].path : '';
@@ -279,14 +295,25 @@ loginRouter.post('/login', (req, res) => {
                     req.session.userName = results[0].account;
                     req.session.userType = userType;
                     console.log(`${userType} 登入成功:`, results[0].account);
-                    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
-                        return res.json({
-                            success: true,
-                            userType: userType,
-                            userName: results[0].account,
-                            vendorName: userType === 'vendor' ? req.session.vendorName : null
-                        });
-                    } 
+
+                    const userInfo = {
+                        success: true,
+                        userType: userType,
+                        userName: results[0].account,
+                        uid: results[0].id, // 添加用戶ID
+                        email: results[0].email,
+                        firstName: results[0].first_name,
+                        lastName: results[0].last_name,
+                        phone: results[0].phone
+                    };
+
+                    // 如果是攤販，添加額外的攤販信息
+                    if (userType === 'vendor') {
+                        userInfo.vendorName = results[0].brand_name;
+                        userInfo.vinfoId = results[0].vinfo;
+                    }
+
+                    return res.json(userInfo);
 
                 } else {
                     console.log(`${userType} 密碼錯誤:`, account);
@@ -326,6 +353,149 @@ loginRouter.use((err, req, res, next) => {
     }
     next();
 });
+
+// 設置 Passport(google)
+passport.use(new GoogleStrategy({
+   
+    
+    prompt: 'select_account',
+    passReqToCallback: true
+},
+function (req, accessToken, refreshToken, profile, cb) {
+    // 在這裡處理用戶登入邏輯
+    // 您需要檢查用戶是否已存在，如果不存在則創建新用戶
+    const { id, displayName, emails } = profile;
+    const email = emails && emails.length > 0 ? emails[0].value : null;
+    if (!email) {
+        return cb(new Error('google信箱失敗'));
+    }
+
+    const userType = req.session.googleAuthUserType || 'member';  // 默認為會員
+    const table = userType === 'member' ? 'member' : 'vendor';
+
+    // 使用 email 查找或建立用戶
+    conn.query(`SELECT * FROM ${table} WHERE email = ?`, [email], (err, results) => {
+        if (err) return cb(err);
+
+        if (results.length > 0) {
+            const existingUser = results[0];
+            if (existingUser.account.startsWith(userType)) {
+                // 帳號通過，返回
+                return cb(null, { ...existingUser, userType });
+            } else {
+                // 帳戶已申請為其他用戶，送出錯誤訊息
+                return cb(null, { error: 'account_exists', message: '此帳號已申請為其他使用身分' });
+            }
+        } else {
+            // 創建新用戶
+            const newUser = {
+                account: email,
+                email: email,
+                first_name: profile.name && profile.name.givenName ? profile.name.givenName : '',
+                last_name: profile.name && profile.name.familyName ? profile.name.familyName : '',
+                // 其他欄位設置為空字串
+            };
+
+            conn.query(`INSERT INTO ${userType === 'member' ? 'member' : 'vendor'} SET ?`, newUser, (err, result) => {
+                if (err) {
+                    if (err.code === 'ER_DUP_ENTRY') {
+                        return cb(null, { error: 'account_exists', message: '此帳號已申請為其他使用身分' });
+                    }
+                    return cb(err);
+                }
+                newUser.id = result.insertId;
+                newUser.userType = userType;
+                return cb(null, newUser);
+            });
+        }
+    });
+}));
+
+// 初始化 Passport
+loginRouter.use(passport.initialize());
+loginRouter.use(passport.session());
+
+// Google 登入路由
+loginRouter.get('/auth/google', (req, res, next) => {
+    req.session.googleAuthUserType = req.query.userType;
+    next();
+},
+passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+loginRouter.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }),
+    function (req, res) {
+        console.log('Google 回調觸發，用戶數據:', req.user)
+        if (!req.user) {
+            return res.redirect('http://localhost:3000/login?error=登入失敗');
+        }
+
+        if (req.user.error === 'account_exists') {
+            // 將錯誤消息儲存在 session 中
+            req.session.authError = req.user.message;
+            return res.redirect('http://localhost:3000/login?error=' + encodeURIComponent(req.user.message));
+        }
+
+        const userType = req.session.userType || 'member';  // 默認為會員
+         const userData = {
+            success: true,
+            userType: userType,
+            userName: req.user.account,
+            uid: req.user.id,
+            email: req.user.email,
+            firstName: req.user.first_name,
+            lastName: req.user.last_name
+        };
+
+
+        if (!email) {
+            return res.redirect('/');
+        }
+        // 根據用戶類型查詢相應的表
+        const table = userType === 'member' ? 'member' : 'vendor';
+
+        conn.query(`SELECT * FROM ${table} WHERE email = ?`, [email], (err, results) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.redirect('/');
+            }
+
+            if (results.length > 0) {
+                // 用戶存在，直接登入
+                req.session.loggedin = true;
+                req.session.userName = results[0].account;
+                req.session.userType = userType;
+                res.redirect('/');
+            } else {
+                // 用戶不存在，創建新用戶
+                const newUser = {
+                    account: email,
+                    email: email,
+                    first_name: req.user.name && req.user.name.givenName ? req.user.name.givenName : '',
+                    last_name: req.user.name && req.user.name.familyName ? req.user.name.familyName : '',
+                    // 其他欄位設置為默認值
+                };
+
+                conn.query(`INSERT INTO ${table} SET ?`, newUser, (err, result) => {
+                    if (err) {
+                        console.error('Error creating new user:', err);
+                        return res.redirect('/');
+                    }
+
+                    req.session.loggedin = true;
+                    req.session.userName = newUser.account;
+                    req.session.userType = userType;
+                    res.redirect('/');
+                });
+            }
+        });
+
+        // 將用戶數據作為 URL 參數傳遞
+        const userDataParam = encodeURIComponent(JSON.stringify(userData));
+        res.redirect(`http://localhost:3000/login?googleLoginData=${userDataParam}`);
+    }
+);
+
 
 
 module.exports = loginRouter

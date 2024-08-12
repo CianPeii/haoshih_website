@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import axios from 'axios';
 
-const NormalForm = ({ onRegistrationSuccess }) => {
+const NormalForm = ({ onRegSuccess }) => {
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -20,6 +20,7 @@ const NormalForm = ({ onRegistrationSuccess }) => {
   });
 
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const doChange = (e) => {
     const { name, value } = e.target;
@@ -32,21 +33,27 @@ const NormalForm = ({ onRegistrationSuccess }) => {
   const doSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
+    setIsLoading(true);
 
     if (formData.password !== formData.doubleCheck) {
       setErrorMessage('密碼不相同');
       return;
     }
     try {
-      const response = await axios.post('http://localhost:3200/register', formData, {
+      const response = await axios.post('http://localhost:3200/register/member', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
+        withCredentials: true,
         timeout: 5000,
       });
-      console.log(response.data);
-      alert('註冊成功');
-      onRegistrationSuccess();
+      console.log('註冊成功:', response.data);
+      onRegSuccess();
+      if (response.data.success) {
+        onRegSuccess();
+      } else {
+        setErrorMessage(response.data.error || '註冊失敗，請稍後再試');
+      }
     } catch (error) {
       console.error('註冊失敗:', error);
       let errorMsg = '發生錯誤，請稍後再試';
@@ -61,6 +68,9 @@ const NormalForm = ({ onRegistrationSuccess }) => {
         console.error('錯誤:', error.message);
         errorMsg = `發生錯誤: ${error.message}`;
       }
+      setErrorMessage(errorMsg); 
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -154,8 +164,9 @@ const NormalForm = ({ onRegistrationSuccess }) => {
             className="bg-blueGray c-white me-3"
             variant="border border-2 rounded-pill px-4"
             type="submit"
+            disabled={isLoading}
           >
-            確認
+           {isLoading ? '提交中...' : '確認'}
           </Button>
           <Button
             className="bg-gray c-white"
@@ -173,6 +184,7 @@ const NormalForm = ({ onRegistrationSuccess }) => {
               password: '',
               doubleCheck: ''
             })}
+            disabled={isLoading}
           >
             取消
           </Button>
