@@ -94,7 +94,7 @@ const MarketFloorPlan = ({fetchData}) => {
           </div>
         </Col>
       </Row>
-
+      <br />
       <Row className={styles.footer}>
         <Col>
           <div className="f-end fs-5 c-gray">點擊尋找 → </div>
