@@ -3,11 +3,46 @@ import NavBar from "../components/NavBar";
 import SubTitleYellow from "../components/SubTitleYellow";
 import ThirdTitle from "../components/ThirdTitle";
 import Footer from "../components/Footer";
-
+import VendorDetail from "./components/VendorDetail";
 import MarketFloorPlan from "./components/MarketFloorPlan";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Col, Form } from "react-bootstrap";
 
 const Map = () => {
+  const [data_from_parent, setVinfo] = useState([]);
+  const [season_data, setSeason] = useState([]);
+  const fetchData = async (vinfo) => {
+    try {
+      const response = await axios.get("http://localhost:3200/map/getdata", {
+        params: { vinfo },
+      });
+      setVinfo(response.data.data_from_server);
+    } catch (error) {
+      console.log("Error fetching data", error);
+    }
+  };
+  
+  const fetchSeasonData = async (season) => {
+    try {
+      const response = await axios.get(`http://localhost:3200/map/seasondata/${season}`, {
+      });
+      setSeason(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log("Error fetching data", error);
+    }
+  };
+  //確保dataFromParent資料已動態更新
+  useEffect(() => {
+    console.log(data_from_parent);
+  }, [data_from_parent]);
+  
+  //確保seasondata資料已動態更新
+  useEffect(() => {
+    console.log(season_data);
+  }, [season_data])
   return (
     <>
       <NavBar />
@@ -19,21 +54,21 @@ const Map = () => {
             <div className="w-50 me-2 border border-dark p-3">
               <div className="d-flex justify-content-between align-items-center">
                 <Col>
-                  <ThirdTitle title="市集平面地圖" />
+                  <ThirdTitle title="市集平面圖" />
                 </Col>
                 <Col xs="auto">
-                  <Form.Select size="sm">
-                    <option value="1">2024/07-2024/09</option>
-                    <option value="2">2024/10-2024/12</option>
+                  <Form.Select size="sm" onChange={(event) => fetchSeasonData(event.target.value)}>
+                    <option value="3">2024/07-2024/09</option>
+                    <option value="4">2024/10-2024/12</option>
                   </Form.Select>
                 </Col>
               </div>
               <div>
-                <MarketFloorPlan />
+                <MarketFloorPlan fetchData={fetchData} />
               </div>
             </div>
-            <div className="border border-dark p-3 w-50">
-              點選左側查看攤位詳情
+            <div className="border border-dark p-3 w-50" id="shop">
+              <VendorDetail data_from_parent={data_from_parent} />
             </div>
           </div>
         </div>

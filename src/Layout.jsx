@@ -6,14 +6,20 @@ import AllVendors from "./allVendor/AllVendors";
 import Vendor from "./vendor/Vendor";
 import Type from "./type/Type";
 import Map from "./map/Map";
-// import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
-// import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
+import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
+import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
 import Login from "./login/Login";
 import LoginNormal from "./loginNormal/LoginNormal";
 import LoginVendor from "./loginVendor/LoginVendor";
 import ShopCart from "./shopCart/ShopCart";
 import Normal from "./SignUp/Normal";
 import SetStalls from "./setStalls/SetStalls";
+import Default from "./default/Default";
+import Chatroom from "./chatroom/Chatroom";
+import Step1 from "./checkOut/step/Step1";
+import Step2 from "./checkOut/step/Step2";
+import Step3 from "./checkOut/step/Step3";
+import Step4 from "./checkOut/step/Step4";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -32,17 +38,29 @@ const Layout = () => {
             <Route path="/haoshih" element={<Home />} />
             <Route path="/news" element={<News />} />
             <Route path="/shop" element={<AllVendors />} />
-            <Route path="/vendor" element={<Vendor />} />
+            <Route path="/shop/:vid/*" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
             <Route path="/SetStalls" element={<SetStalls />} />
-            {/* <Route path="/member/:uid" element={<MemberIndexNormal />} /> */}
-            {/* <Route path="/vendor/:vid" element={<MemberIndexVendor />} /> */}
+            {/* TODO: default route  =- 已經在 default/Default.jsx */}
+            <Route path="/member/:uid/*" element={<MemberIndexNormal />} />
+            {/* <<<<<<< HEAD */}
+            <Route path="/vendor/:vid/*" element={<MemberIndexVendor />} />
+            {/* ======= */}
+            <Route path="/Step1" element={<Step1 />} />
+            <Route path="/Step2" element={<Step2 />} />
+            <Route path="/Step3" element={<Step3 />} />
+            <Route path="/Step4" element={<Step4 />} />
+            <Route path="/ShopCart" element={<ShopCart />} />
+            <Route path="/chatroom" element={<Chatroom />} />
             TODO: default route
+            {/* >>>>>>> main */}
           </Routes>
-          {/* <ShopCart /> */}
-          {/* <Step1 /> */}
-          {/* <Normal /> */}
+          {/* <Step1 />
+          <Normal />
+          <AllVendors />
+          <Vendor /> */}
+          {/* <Chatroom /> */}
         </div>
       </div>
       {/* <Login /> */}

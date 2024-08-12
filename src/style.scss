@@ -11,16 +11,19 @@
 }
 
 $colors: (
-  "primary": #a1cae3,
+  "primary": #84afc9,
   "secondary": #f7ea57,
-  "lake": #b7efe0,
-  "lightBlue": #e8f6fe,
+  "lake": #96dbc9,
+  "lightBlue": #a6cee6,
   "gray": #9e9e9e,
   "blueGray": #546975,
   "white": #fff,
   "black": #333,
-  "pink": #f8e7e5,
+  "pink": #ebbcbc,
   "red": #f06f5f,
+  "blue": #5a79ba,
+  "brown": #a58f86,
+  "gress": #b8cd1d,
 );
 
 .bg-glass {
@@ -76,6 +79,30 @@ $layouts: (
     }
   }
 }
+// 以下是flex設定，在className輸入flex-數字1~10
+@mixin flex($value) {
+  flex: $value;
+}
+
+@for $i from 1 through 10 {
+  .flex-#{$i} {
+    @include flex($i);
+  }
+}
+// 以下是padding設定，在className輸入pad-數字1~100
+
+@mixin pad($value) {
+  padding: $value;
+}
+
+@for $i from 1 through 100 {
+  .pad-#{$i} {
+    @include pad(#{$i}px);
+  }
+}
+
+
+
 
 .f-end-end {
   display: flex;
@@ -103,6 +130,22 @@ $layouts: (
   justify-content: space-around;
 }
 
+.f-row-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.f-row-end {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+}
+.f-right {
+  text-align: right;
+}
 .cursor-pointer {
   cursor: pointer;
 }
@@ -117,4 +160,34 @@ $layouts: (
 .fs-medium {
   font-size: 3.4rem !important;
   font-weight: normal !important;
+}
+.fw-bold {
+  font-weight: bold;
+}
+.fw-500 {
+  font-weight: 500;
+}
+
+// 以下是font-weight設定，在className輸入fw-任何
+@mixin fw($value) {
+  font-weight: $value;
+}
+
+@for $i from 1 through 1000 {
+  .fw-#{$i} {
+    @include fw($i);
+  }
+}
+
+
+//forVendorDetail
+.fs-content {
+  font-size: larger;
+  color: #546975;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical; 
 }
