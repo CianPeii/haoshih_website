@@ -6,8 +6,7 @@ import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 
 const Step3 = () => {
-<<<<<<< HEAD
-  const [selectedPayment, setSelectedPayment] = useState("");
+const [selectedPayment, setSelectedPayment] = useState("");
   const [couponCode, setCouponCode] = useState("");
 
   const paymentMethods = [
