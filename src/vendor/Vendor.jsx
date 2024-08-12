@@ -272,18 +272,7 @@ const Vendor = () => {
       <div className="mb-5">
         <div className="container">
           <div className="row row-gap-4">
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
-            <VendorCard />
+            <VendorCard params={params} />
           </div>
         </div>
       </div>
