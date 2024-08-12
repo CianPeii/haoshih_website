@@ -14,9 +14,9 @@ const EditStallProfile = (props) => {
   // 重新導向功能
   const navigate = useNavigate();
   // refetch功能
-  const [{ data, loading, error }, refetch] = useAxios(
-    `http://localhost:3200/vendor/info/${props.stallProfile.vid}`
-  );
+  // const [{ data, loading, error }, refetch] = useAxios(
+  //   `http://localhost:3200/vendor/info/${props.stallProfile.vid}`
+  // );
   // 資料庫抓出來的資料
   const stallProfile = props.stallProfile;
   // 新填寫的表單資料
