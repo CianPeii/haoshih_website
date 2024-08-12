@@ -28,7 +28,7 @@ mapRouter.get('/getdata', function(request, response) {
             }
         )
 }) 
-
+//取得季度資料
 mapRouter.get('/seasondata/:season', function(request, response) {
     const season = request.params.season;
         conn.query(

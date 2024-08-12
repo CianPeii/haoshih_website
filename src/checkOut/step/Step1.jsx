@@ -4,9 +4,9 @@ import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 import CheckOutCard from "../CheckOutCard";
 import { Button } from "react-bootstrap";
-import {turnPrice} from "../../utils/turnPrice";
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { turnPrice } from "../../utils/turnPrice";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 
@@ -16,10 +16,9 @@ const Step1 = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+
   const data = queryParams.get('data');
-  // console.log(data);
-  const navigate = useNavigate();
-  
+  const navigate = useNavigate;
 
   let products = [];
 
@@ -28,7 +27,7 @@ const Step1 = () => {
       products = JSON.parse(data);
       // console.log(products);
     } catch (error) {
-      console.error('Error parsing data:', error);
+      console.error("Error parsing data:", error);
     }
   }
   useEffect(() => {
@@ -36,7 +35,7 @@ const Step1 = () => {
       try {
         const fetchedData = [];
         for (let i = 0; i < products.length; i++) {
-          const response = await axios.get(`http://localhost:3200/carts/products/${products[i].pid}/1`);
+          const response = await axios.get(`http://localhost:5000/index/carts/products/${products[i].pid}/1`);
           fetchedData.push(response.data[0]); // 只取第一個元素
         }
         setProductsData(fetchedData);
@@ -50,9 +49,12 @@ const Step1 = () => {
 
         setUseProducts(useProducts);
 
-              // 計算總金額
-      const total = useProducts.reduce((sum, product) => sum + (product.price * product.amount), 0);
-      setTotalAmount(total);
+        // 計算總金額
+        const total = useProducts.reduce(
+          (sum, product) => sum + product.price * product.amount,
+          0
+        );
+        setTotalAmount(total);
       } catch (error) {
         console.error("Error fetching Products Data:", error);
       }
@@ -87,12 +89,10 @@ const Step1 = () => {
         <Arrow color="white" title="完成訂單" />
       </div>
       <div className="container">
-        <CheckOutCard groupedProducts={groupedProducts}/>
+        <CheckOutCard groupedProducts={groupedProducts} />
         <div className="f-end-end mt-5 gap-3 ">
           <h4>總金額：NT{turnPrice(totalAmount)}</h4>
-          <Button variant="danger rounded-pill px-4 py-2" onClick={handleCheckout}>
-            前往結帳
-          </Button>
+          <Button variant="red rounded-pill px-4 py-2">前往結帳</Button>
         </div>
       </div>
       <Footer />
