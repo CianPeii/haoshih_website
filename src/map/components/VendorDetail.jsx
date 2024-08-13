@@ -2,12 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
 import styles from "./VendorDetail.module.scss";
-
-
-
 const VendorDetail = ({data_from_parent}) => {
   var [data, setData] = useState();
-
   //useEffect用於畫面上有變化時動態更新資料
   useEffect(() => {
     const getData = async (vinfo) => {
@@ -22,7 +18,6 @@ const VendorDetail = ({data_from_parent}) => {
     };
     getData();
   }, []);
-
   //輪播、標籤設置
   useEffect(() => {
     if (!data) return;
@@ -65,7 +60,6 @@ const VendorDetail = ({data_from_parent}) => {
         }
         //按鈕添加到容器
         indicatorsContainer.appendChild(cbutton);
-
         //生成輪播圖片
         //圖片容器
         const cimagecontainer = document.createElement("div");
@@ -84,7 +78,6 @@ const VendorDetail = ({data_from_parent}) => {
         imageContainer.appendChild(cimagecontainer);
       }
     });
-
     //選擇標籤容器
     const tagContainer = document.getElementById("tagContainer");
     //每次動態生成前先清空元素內容
@@ -100,7 +93,7 @@ const VendorDetail = ({data_from_parent}) => {
         data_from_parent[0].tag2
       ];
     };
-
+    //tag顏色表
     const colorPalette = [
       "#00a381",  // 顏色 1
       "#b7efe0",  // 顏色 2

@@ -1,26 +1,50 @@
+import { type } from "@testing-library/user-event/dist/type";
 import ChatBtn from "../components/ChatBtn";
 import Footer from "../components/Footer";
 import MainBg from "../components/MainBg";
 import NavBarShop from "../components/NavBarShop";
 import ThirdTitle from "../components/ThirdTitle";
-
-import React from "react";
+import styles from "./setStalls.module.scss";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import axios from "axios";
+
+
 
 const SetStalls = () => {
+  var [data, setData] = useState();
+  useEffect(() => {
+    const getData = async (vinfo) => {
+      try {
+        const response = await axios.get("http://localhost:3200/map", {
+          params: { vinfo },
+        });
+        setData(response.data);
+      }
+      catch (error) {
+        
+      }
+    };
+  });
+
   const booths = [
     ["A01", "A02", "A03", "A04", "A05"],
     ["B01", "B02", "B03", "B04", "B05"],
     ["C01", "C02", "C03", "C04", "C05"],
     ["D01", "D02", "D03", "D04", "D05"],
   ];
-
+  
+  
   const getBoothClass = (booth) => {
     if (["A01", "A02", "B02", "C02", "D01", "D02"].includes(booth))
       return "bg-red";
     if (["A03", "B01", "C01"].includes(booth)) return "bg-gray";
     return "bg-secondary";
   };
+
+  const handleClick = (event) => {
+    console.log(event.target.innerText);
+  }
   return (
     <>
       <NavBarShop />
@@ -50,12 +74,14 @@ const SetStalls = () => {
                       {row.map((booth, boothIndex) => (
                         <div
                           key={boothIndex}
-                          className={`border f-center me-2 ${getBoothClass(booth)}`}
+                          className={`vendors border f-center me-2 ${getBoothClass(booth)} ${styles.hover}`}
                           style={{
                             width: "50px",
                             height: "50px",
                             fontSize: "0.8rem",
                           }}
+                          id={booth}
+                          onClick={handleClick}
                         >
                           {booth}
                         </div>
@@ -90,7 +116,7 @@ const SetStalls = () => {
                     className="bg-gray me-2"
                     style={{ width: "20px", height: "20px" }}
                   ></div>
-                  <span>不可選</span>
+                  <span>已出租</span>
                 </div>
               </div>
               <div className="f-center fs-4 h-100 c-gray">← 請點選左邊攤位</div>
