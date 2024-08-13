@@ -58,7 +58,7 @@ const MemberIndexVendor = () => {
   // 重抓攤位資訊
   const refetchStallProfile = async (updatedData = null) => {
     if (updatedData) {
-      setStallProfile(updatedData);
+      setStallProfile((prevProfile) => ({ ...prevProfile, ...updatedData }));
     } else {
       try {
         const response = await axios.get(

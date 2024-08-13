@@ -203,8 +203,11 @@ vendorRouter.put(
         "brand_img05",
       ];
       imageFields.forEach((field) => {
-        if (req.files && req.files[field] && req.files[field][0]) {
-          updateFields[field] = req.files[field][0].buffer;
+        if (req.body[field] && req.body[field].startsWith("data:image")) {
+          // 從 Base64 字符串中提取實際的 base64 編碼部分
+          const base64Data = req.body[field].split(";base64,").pop();
+          // 將 Base64 字符串轉換為 buffer
+          updateFields[field] = Buffer.from(base64Data, "base64");
         }
       });
 

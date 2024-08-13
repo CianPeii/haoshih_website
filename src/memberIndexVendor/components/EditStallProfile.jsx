@@ -70,7 +70,7 @@ const EditStallProfile = (props) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImages((prev) => ({ ...prev, [fieldName]: reader.result }));
-        setStallData((prev) => ({ ...prev, [fieldName]: file }));
+        setStallData((prev) => ({ ...prev, [fieldName]: reader.result }));
       };
       reader.readAsDataURL(file);
     }
@@ -164,35 +164,10 @@ const EditStallProfile = (props) => {
     event.preventDefault();
     const formData = new FormData();
 
-    // 添加文本字段
-    formData.append("brand_name", stallData.brand_name);
-    formData.append("brand_type", stallData.brand_type);
-    formData.append("tag1", stallData.tag1);
-    formData.append("tag2", stallData.tag2);
-    formData.append("fb", stallData.fb);
-    formData.append("ig", stallData.ig);
-    formData.append("web", stallData.web);
-    formData.append("content", stallData.content);
-
-    // 添加文件字段
-    if (stallData.logo_img instanceof File) {
-      formData.append("logo_img", stallData.logo_img);
-    }
-    if (stallData.brand_img01 instanceof File) {
-      formData.append("brand_img01", stallData.brand_img01);
-    }
-    if (stallData.brand_img02 instanceof File) {
-      formData.append("brand_img02", stallData.brand_img02);
-    }
-    if (stallData.brand_img03 instanceof File) {
-      formData.append("brand_img03", stallData.brand_img03);
-    }
-    if (stallData.brand_img04 instanceof File) {
-      formData.append("brand_img04", stallData.brand_img04);
-    }
-    if (stallData.brand_img05 instanceof File) {
-      formData.append("brand_img05", stallData.brand_img05);
-    }
+    // 添加所有字段，包括圖片（現在是 Base64 字符串）
+    Object.keys(stallData).forEach((key) => {
+      formData.append(key, stallData[key]);
+    });
 
     let isValid = true;
 
@@ -258,10 +233,7 @@ const EditStallProfile = (props) => {
         }
 
         alert("資料更新成功");
-        // 重新導回攤位資訊頁面 ==> 來不及抓到最新資料就渲染了 ==> 先不自動導回
-        setTimeout(() => {
-          navigate(`/vendor/${stallProfile.vid}/vendorInfo`);
-        }, 500);
+        navigate(`/vendor/${stallProfile.vid}/vendorInfo`);
       } else {
         console.log("Unexpected response status:", response.status);
       }
