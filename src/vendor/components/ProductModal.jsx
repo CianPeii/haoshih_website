@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Image, InputGroup, FormControl } from "react-bootstrap";
 import styled from "styled-components";
 import { X, Dash, Plus, Cart } from "react-bootstrap-icons";
-
+import { Buffer } from "buffer"
 const StyledModal = styled(Modal)`
   .modal-content {
     border-radius: 15px;
@@ -68,10 +68,17 @@ const ProductDescription = styled.div`
 
 const ProductModal = ({ show, onHide, product }) => {
   const [quantity, setQuantity] = useState(1);
+  // const [imgSrc, setImgSrc] = useState("")
 
   const handleQuantityChange = (amount) => {
     setQuantity(Math.max(1, quantity + amount));
   };
+  // useEffect(() => {
+  //   const imageData = product.img01;
+  //   console.log(imageData)
+  //   const base64String = Buffer.from(imageData).toString('base64');
+  //   setImgSrc(`data:image/jpeg;base64,${base64String}`)
+  // }, [])
 
   return (
     <StyledModal show={show} onHide={onHide} size="lg" centered>
@@ -79,7 +86,7 @@ const ProductModal = ({ show, onHide, product }) => {
         <CloseButton onClick={onHide}>
           <X />
         </CloseButton>
-        <Image src={product.image} fluid rounded />
+        {/* <Image src={imgSrc} fluid rounded /> */}
         <ProductTitle>{product.name}</ProductTitle>
         <ProductPrice>NT$ {product.price}</ProductPrice>
         <QuantitySelector>
@@ -97,11 +104,12 @@ const ProductModal = ({ show, onHide, product }) => {
             <Plus />
           </Button>
         </QuantitySelector>
+        <p>庫存: {product.quantity}</p>
         <AddToCartButton>
           <Cart /> 加入購物車
         </AddToCartButton>
         <ProductDescription>
-          <p>{product.description}</p>
+          <p>{product.content}</p>
         </ProductDescription>
       </Modal.Body>
     </StyledModal>
