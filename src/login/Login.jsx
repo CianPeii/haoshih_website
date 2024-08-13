@@ -80,7 +80,7 @@ const Login = () => {
   // console.log('Login渲染');
 
   const handleLoginSuccess = (userData) => {
-    // 儲存用戶信息到 localStorage 或 state management 系統
+    // 儲存用戶信息到 localStorage
     localStorage.setItem('user', JSON.stringify(userData));
     
     // 根據用戶類型導到相應頁面
