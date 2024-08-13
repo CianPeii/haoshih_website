@@ -10,7 +10,7 @@ import ChatBtn from "../components/ChatBtn";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import { Buffer } from "buffer";
-
+import  ProductModal  from "./components/ProductModal"
 
 
 const Vendor = () => {
@@ -19,7 +19,8 @@ const Vendor = () => {
   const [logoImgSrc, setLogoImgSrc] = useState('');
   const cartVisible = 1;
   // console.log(params) // can get vid
-  const [editingShow, setEditingShow] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [product, setProduct] = useState({})
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -100,11 +101,13 @@ const Vendor = () => {
     console.log("Vendor data updated:", vendor);
 
   }, [vendor, params.vid]);
-
+  useEffect(() => {
+    console.log(product)
+  }, [product])
 
   return (
     <>
-      <NavBarShop cartVisible={cartVisible}/>
+      <NavBarShop cartVisible={cartVisible} />
       {/* vendorHeader */}
       <div
         className={`p-4 d-flex justify-content-center align-items-center d-grid gap-4 ${styles.header}`}
@@ -151,11 +154,11 @@ const Vendor = () => {
             data-bs-interval="3000" //控制播放
           >
             <div className="carousel-indicators" id="carousel-indicators">
-              
+
             </div>
             {/* 輪播圖片 */}
             <div className="carousel-inner " id="carousel-inner">
-              
+
             </div>
             {/*  */}
             <button
@@ -220,13 +223,18 @@ const Vendor = () => {
       <div className="mb-5">
         <div className="container">
           <div className="row row-gap-4">
-            <VendorCard params={params} />
+            <VendorCard params={params} productDetail={(data) => { setProduct(data) }} showProduct={()=>{setShowModal(true)}}/>
           </div>
         </div>
       </div>
       {/* <PageBtn /> */}
       <Footer />
       <ChatBtn />
+      <ProductModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        product={product}
+      />
     </>
   );
 };
