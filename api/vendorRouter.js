@@ -31,7 +31,7 @@ vendorRouter.get("/profile/:vid", (req, res) => {
     "SELECT * FROM vendor WHERE vid = ?",
     [req.params.vid],
     (err, result) => {
-      res.json(result);
+      res.json(result[0]);
     }
   );
 });
