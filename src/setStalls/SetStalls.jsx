@@ -119,7 +119,14 @@ const SetStalls = () => {
                   <span>已出租</span>
                 </div>
               </div>
-              <div className="f-center fs-4 h-100 c-gray">← 請點選左邊攤位</div>
+              <div className="f-start fs-4 h-100 c-gray">
+                <span>選擇季度：
+                </span>
+                <select>
+                  <option value="3">2024/07-2024/09</option>
+                  <option value="4">2024/10-2024/12</option>
+                </select>
+              </div>
             </div>
           </Col>
         </Row>
