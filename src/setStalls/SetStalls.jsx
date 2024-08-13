@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import MainBg from "../components/MainBg";
 import NavBarShop from "../components/NavBarShop";
 import ThirdTitle from "../components/ThirdTitle";
+import MarketFloorPlan from "../components/MarketFloorPlan";
 import styles from "./setStalls.module.scss";
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
@@ -13,6 +14,7 @@ import axios from "axios";
 
 const SetStalls = () => {
   var [data, setData] = useState();
+  const [data_from_parent, setVinfo] = useState([]);
   useEffect(() => {
     const getData = async (vinfo) => {
       try {
@@ -26,6 +28,18 @@ const SetStalls = () => {
       }
     };
   });
+
+  const fetchData = async (vinfo) => {
+    try {
+      const response = await axios.get("http://localhost:3200/map/getdata", {
+        params: { vinfo },
+      });
+      setVinfo(response.data.data_from_server);
+    } catch (error) {
+      console.log("Error fetching data", error);
+    }
+  };
+  
 
   const booths = [
     ["A01", "A02", "A03", "A04", "A05"],
@@ -51,7 +65,12 @@ const SetStalls = () => {
       <MainBg title="我要擺攤" page="setStalls" />
       <Container fluid className="mt-4 bg-white p-5">
         <Row className="d-flex h-100">
-          <Col md={6} className="d-flex">
+          <div>
+          <MarketFloorPlan fetchData={fetchData}>
+          </MarketFloorPlan>
+          </div>
+          {/* 用看看MarketFloorPlan，以下先註解 */}
+          {/* <Col md={6} className="d-flex">
             <div className="border p-5 flex-grow-1">
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <ThirdTitle title="市集攤位" />
@@ -91,8 +110,7 @@ const SetStalls = () => {
                 </div>
               </div>
             </div>
-          </Col>
-
+          </Col> */}
           <Col md={6} className="d-flex">
             <div className="border p-5 flex-grow-1">
               <ThirdTitle title="攤位租金" />
@@ -118,7 +136,7 @@ const SetStalls = () => {
                   ></div>
                   <span>已出租</span>
                 </div>
-              </div>
+              </div>  
               <div className="f-start fs-4 h-100 c-gray">
                 <span>選擇季度：
                 </span>
