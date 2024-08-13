@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Image, InputGroup, FormControl } from "react-bootstrap";
 import styled from "styled-components";
 import { X, Dash, Plus, Cart } from "react-bootstrap-icons";
-
+import { Buffer } from "buffer"
 const StyledModal = styled(Modal)`
   .modal-content {
     border-radius: 15px;
@@ -52,11 +52,12 @@ const QuantitySelector = styled(InputGroup)`
 `;
 
 const AddToCartButton = styled(Button)`
+  width: 150px;
   background-color: #e7f1ff;
-  color: #000;
-  border: none;
+  color: #1f618d ;
+  border: 2px solid #1f618d ;
   &:hover {
-    background-color: #d0e3ff;
+    background-color:#1f618d ;
   }
 `;
 
@@ -68,10 +69,20 @@ const ProductDescription = styled.div`
 
 const ProductModal = ({ show, onHide, product }) => {
   const [quantity, setQuantity] = useState(1);
+  const [imgSrc, setImgSrc] = useState("")
 
   const handleQuantityChange = (amount) => {
     setQuantity(Math.max(1, quantity + amount));
   };
+  console.log("IMGpart", product);
+
+  useEffect(() => {
+    const imageData = product.img01 || ''; // 提供一个默认值
+    if (imageData) {
+      const base64String = Buffer.from(imageData).toString('base64');
+      setImgSrc(`data:image/jpeg;base64,${base64String}`);
+    }
+  }, [product.img01]);
 
   return (
     <StyledModal show={show} onHide={onHide} size="lg" centered>
@@ -79,29 +90,37 @@ const ProductModal = ({ show, onHide, product }) => {
         <CloseButton onClick={onHide}>
           <X />
         </CloseButton>
-        <Image src={product.image} fluid rounded />
-        <ProductTitle>{product.name}</ProductTitle>
-        <ProductPrice>NT$ {product.price}</ProductPrice>
-        <QuantitySelector>
-          <Button
-            variant="outline-secondary"
-            onClick={() => handleQuantityChange(-1)}
-          >
-            <Dash />
-          </Button>
-          <FormControl value={quantity} readOnly />
-          <Button
-            variant="outline-secondary"
-            onClick={() => handleQuantityChange(1)}
-          >
-            <Plus />
-          </Button>
-        </QuantitySelector>
-        <AddToCartButton>
-          <Cart /> 加入購物車
-        </AddToCartButton>
+        <div style={{ display: "flex" }}>
+          <div style={{ width: "400px", flex: "1" }}>
+            <img src={imgSrc} className="img-fluid rounded" />
+          </div>
+          <div style={{ flex: "1", marginLeft: "100px" }}>
+            <ProductTitle>{product.name}</ProductTitle>
+            <ProductPrice>NT$ {product.price}</ProductPrice>
+            <QuantitySelector>
+              <Button
+                variant="outline-secondary"
+                onClick={() => handleQuantityChange(-1)}
+              >
+                <Dash />
+              </Button>
+              <FormControl value={quantity} readOnly />
+              <Button
+                variant="outline-secondary"
+                onClick={() => handleQuantityChange(1)}
+              >
+                <Plus />
+              </Button>
+            </QuantitySelector>
+            <p style={{ marginTop: "10px" }}>庫存: {product.quantity}</p>
+            <AddToCartButton>
+              <Cart /> 加入購物車
+            </AddToCartButton>
+          </div>
+        </div>
+
         <ProductDescription>
-          <p>{product.description}</p>
+          <p>{product.content}</p>
         </ProductDescription>
       </Modal.Body>
     </StyledModal>
