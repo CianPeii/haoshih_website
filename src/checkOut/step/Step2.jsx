@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import NavBarShop from "../../components/NavBarShop";
 import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
@@ -10,13 +10,14 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
 const Step2 = () => {
-  const [fullName, setFullName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const navigate = useNavigate();
+  const cartVisible = false;
 
   const handleNextStep = () => {
-    const checkoutData = JSON.parse(localStorage.getItem('checkoutData'));
+    const checkoutData = JSON.parse(localStorage.getItem("checkoutData"));
     // checkoutData 是前面的結帳商品的資訊
     const contactInfo = {
       fullName,
@@ -25,19 +26,14 @@ const Step2 = () => {
     };
 
     // 將聯絡訊息和 checkoutData 一起儲存到 localStorage 中
-    localStorage.setItem('contactInfo', JSON.stringify(contactInfo));
-    localStorage.setItem('checkoutData', JSON.stringify(checkoutData));
-    navigate('/Step3');
+    localStorage.setItem("contactInfo", JSON.stringify(contactInfo));
+    localStorage.setItem("checkoutData", JSON.stringify(checkoutData));
+    navigate("/Step3");
   };
-  
-
-  const handleBack = () => {
-    navigate(-1);
-  }
 
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible} />
       <div className="f-space-around">
         <Arrow color="green" title="確認商品" />
         <Arrow color="yellow" title="寄送資訊" />
@@ -51,13 +47,13 @@ const Step2 = () => {
               收件人全名
             </Form.Label>
             <Col sm="8">
-              <Form.Control 
-                type="text" 
-                placeholder="" 
-                name="" 
+              <Form.Control
+                type="text"
+                placeholder=""
+                name=""
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                />
+              />
             </Col>
           </Form.Group>
 
@@ -66,12 +62,12 @@ const Step2 = () => {
               收件人電話
             </Form.Label>
             <Col sm="8">
-              <Form.Control 
-              type="tel" 
-              placeholder="" 
-              name="phone" 
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              <Form.Control
+                type="tel"
+                placeholder=""
+                name="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
               />
             </Col>
           </Form.Group>
@@ -102,8 +98,7 @@ const Step2 = () => {
             回上一步
           </Button>
           <Button
-            className="bg-red c-white"
-            variant="border border-2 rounded-pill px-4"
+            className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
             type="button"
             onClick={handleNextStep}
           >

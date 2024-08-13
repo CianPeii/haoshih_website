@@ -1,7 +1,26 @@
 import styles from "./NavBarShop.module.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { useState, useEffect } from "react";
+import axios from 'axios';
 
-const NavBarShop = () => {
+const NavBarShop = ({cartVisible}) => {
+  const [productsData, setProductsData] = useState({});
+  // console.log("cartVisible",cartVisible);
+
+  useEffect(() => {
+    const fetchProductsData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3200/carts/1");
+        setProductsData(response.data);
+        // console.log("Products Data:", response.data);
+      } catch (error) {
+        console.error("Error fetching Products Data:", error);
+      }
+    };
+    fetchProductsData();
+  }, []);
+  // console.log(productsData);
+  // console.log(Object.keys(productsData).length);
   return (
     <>
       <div className="navBarShop">
@@ -33,16 +52,16 @@ const NavBarShop = () => {
             <div
               className={`d-flex flex-row  justify-content-between align-items-center gap-1 ${styles.loginItem}`}
             >
-              <div>
+              <div id="123" style={{display: (cartVisible ? "visible" : "none")}}>
                 <a
                   className="position-relative text-decoration-none link-dark"
                   href="/ShopCart"
                 >
                   <div className="bi bi-cart h2 "></div>
                   <span
-                    className={`c-white rounded-circle  bg-gray c-black fw-bolder cursor-pointerer; ${styles.ShopQuantity}`}
+                    className={`c-white rounded-circle  bg-gray c-black fw-bolder cursor-pointer; ${styles.ShopQuantity}`}
                   >
-                    1
+                    {Object.keys(productsData).length}
                   </span>
                 </a>
               </div>

@@ -14,6 +14,7 @@ const SetStalls = () => {
     ["C01", "C02", "C03", "C04", "C05"],
     ["D01", "D02", "D03", "D04", "D05"],
   ];
+  const cartVisible = 1;
 
   const getBoothClass = (booth) => {
     if (["A01", "A02", "B02", "C02", "D01", "D02"].includes(booth))
@@ -23,7 +24,7 @@ const SetStalls = () => {
   };
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible}/>
       <MainBg title="我要擺攤" page="setStalls" />
       <Container fluid className="mt-4 bg-white p-5">
         <Row className="d-flex h-100">
