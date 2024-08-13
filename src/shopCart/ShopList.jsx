@@ -106,7 +106,7 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
               </div>
 
             </td>
-            <td className="align-middle">
+            <td className="align-middle" style={{weight:"100px"}}>
               {turnPrice(product.amount * product.price)}
             </td>
             <td className="align-middle">

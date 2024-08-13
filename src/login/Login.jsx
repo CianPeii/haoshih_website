@@ -54,7 +54,7 @@ const Login = () => {
         userType: userType
       });
       if (response.data.success) {
-        console.log('登入成功', response.data);
+        // console.log('登入成功', response.data);
         const { uid, userType, userName } = response.data;
         localStorage.setItem('user', JSON.stringify(response.data));
         navigate(`/${userType}/${uid}`);
@@ -68,12 +68,12 @@ const Login = () => {
   };
 
   const doMemberSubmit = async (formData) => {
-    console.log('一般會員登入');
+    // console.log('一般會員登入');
     await doLogin(formData, 'member');
   };
 
   const doVendorSubmit = async (formData) => {
-    console.log('攤主登入');
+    // console.log('攤主登入');
     await doLogin(formData, 'vendor');
   };
 

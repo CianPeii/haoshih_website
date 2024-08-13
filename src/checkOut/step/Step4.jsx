@@ -8,6 +8,7 @@ import ChatBtn from "../../components/ChatBtn";
 const Step4 = () => {
   const [paymentStatus, setPaymentStatus] = useState("processing");
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const cartVisible = false;
 
   useEffect(() => {
     // 模擬付款過程
@@ -26,7 +27,7 @@ const Step4 = () => {
 
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible} />
       <div className="f-space-around">
         <Arrow color="green" title="確認商品" />
         <Arrow color="green" title="寄送資訊" />
@@ -62,23 +63,21 @@ const Step4 = () => {
         </Card>
 
         <Col className="f-end">
-          {paymentStatus === "failed" && (
-            <Button
-              className="bg-white border border-red me-3"
-              variant="border border-2 rounded-pill px-4"
-              type="button"
-              onClick={() => window.history.back()}
-            >
-              回上一步
-            </Button>
-          )}
           <Button
-            className="bg-red"
+            className="bg-white border border-red me-3"
             variant="border border-2 rounded-pill px-4"
             type="button"
           >
-            <a href="/" className="c-white text-decoration-none">
-              回到首頁
+            <a href="/step3" className="c-black text-decoration-none">
+              回上一步
+            </a>
+          </Button>
+          <Button
+            className="rounded-pill px-4 py-2 bg-secondary  border border-2"
+            type="button"
+          >
+            <a href="/" className="c-black text-decoration-none">
+              我的訂單
             </a>
           </Button>
         </Col>

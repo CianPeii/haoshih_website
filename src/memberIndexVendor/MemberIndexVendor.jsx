@@ -20,6 +20,7 @@ const MemberIndexVendor = () => {
   const updateProfileData = (newData) => {
     setVendorData(newData);
   };
+  const cartVisible = 1;
 
   // 抓會員資料
   useEffect(() => {
@@ -29,7 +30,7 @@ const MemberIndexVendor = () => {
           `http://localhost:3200/vendor/profile/${vid}`
         );
         setVendorData(response.data);
-        // console.log("Vendor Data:", response.data); // 數據首次被獲取時在控制台顯示
+        console.log("Vendor Data:", response.data); // 數據首次被獲取時在控制台顯示
       } catch (error) {
         console.error("Error fetching vendor data:", error);
       }
@@ -37,7 +38,9 @@ const MemberIndexVendor = () => {
 
     fetchVendorData();
   }, [vid]); // 空陣列表示這個效果只在組件首次渲染時運行
-
+  
+  
+  
   // 抓攤位資訊
   useEffect(() => {
     const fetchStallProfile = async () => {
@@ -55,7 +58,7 @@ const MemberIndexVendor = () => {
   }, [vid]); // 空陣列表示這個效果只在組件首次渲染時運行
 
   const VendorProfile = () => (
-    <>
+    <>{console.log(vendorData)}
       <SubTitleYellow title="會員資料" />
       {vendorData ? (
         <VendorForm profile={vendorData} onProfileUpdate={updateProfileData} />
@@ -67,7 +70,7 @@ const MemberIndexVendor = () => {
 
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible}/>
       <div className="row mw-100">
         <div className="col-3  border-end border-3">
           <MemberVenderSideBar />

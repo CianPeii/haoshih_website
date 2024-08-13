@@ -9,7 +9,7 @@ const Normal = () => {
   const navigate = useNavigate();
 
   const doRegSuccess = () => {
-    console.log('註冊成功');
+    // console.log('註冊成功');
     alert('註冊成功！');
     navigate('/login'); // 回登入頁面
   };

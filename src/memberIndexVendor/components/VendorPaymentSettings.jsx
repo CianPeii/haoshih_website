@@ -25,6 +25,7 @@ const VendorPaymentSettings = () => {
 
   const { vid } = useParams();
   const navigate = useNavigate();
+  const cartVisible = 1;
 
   // 表單是否已經被驗證
   const [validated, setValidated] = useState(false);

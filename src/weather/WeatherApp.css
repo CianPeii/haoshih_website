@@ -1,0 +1,86 @@
+.weather-card {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f0f8ff;
+    text-align: right;
+  }
+  
+  .weather-card h2 {
+    color: #333;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  
+  .observation-time {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 15px;
+  }
+  
+  .weather-info p {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .weather-info span {
+    font-weight: bold;
+    color: #4a4a4a;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+    margin-top: 50px;
+  }
+
+  .weather {
+    width: 100px;
+    height: 100px;
+  }
+
+  .temperature-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .temperature {
+    font-size: 68px;
+    font-weight: normal;
+    margin-right: 10px;
+  }
+
+  .temperature span {
+    font-size: 24px;
+    vertical-align: super;
+  }
+
+  /* //更改圖片大小 */
+  .weather-icon {
+    width: 150px;
+    height: 150px;
+    margin-left: auto;
+  }
+
+  .wind-speed {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .wind-speed img {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+  }
+
+  .observation-time {
+    text-align: left;
+  }

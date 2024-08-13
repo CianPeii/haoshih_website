@@ -47,7 +47,7 @@ const NormalForm = ({ onRegSuccess }) => {
         withCredentials: true,
         timeout: 5000,
       });
-      console.log('註冊成功:', response.data);
+      // console.log('註冊成功:', response.data);
       onRegSuccess();
       if (response.data.success) {
         onRegSuccess();

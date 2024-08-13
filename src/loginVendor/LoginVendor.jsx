@@ -18,7 +18,7 @@ const LoginVendor = () => {
         userType: 'vendor'
       });
       if (response.data.success) {
-        console.log('攤販登入成功:', response.data);
+        // console.log('攤販登入成功:', response.data);
         const { vid, userType, userName } = response.data;
         localStorage.setItem('user', JSON.stringify(response.data));
         navigate(`/${userType}/${vid}`);
@@ -30,6 +30,8 @@ const LoginVendor = () => {
       console.error('登入過程中發生錯誤:', error);
       setError('登入過程發生錯誤，請稍後再試');
     }
+    // console.log(response.data);
+    
   };
 
   return (

@@ -20,7 +20,7 @@ const LoginNormal = () => {
       });
 
       if (response.data.success) {
-        console.log('登入成功', response.data);
+        // console.log('登入成功', response.data);
         const { uid, userType, userName } = response.data;
         localStorage.setItem('user', JSON.stringify(response.data));
         navigate(`/${userType}/${uid}`);

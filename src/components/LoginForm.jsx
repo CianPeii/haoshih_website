@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import { useNavigate } from 'react-router-dom';
 
 function LoginForm({ onSubmit, buttonText = "登入" ,userType}) {
-  console.log('LoginForm 接收到的', { onSubmit, buttonText });
+  // console.log('LoginForm 接收到的', { onSubmit, buttonText });
 
   const [validated, setValidated] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,11 +22,11 @@ function LoginForm({ onSubmit, buttonText = "登入" ,userType}) {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      console.log('呼叫onSubmit', formData);
+      // console.log('呼叫onSubmit', formData);
       if (typeof onSubmit === 'function') {
         onSubmit(formData);
       } else {
-        console.error('LoginForm: onSubmit不是一個函數', onSubmit);
+        // console.error('LoginForm: onSubmit不是一個函數', onSubmit);
         alert('登入異常');
       }
     }
