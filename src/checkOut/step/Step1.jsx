@@ -8,7 +8,7 @@ import { turnPrice } from "../../utils/turnPrice";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Col from "react-bootstrap/Col";
 
 const Step1 = () => {
@@ -18,7 +18,7 @@ const Step1 = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  const data = queryParams.get('data');
+  const data = queryParams.get("data");
   // console.log(data);
   const navigate = useNavigate();
   const cartVisible = false;
@@ -38,7 +38,9 @@ const Step1 = () => {
       try {
         const fetchedData = [];
         for (let i = 0; i < products.length; i++) {
-          const response = await axios.get(`http://localhost:3200/carts/products/${products[i].pid}/1`);
+          const response = await axios.get(
+            `http://localhost:3200/carts/products/${products[i].pid}/1`
+          );
           fetchedData.push(response.data[0]); // 只取第一個元素
         }
         setProductsData(fetchedData);
@@ -65,7 +67,6 @@ const Step1 = () => {
     fetchProductsData();
   }, [data]);
 
-
   const groupedProducts = useProducts.reduce((acc, product) => {
     const { vinfo } = product;
     if (!acc[vinfo]) {
@@ -76,15 +77,15 @@ const Step1 = () => {
   }, {});
 
   const handleCheckout = () => {
-    localStorage.setItem('checkoutData', JSON.stringify(productsData));
-    navigate('/Step2');
+    localStorage.setItem("checkoutData", JSON.stringify(productsData));
+    navigate("/Step2");
   };
-  
+
   // console.log("Step1:",typeof productsData);
 
   return (
     <>
-      <NavBarShop cartVisible={cartVisible}/>
+      <NavBarShop cartVisible={cartVisible} />
       <div className="f-space-around">
         <Arrow color="yellow" title="確認商品" />
         <Arrow color="white" title="寄送資訊" />
@@ -94,21 +95,23 @@ const Step1 = () => {
       <div className="container">
         <CheckOutCard groupedProducts={groupedProducts} />
         <div className="f-end-end mt-5 gap-3 ">
-        <Col className="d-flex justify-content-end align-items-end">
-          <div className="fs-4">總金額：NT{turnPrice(totalAmount)}</div>
-          <Button
-            className="bg-white border border-red me-3 ms-2"
-            variant="border border-2 rounded-pill px-4"
-            type="button"
-            onClick={() => navigate(-1)}
-          >
-            回上一步
-          </Button>
-          <Button variant="danger rounded-pill px-4 py-2" onClick={handleCheckout}>
-            前往結帳
-          </Button>
-        </Col>
-
+          <Col className="d-flex justify-content-end align-items-end">
+            <div className="fs-4">總金額：NT{turnPrice(totalAmount)}</div>
+            <Button
+              className="bg-white border border-red me-3 ms-2"
+              variant="border border-2 rounded-pill px-4"
+              type="button"
+              onClick={() => navigate(-1)}
+            >
+              回上一步
+            </Button>
+            <Button
+              className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
+              onClick={handleCheckout}
+            >
+              前往結帳
+            </Button>
+          </Col>
         </div>
       </div>
       <Footer />

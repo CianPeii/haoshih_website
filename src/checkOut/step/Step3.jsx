@@ -6,12 +6,12 @@ import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 
 const Step3 = () => {
-  const checkoutData = JSON.parse(localStorage.getItem('checkoutData'));
-  const contactInfo = JSON.parse(localStorage.getItem('contactInfo'));
+  const checkoutData = JSON.parse(localStorage.getItem("checkoutData"));
+  const contactInfo = JSON.parse(localStorage.getItem("contactInfo"));
   const cartVisible = false;
   console.log(checkoutData);
   console.log(contactInfo);
-  
+
   const [selectedPayment, setSelectedPayment] = useState("");
   const [couponCode, setCouponCode] = useState("");
 
@@ -46,7 +46,7 @@ const Step3 = () => {
 
   return (
     <>
-      <NavBarShop cartVisible={cartVisible}/>
+      <NavBarShop cartVisible={cartVisible} />
       <div className="f-space-around">
         <Arrow color="green" title="確認商品" />
         <Arrow color="green" title="寄送資訊" />
@@ -117,14 +117,17 @@ const Step3 = () => {
             variant="border border-2 rounded-pill px-4"
             type="button"
           >
-            回上一步
+            <a href="/step2" className="c-black text-decoration-none">
+              回上一步
+            </a>
           </Button>
           <Button
-            className="bg-red c-white"
-            variant="border border-2 rounded-pill px-4"
+            className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
             type="button"
           >
-            下一步
+            <a href="/step4" className="c-black text-decoration-none">
+              下一步
+            </a>
           </Button>
         </Col>
       </Container>
