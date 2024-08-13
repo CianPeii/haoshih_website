@@ -9,7 +9,7 @@ const Step4 = () => {
   const [paymentStatus, setPaymentStatus] = useState("processing");
   const [showErrorModal, setShowErrorModal] = useState(false);
   const cartVisible = false;
-  
+
   useEffect(() => {
     // 模擬付款過程
     const simulatePayment = setTimeout(() => {
@@ -27,7 +27,7 @@ const Step4 = () => {
 
   return (
     <>
-      <NavBarShop cartVisible={cartVisible}/>
+      <NavBarShop cartVisible={cartVisible} />
       <div className="f-space-around">
         <Arrow color="green" title="確認商品" />
         <Arrow color="green" title="寄送資訊" />
@@ -68,14 +68,15 @@ const Step4 = () => {
             variant="border border-2 rounded-pill px-4"
             type="button"
           >
-            回上一步
+            <a href="/step3" className="c-black text-decoration-none">
+              回上一步
+            </a>
           </Button>
           <Button
-            className="bg-blueGray"
-            variant="border border-2 rounded-pill px-4"
+            className="rounded-pill px-4 py-2 bg-secondary  border border-2"
             type="button"
           >
-            <a href="/" className="c-white text-decoration-none">
+            <a href="/" className="c-black text-decoration-none">
               我的訂單
             </a>
           </Button>

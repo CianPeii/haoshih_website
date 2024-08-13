@@ -6,9 +6,9 @@ import ShopCartForm from "./ShopCartForm";
 import Footer from "../components/Footer";
 import { turnPrice } from "../utils/turnPrice";
 import { useState, useEffect } from "react";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import WeatherApp from '../weather/WeatherApp';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import WeatherApp from "../weather/WeatherApp";
 
 const ShopCart = () => {
   const [productsData, setProductsData] = useState(null);
@@ -78,16 +78,16 @@ const ShopCart = () => {
       data: JSON.stringify(checkoutData),
     }).toString();
     // console.log(queryString);
-    if(checkoutData.length>0){
+    if (checkoutData.length > 0) {
       navigate(`/Step1?${queryString}`);
     } else {
-      alert("請選擇商品!")
+      alert("請選擇商品!");
     }
   };
 
   return (
     <>
-      <NavBarShop cartVisible={cartVisible}/>
+      <NavBarShop cartVisible={cartVisible} />
       <div className="row">
         <div className="col-2 border-end border-3">
           <MemberSideBar />
@@ -108,14 +108,13 @@ const ShopCart = () => {
               <h4>總金額：NT${turnPrice(totalPrice)}</h4>
 
               <Button
-                variant="danger rounded-pill px-4 py-2"
+                className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
                 onClick={handleCheckout}
               >
                 前往結帳
               </Button>
 
-              <WeatherApp/>
-              
+              <WeatherApp />
             </div>
           </div>
         </div>
