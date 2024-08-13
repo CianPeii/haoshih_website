@@ -68,17 +68,20 @@ const ProductDescription = styled.div`
 
 const ProductModal = ({ show, onHide, product }) => {
   const [quantity, setQuantity] = useState(1);
-  // const [imgSrc, setImgSrc] = useState("")
+  const [imgSrc, setImgSrc] = useState("")
 
   const handleQuantityChange = (amount) => {
     setQuantity(Math.max(1, quantity + amount));
   };
-  // useEffect(() => {
-  //   const imageData = product.img01;
-  //   console.log(imageData)
-  //   const base64String = Buffer.from(imageData).toString('base64');
-  //   setImgSrc(`data:image/jpeg;base64,${base64String}`)
-  // }, [])
+  console.log("IMGpart",product);
+  
+  useEffect(() => {
+    const imageData = product.img01 || ''; // 提供一个默认值
+    if (imageData) {
+      const base64String = Buffer.from(imageData).toString('base64');
+      setImgSrc(`data:image/jpeg;base64,${base64String}`);
+    }
+  }, [product.img01]);
 
   return (
     <StyledModal show={show} onHide={onHide} size="lg" centered>
@@ -86,7 +89,7 @@ const ProductModal = ({ show, onHide, product }) => {
         <CloseButton onClick={onHide}>
           <X />
         </CloseButton>
-        {/* <Image src={imgSrc} fluid rounded /> */}
+        <Image src={imgSrc} fluid rounded />
         <ProductTitle>{product.name}</ProductTitle>
         <ProductPrice>NT$ {product.price}</ProductPrice>
         <QuantitySelector>

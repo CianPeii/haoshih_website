@@ -44,8 +44,10 @@ const Layout = () => {
             <Route path="/SetStalls" element={<SetStalls />} />
             {/* TODO: default route  =- 已經在 default/Default.jsx */}
             <Route path="/member/:uid/*" element={<MemberIndexNormal />} />
-            {/* <<<<<<< HEAD */}
             <Route path="/vendor/:vid/*" element={<MemberIndexVendor />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login />} />
             {/* ======= */}
             <Route path="/Step1" element={<Step1 />} />
             <Route path="/Step2" element={<Step2 />} />
@@ -53,14 +55,7 @@ const Layout = () => {
             <Route path="/Step4" element={<Step4 />} />
             <Route path="/ShopCart" element={<ShopCart />} />
             <Route path="/chatroom" element={<Chatroom />} />
-            TODO: default route
-            {/* >>>>>>> main */}
           </Routes>
-          {/* <Step1 />
-          <Normal />
-          <AllVendors />
-          <Vendor /> */}
-          {/* <Chatroom /> */}
         </div>
       </div>
       {/* <Login /> */}
