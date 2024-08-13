@@ -52,11 +52,12 @@ const QuantitySelector = styled(InputGroup)`
 `;
 
 const AddToCartButton = styled(Button)`
+  width: 150px;
   background-color: #e7f1ff;
-  color: #000;
-  border: none;
+  color: #1f618d ;
+  border: 2px solid #1f618d ;
   &:hover {
-    background-color: #d0e3ff;
+    background-color:#1f618d ;
   }
 `;
 
@@ -73,8 +74,8 @@ const ProductModal = ({ show, onHide, product }) => {
   const handleQuantityChange = (amount) => {
     setQuantity(Math.max(1, quantity + amount));
   };
-  console.log("IMGpart",product);
-  
+  console.log("IMGpart", product);
+
   useEffect(() => {
     const imageData = product.img01 || ''; // 提供一个默认值
     if (imageData) {
@@ -89,28 +90,35 @@ const ProductModal = ({ show, onHide, product }) => {
         <CloseButton onClick={onHide}>
           <X />
         </CloseButton>
-        <Image src={imgSrc} fluid rounded />
-        <ProductTitle>{product.name}</ProductTitle>
-        <ProductPrice>NT$ {product.price}</ProductPrice>
-        <QuantitySelector>
-          <Button
-            variant="outline-secondary"
-            onClick={() => handleQuantityChange(-1)}
-          >
-            <Dash />
-          </Button>
-          <FormControl value={quantity} readOnly />
-          <Button
-            variant="outline-secondary"
-            onClick={() => handleQuantityChange(1)}
-          >
-            <Plus />
-          </Button>
-        </QuantitySelector>
-        <p>庫存: {product.quantity}</p>
-        <AddToCartButton>
-          <Cart /> 加入購物車
-        </AddToCartButton>
+        <div style={{ display: "flex" }}>
+          <div style={{ width: "400px", flex: "1" }}>
+            <img src={imgSrc} className="img-fluid rounded" />
+          </div>
+          <div style={{ flex: "1", marginLeft: "100px" }}>
+            <ProductTitle>{product.name}</ProductTitle>
+            <ProductPrice>NT$ {product.price}</ProductPrice>
+            <QuantitySelector>
+              <Button
+                variant="outline-secondary"
+                onClick={() => handleQuantityChange(-1)}
+              >
+                <Dash />
+              </Button>
+              <FormControl value={quantity} readOnly />
+              <Button
+                variant="outline-secondary"
+                onClick={() => handleQuantityChange(1)}
+              >
+                <Plus />
+              </Button>
+            </QuantitySelector>
+            <p style={{ marginTop: "10px" }}>庫存: {product.quantity}</p>
+            <AddToCartButton>
+              <Cart /> 加入購物車
+            </AddToCartButton>
+          </div>
+        </div>
+
         <ProductDescription>
           <p>{product.content}</p>
         </ProductDescription>
