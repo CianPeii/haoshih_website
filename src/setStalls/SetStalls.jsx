@@ -47,7 +47,7 @@ const SetStalls = () => {
   }
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible}/>
       <MainBg title="我要擺攤" page="setStalls" />
       <Container fluid className="mt-4 bg-white p-5">
         <Row className="d-flex h-100">

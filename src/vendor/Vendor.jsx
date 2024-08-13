@@ -10,15 +10,17 @@ import ChatBtn from "../components/ChatBtn";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import { Buffer } from "buffer";
-
+import  ProductModal  from "./components/ProductModal"
 
 
 const Vendor = () => {
   const [vendor, setVendor] = useState({})
   const params = useParams();
   const [logoImgSrc, setLogoImgSrc] = useState('');
+  const cartVisible = 1;
   // console.log(params) // can get vid
-  const [editingShow, setEditingShow] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [product, setProduct] = useState({})
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -99,11 +101,13 @@ const Vendor = () => {
     console.log("Vendor data updated:", vendor);
 
   }, [vendor, params.vid]);
-
+  useEffect(() => {
+    console.log(product)
+  }, [product])
 
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible} />
       {/* vendorHeader */}
       <div
         className={`p-4 d-flex justify-content-center align-items-center d-grid gap-4 ${styles.header}`}
@@ -150,50 +154,11 @@ const Vendor = () => {
             data-bs-interval="3000" //控制播放
           >
             <div className="carousel-indicators" id="carousel-indicators">
-              {/* <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to="0"
-                className="active"
-                aria-current="true"
-                aria-label="Slide 1"
-              ></button>
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to="1"
-                aria-label="Slide 2"
-              ></button>
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to="2"
-                aria-label="Slide 3"
-              ></button> */}
+
             </div>
             {/* 輪播圖片 */}
             <div className="carousel-inner " id="carousel-inner">
-              {/* <div className="carousel-item active">
-                <img
-                  src="https://img.shoplineapp.com/media/image_clips/65d469e5d9c0de4d368479df/original.jpg?1708419556"
-                  className="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div className="carousel-item">
-                <img
-                  src="https://img.shoplineapp.com/media/image_clips/65d4540c2d35da001728d489/original.jpg?1708413963"
-                  className="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div className="carousel-item">
-                <img
-                  src="https://shoplineimg.com/63ea08419b3adf00d260f645/66389b952935cb00147d9b78/1296x.webp?source_format=jpg"
-                  className="d-block w-100 "
-                  alt="..."
-                />
-              </div> */}
+
             </div>
             {/*  */}
             <button
@@ -258,13 +223,18 @@ const Vendor = () => {
       <div className="mb-5">
         <div className="container">
           <div className="row row-gap-4">
-            <VendorCard params={params} />
+            <VendorCard params={params} productDetail={(data) => { setProduct(data) }} showProduct={()=>{setShowModal(true)}}/>
           </div>
         </div>
       </div>
       {/* <PageBtn /> */}
       <Footer />
       <ChatBtn />
+      <ProductModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        product={product}
+      />
     </>
   );
 };

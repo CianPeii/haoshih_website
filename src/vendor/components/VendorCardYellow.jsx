@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Buffer } from 'buffer';
 import { turnPrice } from "../../utils/turnPrice";
 
-const VendorCard = ({params}) => {
+const VendorCard = ({params, productDetail, showProduct}) => {
   const [vendorData, setVendorData] = useState([])
   // console.log(params.vid); 檢查是哪一個攤販
 
@@ -34,7 +34,11 @@ const VendorCard = ({params}) => {
 
         return (
           <div className="col-3" key={index}>
-            <div className={`card ${styles.cardBg}`}>
+            <div className={`card ${styles.cardBg} cursor-pointer`} 
+                onClick={()=>{
+                  productDetail(product)
+                  showProduct()
+                }}>
               <img
                 className="rounded-3 overflow-hidden mx-3 mt-3"
                 src={imgSrc}

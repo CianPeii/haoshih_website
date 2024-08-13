@@ -20,6 +20,7 @@ const MemberIndexVendor = () => {
   const updateProfileData = (newData) => {
     setVendorData(newData);
   };
+  const cartVisible = 1;
 
   // 抓會員資料
   useEffect(() => {
@@ -67,7 +68,7 @@ const MemberIndexVendor = () => {
 
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible}/>
       <div className="row mw-100">
         <div className="col-3  border-end border-3">
           <MemberVenderSideBar />

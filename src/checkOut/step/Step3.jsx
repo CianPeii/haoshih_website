@@ -6,7 +6,13 @@ import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 
 const Step3 = () => {
-const [selectedPayment, setSelectedPayment] = useState("");
+  const checkoutData = JSON.parse(localStorage.getItem("checkoutData"));
+  const contactInfo = JSON.parse(localStorage.getItem("contactInfo"));
+  const cartVisible = false;
+  console.log(checkoutData);
+  console.log(contactInfo);
+
+  const [selectedPayment, setSelectedPayment] = useState("");
   const [couponCode, setCouponCode] = useState("");
 
   const paymentMethods = [
@@ -38,16 +44,9 @@ const [selectedPayment, setSelectedPayment] = useState("");
     setCouponCode(e.target.value);
   };
 
-
-  const checkoutData = JSON.parse(localStorage.getItem('checkoutData'));
-  const contactInfo = JSON.parse(localStorage.getItem('contactInfo'));
-  console.log(checkoutData);
-  console.log(contactInfo);
-  
-
   return (
     <>
-      <NavBarShop />
+      <NavBarShop cartVisible={cartVisible} />
       <div className="f-space-around">
         <Arrow color="green" title="確認商品" />
         <Arrow color="green" title="寄送資訊" />
@@ -93,16 +92,18 @@ const [selectedPayment, setSelectedPayment] = useState("");
             <Card>
               <Card.Body>
                 <h5>訂單摘要</h5>
-                <p>商品總額: $1234</p>
-                <p id="freight">運費: $60</p>
+                <p>商品總額: $1000</p>
+                <p>運費: $60</p>
                 <p>優惠折扣: -$0</p>
                 <hr />
-                <h5>總計:</h5>
+                <h5>總計: $1060</h5>
               </Card.Body>
             </Card>
             <Card className="mt-3">
               <Card.Body>
-                <h6>安全支付保證</h6>
+                <h6>
+                  安全支付保證 <i className="bi bi-shield-fill-check c-red"></i>
+                </h6>
                 <p className="small">
                   我們使用先進的加密技術確保您的支付安全。您的個人資料及付款信息將受到嚴格保護。
                 </p>
@@ -116,14 +117,17 @@ const [selectedPayment, setSelectedPayment] = useState("");
             variant="border border-2 rounded-pill px-4"
             type="button"
           >
-            回上一步
+            <a href="/step2" className="c-black text-decoration-none">
+              回上一步
+            </a>
           </Button>
           <Button
-            className="bg-red c-white"
-            variant="border border-2 rounded-pill px-4"
+            className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
             type="button"
           >
-            下一步
+            <a href="/step4" className="c-black text-decoration-none">
+              下一步
+            </a>
           </Button>
         </Col>
       </Container>
