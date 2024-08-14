@@ -14,7 +14,7 @@ const MarketFloorPlan = ({fetchData}) => {
   const getBoothClass = (booth) => {
     if (["A01", "A02", "B02", "C02", "D01", "D02"].includes(booth))
       return "bg-red";
-    if (["A03", "B01", "C01"].includes(booth)) return "bg-gray";
+    if (["A03", "B01", "C01"].includes(booth)) return "bg-select-gray";
     return "bg-secondary";
   };
   const handleClick = (event) => {
