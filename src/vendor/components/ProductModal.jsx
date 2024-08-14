@@ -1,7 +1,11 @@
-import React, { useState } from "react";
-import { Modal, Button, Image, InputGroup, FormControl } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Modal, Button, InputGroup, FormControl } from "react-bootstrap";
 import styled from "styled-components";
 import { X, Dash, Plus, Cart } from "react-bootstrap-icons";
+import { Buffer } from "buffer"
+import axios from "axios";
+import { turnPrice } from "../../utils/turnPrice";
+// import { Alert } from "bootstrap";
 
 const StyledModal = styled(Modal)`
   .modal-content {
@@ -52,11 +56,12 @@ const QuantitySelector = styled(InputGroup)`
 `;
 
 const AddToCartButton = styled(Button)`
+  width: 150px;
   background-color: #e7f1ff;
-  color: #000;
-  border: none;
+  color: #1f618d ;
+  border: 2px solid #1f618d ;
   &:hover {
-    background-color: #d0e3ff;
+    background-color:#1f618d ;
   }
 `;
 
@@ -67,10 +72,75 @@ const ProductDescription = styled.div`
 `;
 
 const ProductModal = ({ show, onHide, product }) => {
-  const [quantity, setQuantity] = useState(1);
+  const [amount, setAmount] = useState(1);
+  // const [amountData, setAmountData] = useState({});
+  const [imgSrc, setImgSrc] = useState("");
+  // const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleQuantityChange = (amount) => {
-    setQuantity(Math.max(1, quantity + amount));
+  const handleQuantityChange = (value) => {
+    setAmount(amount + value);
+  };
+  // console.log("ProductModal 80", product);
+
+  useEffect(() => {
+    const imageData = product.img01 || ''; // 提供一个默認值
+    if (imageData) {
+      const base64String = Buffer.from(imageData).toString('base64');
+      setImgSrc(`data:image/jpeg;base64,${base64String}`);
+    }
+  }, [product.img01]);
+
+
+  // useEffect(() => {
+  //   // Fetch amountData when product changes
+  //   const fetchAmountData = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:3200/carts/2");
+  //       setAmountData(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching Products Data:", error);
+  //     }
+  //   };
+  //   fetchAmountData();
+  // }, [product]);
+
+  
+
+  const handleSubmit = async () => {
+    // if (isSubmitting) return;
+
+    // setIsSubmitting(true);
+
+    try {
+      // 1. 首先獲取最新的購物車數據
+      const cartResponse = await axios.get("http://localhost:3200/carts/2");
+      const cartData = cartResponse.data;
+
+      // 2. 查找當前商品在購物車中的數據
+      const cartItem = cartData.find(item => item.pid === product.pid);
+      const currentCartAmount = cartItem ? cartItem.amount : 0;
+
+      // 3. 檢查是否超出库存
+      if (amount + currentCartAmount > product.quantity) {
+        alert("選擇數量超出庫存!快去購物車看看吧!!");
+        return;
+      }
+
+      // 4. 提交購物車更新請求
+      const response = await axios.post('http://localhost:3200/carts', {
+        uid: '2', 
+        pid: product.pid, 
+        amount: amount,
+        quantity: product.quantity
+      });
+    
+      console.log('Success:', response.data);
+
+      onHide(); // 成功後關閉彈跳窗
+    } catch (error) {
+      console.error('Error:', error);
+      alert("加入購物車失敗，請稍後再試");
+    }
   };
 
   return (
@@ -79,29 +149,41 @@ const ProductModal = ({ show, onHide, product }) => {
         <CloseButton onClick={onHide}>
           <X />
         </CloseButton>
-        <Image src={product.image} fluid rounded />
-        <ProductTitle>{product.name}</ProductTitle>
-        <ProductPrice>NT$ {product.price}</ProductPrice>
-        <QuantitySelector>
-          <Button
-            variant="outline-secondary"
-            onClick={() => handleQuantityChange(-1)}
-          >
-            <Dash />
-          </Button>
-          <FormControl value={quantity} readOnly />
-          <Button
-            variant="outline-secondary"
-            onClick={() => handleQuantityChange(1)}
-          >
-            <Plus />
-          </Button>
-        </QuantitySelector>
-        <AddToCartButton>
-          <Cart /> 加入購物車
-        </AddToCartButton>
+
+        <div style={{ display: "flex" }}>
+          <div style={{ width: "400px", flex: "1" }}>
+            <img src={imgSrc} className="img-fluid rounded" alt="Loding..." />
+          </div>
+        <div style={{ flex: "1", marginLeft: "100px" }}>
+            <ProductTitle>{product.name}</ProductTitle>
+            <ProductPrice>NT$ {turnPrice(product.price)}</ProductPrice>
+            <QuantitySelector>
+              <Button
+                variant="outline-secondary"
+                onClick={() => handleQuantityChange(-1)}
+                disabled={amount <= 1}
+              >
+                <Dash />
+              </Button>
+              <FormControl value={amount} className="text-center" readOnly />
+              <Button
+                variant="outline-secondary"
+                onClick={() => handleQuantityChange(1)}
+                disabled={amount >= product.quantity}
+              >
+                <Plus />
+              </Button>
+            </QuantitySelector>
+            <p style={{ marginTop: "10px" }}>庫存 : {product.quantity}</p>
+            <AddToCartButton onClick={handleSubmit}>
+              <Cart /> 加入購物車
+            </AddToCartButton>
+            <p style={{ marginTop: "10px" }}>小計 : {turnPrice(amount * product.price)}</p>
+          </div>
+        </div>
+
         <ProductDescription>
-          <p>{product.description}</p>
+          <p>{product.content}</p>
         </ProductDescription>
       </Modal.Body>
     </StyledModal>

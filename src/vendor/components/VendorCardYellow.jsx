@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Buffer } from 'buffer';
 import { turnPrice } from "../../utils/turnPrice";
 
-const VendorCard = ({params}) => {
+const VendorCard = ({params, productDetail, showProduct}) => {
   const [vendorData, setVendorData] = useState([])
   // console.log(params.vid); 檢查是哪一個攤販
 
@@ -13,7 +13,7 @@ const VendorCard = ({params}) => {
       try {
         const response = await axios.get(`http://localhost:3200/carts/vendorProducts/${params.vid}`);
         setVendorData(response.data);
-        console.log(response.data)
+        // console.log(response.data)
       } catch (error) {
         console.error("Error fetching Vendor Data:", error);
       }
@@ -34,7 +34,11 @@ const VendorCard = ({params}) => {
 
         return (
           <div className="col-3" key={index}>
-            <div className={`card ${styles.cardBg} cursor-pointer`}>
+            <div className={`card ${styles.cardBg} cursor-pointer`} 
+                onClick={()=>{
+                  productDetail(product)
+                  showProduct()
+                }}>
               <img
                 className="rounded-3 overflow-hidden mx-3 mt-3"
                 src={imgSrc}

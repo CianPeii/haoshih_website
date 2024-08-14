@@ -15,16 +15,16 @@ const socket = io("http://localhost:3200");
 
 // 顏色陣列
 const colors = [
-  "#FF6B6B",
-  "#4ECDC4",
-  "#45B7D1",
-  "#FFA07A",
-  "#98D8C8",
-  "#F06292",
-  "#BA68C8",
-  "#7986CB",
-  "#4FC3F7",
-  "#4DB6AC",
+  "#FFB3B3",
+  "#B3E6E0",
+  "#B3DDE8",
+  "#FFD1B3",
+  "#CCE9DF",
+  "#F9B3D1",
+  "#DFB3E6",
+  "#C4CCE5",
+  "#B3E5FC",
+  "#B3DFD8",
 ];
 
 const Chatroom = () => {
@@ -43,9 +43,19 @@ const Chatroom = () => {
   const cartVisible = 1;
 
   useEffect(() => {
+    axios
+      .get("http://localhost:3200/chatroom/messages")
+      .then((response) => {
+        setMessages(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching messages:", error);
+      });
+
     socket.on("chat message", (msg) => {
       setMessages((prev) => [...prev, msg]);
     });
+
     return () => socket.off("chat message");
   }, []);
 
@@ -57,12 +67,13 @@ const Chatroom = () => {
   }, [messages]);
 
   const sendMessage = (type, content) => {
+    const now = new Date();
     socket.emit("chat message", {
       type,
       content,
       username,
-      timestamp: new Date().toLocaleTimeString(),
-      color: userColor, // 添加顏色資訊
+      timestamp: now.toISOString(),
+      color: userColor,
     });
   };
 
@@ -85,7 +96,7 @@ const Chatroom = () => {
 
   return (
     <>
-      <NavBarShop cartVisible={cartVisible}/>
+      <NavBarShop cartVisible={cartVisible} />
       <div className="row mw-100 ">
         <div className="col-3  border-end border-3">
           <MemberSideBar />

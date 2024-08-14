@@ -14,31 +14,92 @@ var conn = config.connection
 // --------測試路由用----------
 
 //加入購物車
-cartRouter.post('/index', function(req, res) {
-    conn.query("SELECT * FROM carts WHERE uid = ? AND pid = ?", 
-        [req.body.uid, req.body.pid], function(err, results) {
-            // console.log(results);
+// cartRouter.post('/', async (req, res) => {
+//     conn.query("SELECT * FROM carts WHERE uid = ? AND pid = ?", 
+//         [req.body.uid, req.body.pid], function(err, results) {
+//             // console.log(err,"20",results);
+//             // console.log(results);
+//             const amount =  results[0].amount;
+            
+//         if (results.length > 0) {
+//             const newAmount = amount + req.body.amount;
+//             if (newAmount <= req.body.quantity) {
+//                 conn.query("UPDATE carts SET amount = ? WHERE uid = ? AND pid = ?", 
+//                     [newAmount, req.body.uid, req.body.pid], function(err, result) {
+//                     if (err) {
+//                         return res.status(500).send('Update error');
+//                     }
+//                     // res.send('Update OK!');
+//                     console.log('Update OK!');
+//                 });
+//             } else {
+//                 res.status(400).send('添加數量超過庫存!');
+//             }
+//         } else {
+//             // 如果紀錄不存在，插入新紀錄
+//             conn.query("INSERT INTO carts (uid, pid, amount) VALUES (?, ?, ?)", 
+//                 [req.body.uid, req.body.pid, req.body.amount], function(err, result) {
+//                 if (err) {
+//                     console.log("insert error", err);
+                    
+//                     return res.status(500).send('Insert error 36');
+//                 }
+//                 // res.send('INSERT INTO!');
+//                 console.log('INSERT INTO!');
+                
+//             });
+//         }
+//         // res.redirect('/index/carts');
+//     });
+// });
+
+// 加入購物車post async版本
+cartRouter.post('/', async (req, res) => {
+    try {
+        // 使用 Promise 來包裝資料庫查詢
+        const query = (sql, params) => {
+            return new Promise((resolve, reject) => {
+                conn.query(sql, params, (err, results) => {
+                    if (err) return reject(err);
+                    resolve(results);
+                });
+            });
+        };
+
+        // 查詢是否已經存在
+        const results = await query("SELECT * FROM carts WHERE uid = ? AND pid = ?", [req.body.uid, req.body.pid]);
+
+        // 檢查查詢結果是否有資料
         if (results.length > 0) {
-            conn.query("UPDATE carts SET amount = ? WHERE uid = ? AND pid = ?", 
-                [req.body.amount, req.body.uid, req.body.pid], function(err, result) {
-                if (err) {
-                    return res.status(500).send('Update error');
-                }
-                // res.send('Update OK!');
-            });
+            const amount = results[0].amount;
+            const newAmount = amount + req.body.amount;
+
+            if (newAmount <= req.body.quantity) {
+                // 更新資料
+                await query("UPDATE carts SET amount = ? WHERE uid = ? AND pid = ?", [newAmount, req.body.uid, req.body.pid]);
+                console.log('Update OK!');
+                res.send('Update OK!');
+            } else {
+                res.status(400).send('添加數量超過庫存!');
+            }
         } else {
-            // 如果紀錄不存在，插入新紀錄
-            conn.query("INSERT INTO carts (uid, pid, amount) VALUES (?, ?, ?)", 
-                [req.body.uid, req.body.pid, req.body.amount], function(err, result) {
-                if (err) {
-                    return res.status(500).send('Insert error');
-                }
-                // res.send('INSERT INTO!');
-            });
+            // 插入新紀錄
+            await query("INSERT INTO carts (uid, pid, amount) VALUES (?, ?, ?)", [req.body.uid, req.body.pid, req.body.amount]);
+            console.log('INSERT INTO!');
+            res.send('Insert OK!');
         }
-        // res.redirect('/index/carts');
-    });
+    } catch (err) {
+        console.log('Error:', err);
+        res.status(500).send('Server error');
+    }
 });
+
+
+
+
+
+
+
 
 cartRouter.get('/:uid', function(req, res) {
     // const conn = req.app.get('connection') ???????????????????????????????????
@@ -79,7 +140,7 @@ cartRouter.get('/products/:pid/:uid', function(req, res) {
 // 在vendorCard那邊 攤販要獲取自己的商品
 cartRouter.get('/vendorProducts/:vid', function(req, res) {
     conn.query(
-        "SELECT product.name, content, quantity, price, img01, is_show, launch FROM vendor JOIN product ON vendor.vid = product.vid WHERE vendor.vid = ? ",
+        "SELECT product.name, pid, content, quantity, price, img01, is_show, launch FROM vendor JOIN product ON vendor.vid = product.vid WHERE vendor.vid = ? ",
         [req.params.vid],
         function(err, result) {
             res.json(result);
