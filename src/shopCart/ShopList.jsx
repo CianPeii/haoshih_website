@@ -18,7 +18,7 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
     console.log(`uid: ${uid}, pid: ${pid}`)
     if (window.confirm("確定要刪除此商品嗎？")) {
       try {
-        const response = await fetch(`http://localhost:3200/carts/1/${pid}`, {
+        const response = await fetch(`http://localhost:3200/carts/2/${pid}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

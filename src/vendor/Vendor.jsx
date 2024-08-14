@@ -219,6 +219,7 @@ const Vendor = () => {
           </li>
         </ul>
       </div>
+
       {/* VendorCards */}
       <div className="mb-5">
         <div className="container">
