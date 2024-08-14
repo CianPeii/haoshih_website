@@ -33,7 +33,7 @@ const LoginNormal = () => {
         localStorage.setItem('user', JSON.stringify(userData));        
 
         // 導航到用戶主頁
-        navigate(`/shop`);
+        navigate(`/${userType}/${uid}`);
       } else {
         setError(response.data.error || '登入失敗');
       }

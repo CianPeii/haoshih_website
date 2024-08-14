@@ -366,7 +366,7 @@ loginRouter.use((err, req, res, next) => {
 });
 
 //localstorage
-loginRouter.get('/:uid', function (req, res) {
+loginRouter.get('/:userType/:uid', function (req, res) {
     conn.query(
         "SELECT uid, nickname FROM member WHERE uid = ?",
         [req.params.uid],
@@ -389,7 +389,6 @@ loginRouter.get('/:uid', function (req, res) {
 //     passReqToCallback: true
 // },
 //     function (req, accessToken, refreshToken, profile, cb) {
-//         // 在這裡處理用戶登入邏輯
 //         // 您需要檢查用戶是否已存在，如果不存在則創建新用戶
 //         const { id, displayName, emails } = profile;
 //         const email = emails && emails.length > 0 ? emails[0].value : null;

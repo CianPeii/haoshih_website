@@ -47,7 +47,7 @@ function LoginForm({ onSubmit, buttonText = "登入" ,userType}) {
 
   const doGoogleLogin = (e) => {
     e.preventDefault();
-    window.location.href = `http://localhost:3200/auth/google?userType=${userType}`;
+    window.location.href = `http://localhost:3200/login/auth/google?userType=${userType}`;
   };
 
   return (
