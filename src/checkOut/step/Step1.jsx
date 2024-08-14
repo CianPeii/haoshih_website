@@ -14,7 +14,7 @@ import Col from "react-bootstrap/Col";
 const Step1 = () => {
   const [productsData, setProductsData] = useState(null);
   const [useProducts, setUseProducts] = useState([]);
-  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
@@ -33,6 +33,7 @@ const Step1 = () => {
       console.error("Error parsing data:", error);
     }
   }
+  
   useEffect(() => {
     const fetchProductsData = async () => {
       try {
@@ -59,7 +60,7 @@ const Step1 = () => {
           (sum, product) => sum + product.price * product.amount,
           0
         );
-        setTotalAmount(total);
+        setTotalPrice(total);
       } catch (error) {
         console.error("Error fetching Products Data:", error);
       }
@@ -76,9 +77,15 @@ const Step1 = () => {
     return acc;
   }, {});
 
+  const total = {total: totalPrice};
+
+
   const handleCheckout = () => {
-    localStorage.setItem("checkoutData", JSON.stringify(productsData));
+    localStorage.setItem("Step1Data", JSON.stringify(useProducts));
+    localStorage.setItem("total", JSON.stringify(total));
     navigate("/Step2");
+    console.log(useProducts);
+    
   };
 
   // console.log("Step1:",typeof productsData);
@@ -96,7 +103,7 @@ const Step1 = () => {
         <CheckOutCard groupedProducts={groupedProducts} />
         <div className="f-end-end mt-5 gap-3 ">
           <Col className="d-flex justify-content-end align-items-end">
-            <div className="fs-4">總金額：NT{turnPrice(totalAmount)}</div>
+            <div className="fs-4">總金額：NT{turnPrice(totalPrice)}</div>
             <Button
               className="bg-white border border-red me-3 ms-2"
               variant="border border-2 rounded-pill px-4"
@@ -109,7 +116,7 @@ const Step1 = () => {
               className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
               onClick={handleCheckout}
             >
-              前往結帳
+              下一步
             </Button>
           </Col>
         </div>

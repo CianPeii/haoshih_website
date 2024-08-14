@@ -72,7 +72,7 @@ cartRouter.post('/', async (req, res) => {
         // 檢查查詢結果是否有資料
         if (results.length > 0) {
             const amount = results[0].amount;
-            const newAmount = amount + req.body.amount;
+            var newAmount = amount + req.body.amount;
 
             if (newAmount <= req.body.quantity) {
                 // 更新資料
@@ -80,6 +80,8 @@ cartRouter.post('/', async (req, res) => {
                 console.log('Update OK!');
                 res.send('Update OK!');
             } else {
+                await query("UPDATE carts SET amount = ? WHERE uid = ? AND pid = ?", [req.body.quantity, req.body.uid, req.body.pid]);
+                console.log('Set to quantity OK!');
                 res.status(400).send('添加數量超過庫存!');
             }
         } else {

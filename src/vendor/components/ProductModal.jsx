@@ -120,17 +120,17 @@ const ProductModal = ({ show, onHide, product }) => {
       const cartItem = cartData.find(item => item.pid === product.pid);
       const currentCartAmount = cartItem ? cartItem.amount : 0;
 
-      // 3. 檢查是否超出库存
+      // 3. 檢查是否超出庫存
       if (amount + currentCartAmount > product.quantity) {
-        alert("選擇數量超出庫存!快去購物車看看吧!!");
+        alert("該商品選購數量已達庫存上限，請至購物車進行數量更改");
         return;
       }
 
       // 4. 提交購物車更新請求
       const response = await axios.post('http://localhost:3200/carts', {
-        uid: '2', 
-        pid: product.pid, 
-        amount: amount,
+        uid: '2',
+        pid: product.pid,
+        amount: (amount + currentCartAmount > product.quantity)?product.quantity:amount,
         quantity: product.quantity
       });
     
@@ -175,13 +175,12 @@ const ProductModal = ({ show, onHide, product }) => {
               </Button>
             </QuantitySelector>
             <p style={{ marginTop: "10px" }}>庫存 : {product.quantity}</p>
+            <p style={{ marginTop: "10px" }}>小計 : {turnPrice(amount * product.price)}</p>
             <AddToCartButton onClick={handleSubmit}>
               <Cart /> 加入購物車
             </AddToCartButton>
-            <p style={{ marginTop: "10px" }}>小計 : {turnPrice(amount * product.price)}</p>
           </div>
         </div>
-
         <ProductDescription>
           <p>{product.content}</p>
         </ProductDescription>

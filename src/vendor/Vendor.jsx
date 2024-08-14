@@ -94,32 +94,47 @@ const Vendor = () => {
 
   useEffect(() => {
     fetchVendorData();
-    console.log(vendor);
   }, [params.vid]);
 
   useEffect(() => {
     if (!vendor) return;
-    console.log("Vendor data updated:", vendor);
+    // console.log("Vendor data updated:", vendor);
   }, [vendor, params.vid]);
 
   useEffect(() => {
-    console.log(product);
+    // console.log(product);
   }, [product]);
 
   //按讚攤位
-  const [likedData, setLikedData] = useState(null);
+  const [likedData, setLikedData] = useState([]);
 
   useEffect(() => {
     const fetchLikedData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3200/member/like/1`);
+        const response = await axios.get(`http://localhost:3200/shop/like/1`);
         setLikedData(response.data);
+        // console.log('res',response.data)
       } catch (error) {
         console.error("Error fetching liked data:", error);
       }
     };
     fetchLikedData();
+    // console.log('like',likedData)
   }, []); // uid
+
+  // 收藏功能
+  const changeHeartList = () => {
+    console.log('OK')
+    if (likedData.includes(vendor.vinfo)) {
+      var index = likedData.indexOf(vendor.vinfo)
+      var list = likedData.splice(index, 0)
+      setLikedData(list)
+    } else {
+      var list = [...likedData]
+      list.push(vendor.vinfo)
+      setLikedData(list)
+    }
+  }
 
   return (
     <>
@@ -141,7 +156,8 @@ const Vendor = () => {
             {/*攤販資訊} */}
             <div className="d-flex align-items-center">
               <h3>{vendor.brand_name}</h3>
-              <i className=" fs-5 bi bi-heart px-3 text-black-50"></i>
+              <i className={`c-red fs-5 bi ${(likedData.includes(vendor.vinfo)) ? 'bi-heart-fill' : 'bi-heart'} px-3 text-black-50 cursor-pointer`}
+                onClick={() => { changeHeartList() }}></i>
             </div>
             <p className={`${styles.headerText} overflow-hidden`}>
               {vendor.content}
@@ -231,6 +247,7 @@ const Vendor = () => {
           </li>
         </ul>
       </div>
+
       {/* VendorCards */}
       <div className="mb-5">
         <div className="container">

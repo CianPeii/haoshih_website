@@ -19,7 +19,7 @@ const ShopCart = () => {
   useEffect(() => {
     const fetchProductsData = async () => {
       try {
-        const response = await axios.get("http://localhost:3200/carts/1");
+        const response = await axios.get("http://localhost:3200/carts/2");
         setProductsData(response.data);
         // console.log("Products Data:", response.data);
       } catch (error) {
@@ -73,6 +73,8 @@ const ShopCart = () => {
     const checkoutData = productsData
       .filter((product) => selectedProducts.has(product.pid))
       .map((product) => ({ pid: product.pid, amount: product.amount }));
+
+      
 
     const queryString = new URLSearchParams({
       data: JSON.stringify(checkoutData),

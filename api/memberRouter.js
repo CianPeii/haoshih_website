@@ -146,7 +146,7 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
         case 0:
           return "Line Pay";
         case 1:
-          return "銀行轉帳";
+          return "轉帳";
         case 2:
           return "貨到付款";
         default:

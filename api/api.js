@@ -4,10 +4,17 @@ var cors = require("cors");
 const { Server } = require("socket.io");
 var app = express();
 
+// TODO: remove -> 這樣會起一個獨立的 http server，socketio 沒辦法共用 server
+// app.listen(3200);
+
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true, 
+  methods: ['GET', 'POST']
+}));
 
 // create http server
 const server = http.createServer(app);
@@ -17,6 +24,17 @@ const io = new Server(server, {
     origin: "http://localhost:3000", // 允許來自 React 應用的連接
     methods: ["GET", "POST"],
   },
+});
+
+// set Socket.IO
+io.on("connection", (socket) => {
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg);
+  });
+
+  socket.on("disconnect", () => {
+    // TODO: disconnect
+  });
 });
 
 // add io instance to app for using router
@@ -42,7 +60,6 @@ app.use("/vendor", vendorRouter);
 
 var chatroomRouter = require("./chatroomRouter.js");
 app.use("/chatroom", chatroomRouter);
-chatroomRouter.setIo(io);
 
 const PORT = 3200;
 server.listen(PORT, () => {
