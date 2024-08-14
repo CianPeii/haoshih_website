@@ -2,12 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
 import styles from "./VendorDetail.module.scss";
-
-
-
 const VendorDetail = ({data_from_parent}) => {
   var [data, setData] = useState();
-
   //useEffect用於畫面上有變化時動態更新資料
   useEffect(() => {
     const getData = async (vinfo) => {
@@ -22,7 +18,6 @@ const VendorDetail = ({data_from_parent}) => {
     };
     getData();
   }, []);
-
   //輪播、標籤設置
   useEffect(() => {
     if (!data) return;
@@ -41,7 +36,7 @@ const VendorDetail = ({data_from_parent}) => {
       data.data_from_server[0].brand_img04,
       data.data_from_server[0].brand_img05,
     ];
-    if (data_from_parent.length != 0) {
+    if (data_from_parent.length !== 0) {
       imageList = [
         data_from_parent[0].brand_img01,
         data_from_parent[0].brand_img02,
@@ -65,7 +60,6 @@ const VendorDetail = ({data_from_parent}) => {
         }
         //按鈕添加到容器
         indicatorsContainer.appendChild(cbutton);
-
         //生成輪播圖片
         //圖片容器
         const cimagecontainer = document.createElement("div");
@@ -84,7 +78,6 @@ const VendorDetail = ({data_from_parent}) => {
         imageContainer.appendChild(cimagecontainer);
       }
     });
-
     //選擇標籤容器
     const tagContainer = document.getElementById("tagContainer");
     //每次動態生成前先清空元素內容
@@ -94,13 +87,13 @@ const VendorDetail = ({data_from_parent}) => {
       data.data_from_server[0].tag1,
       data.data_from_server[0].tag2
     ];
-    if(data_from_parent.length != 0) {
+    if(data_from_parent.length !== 0) {
       tagList = [
         data_from_parent[0].tag1,
         data_from_parent[0].tag2
       ];
     };
-
+    //tag顏色表
     const colorPalette = [
       "#00a381",  // 顏色 1
       "#b7efe0",  // 顏色 2
@@ -119,7 +112,7 @@ const VendorDetail = ({data_from_parent}) => {
 
     //使用forEach迴圈生成攤位標籤
       tagList.forEach(tag => {
-        if(tag != null) {
+        if(tag !== null) {
           const brand_tag = document.createElement('span');
           const randomColor = getRandomColorFromPalette();
           
@@ -139,12 +132,12 @@ const VendorDetail = ({data_from_parent}) => {
   
   //攤位名稱
   var brandName = data.data_from_server[0].brand_name;
-  if (data_from_parent.length != 0) {
+  if (data_from_parent.length !== 0) {
     brandName = data_from_parent[0].brand_name;
   }
   //攤位簡介
   var vendorContent = data.data_from_server[0].content;
-  if (data_from_parent.length != 0) {
+  if (data_from_parent.length !== 0) {
     vendorContent = data_from_parent[0].content;
   }
   //攤位類別，中英對照表
@@ -158,25 +151,25 @@ const VendorDetail = ({data_from_parent}) => {
   }
   //攤位類別
   var brandType = data.data_from_server[0].brand_type;
-  if (data_from_parent.length != 0) {
+  if (data_from_parent.length !== 0) {
     brandType = data_from_parent[0].brand_type;
   }
   //攤位vinfo
   var brandVinfo = data.data_from_server[0].vinfo;
-  if (data_from_parent.length != 0) {
+  if (data_from_parent.length !== 0) {
     brandVinfo = data_from_parent[0].vinfo
   }
   //攤位社群連結FB、IG、網頁
   var brandFB = data.data_from_server[0].fb;
-  if (data_from_parent.length != 0) {
+  if (data_from_parent.length !== 0) {
     brandFB = data_from_parent[0].fb
   }
   var brandIG = data.data_from_server[0].ig;
-  if (data_from_parent.length != 0) {
+  if (data_from_parent.length !== 0) {
     brandIG = data_from_parent[0].ig
   }
   var brandWeb = data.data_from_server[0].web;
-  if (data_from_parent.length != 0) {
+  if (data_from_parent.length !== 0) {
     brandWeb = data_from_parent[0].web
   }
   return (
