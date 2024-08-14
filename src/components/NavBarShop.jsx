@@ -84,7 +84,7 @@ const NavBarShop = ({cartVisible}) => {
         </div>
       ) : (
         <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>
-          <a className="link-dark text-decoration-none" href="https:">
+          <a className="link-dark text-decoration-none" href="http://localhost:3000/login">
             登入
           </a>
         </div>
