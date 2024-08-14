@@ -4,7 +4,7 @@ shopRouter.use(express.urlencoded({ extended: false }));
 shopRouter.use(express.json());
 var config = require("./databaseConfig.js");
 var conn = config.connection;
-import { queryAsync } from "../src/utils/utils.js";
+const { queryAsync } = require("../src/utils/utils.js");
 
 // --------測試路由用----------
 // shopRouter.get('/', function(req,res){res.send('OK')})
@@ -73,14 +73,15 @@ shopRouter.get("/like/:uid", async function (req, res) {
     const likes = await queryAsync(conn, heartQuery, [req.params.uid]);
     // console.log(`likes: ${JSON.stringify(likes)}`);
 
-    if (likes.length === 0 || !likes[0].list) {
-      return res.json({
-        uid: req.params.uid,
-        likes: likes,
-      });
-    }
+    // if (likes.length === 0 || !likes[0].list) {
+    //   return res.json({
+    //     uid: req.params.uid,
+    //     likes: likes,
+    //   });
+    // }
 
     const likesNumArr = likes[0]["list"].split(",").map(Number);
+    res.json(likesNumArr)
     // console.log(`likesNumArr: ${likesNumArr}`); // 1,2
   } catch (error) {
     console.error("Error in /shop/like/:uid:", error);
