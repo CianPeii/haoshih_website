@@ -18,6 +18,7 @@ const NavBarShop = ({ cartVisible }) => {
       setShowLogin(false);
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
+  
 
   useEffect(() => {
     const fetchProductsData = async () => {
@@ -30,6 +31,10 @@ const NavBarShop = ({ cartVisible }) => {
       }
     };
     fetchProductsData();
+
+
+    setShowLogin(true);  /// 測試用，若有衝突請直接刪除
+
   }, []);
   // console.log(productsData);
   // console.log(Object.keys(productsData).length);
@@ -60,8 +65,8 @@ const NavBarShop = ({ cartVisible }) => {
               >
                 <div
                   id="123"
-                  // style={{ display: cartVisible ? "visible" : "none" }}
-                  style={{ display: "none" }}
+                  style={{ display: cartVisible ? "visible" : "none" }}
+                  // style={{ display: "none" }}
                 >
                   <a
                     className="position-relative text-decoration-none link-dark"
