@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import LoginNormal from '../loginNormal/LoginNormal';
 import LoginVendor from '../loginVendor/LoginVendor';
 import axios from 'axios';
+
+//抓會員暱稱
+const getUserNickname = async (userType, uid) => {
+  try {
+    const response = await axios.get(`http://localhost:3200/api/login/${userType}/${uid}`);
+    return response.data.nickname;
+  } catch (error) {
+    console.error('Error fetching user nickname:', error);
+  }
+};
 
 const Login = () => {
   const [error, setError] = useState('');
@@ -27,7 +37,6 @@ const Login = () => {
       setError(decodeURIComponent(errorMessage));
     }
   }, [location]);
-
 
   const doMemberClick = () => {
     setLoginType('member');
@@ -79,15 +88,24 @@ const Login = () => {
 
   // console.log('Login渲染');
 
-  const handleLoginSuccess = (userData) => {
+  const handleLoginSuccess = async (userData) => {
+
+    // 獲取用戶暱稱
+    const nickname = await getUserNickname(userData.userType, userData.uid);
+
+    // 將暱稱添加到用戶數據中
+    const completeUserData = { ...userData, nickname };
+
     // 儲存用戶信息到 localStorage
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('user', JSON.stringify(completeUserData));
+    console.log(completeUserData);
     
+
     // 根據用戶類型導到相應頁面
-    if (userData.userType === 'member') {
-      navigate(`/member/${userData.uid}`);
-    } else if (userData.userType === 'vendor') {
-      navigate(`/vendor/${userData.uid}`);
+    if (completeUserData === 'member') {
+      navigate(`/member/${completeUserData.uid}`);
+    } else if (completeUserData === 'vendor') {
+      navigate(`/vendor/${completeUserData.uid}`);
     }
   };
   return (
