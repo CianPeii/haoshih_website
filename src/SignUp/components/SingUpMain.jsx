@@ -1,5 +1,6 @@
+import React from 'react'; 
 import styles from "./SingUpMain.module.scss";
-const SingUpMain = () => {
+const SingUpMain = ({ title }) => {
   return (
     <>
       <div className={`position-relative overflow-hidden ${styles.mainBg}`}>
@@ -9,7 +10,7 @@ const SingUpMain = () => {
         <div
           className={`bg-secondary fs-1 font-special position-absolute start-0 px-4 ${styles.mainTitle}`}
         >
-          一般會員註冊
+          {title}
         </div>
       </div>
     </>

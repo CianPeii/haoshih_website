@@ -1,5 +1,5 @@
-var express = require("express");
-var shopRouter = express.Router();
+var express = require("express")
+var shopRouter = express.Router()
 shopRouter.use(express.urlencoded({ extended: false }));
 shopRouter.use(express.json());
 var config = require("./databaseConfig.js");
@@ -16,42 +16,30 @@ const { queryAsync } = require("../src/utils/utils.js");
 
 // 所有攤販類型
 shopRouter.get("/", function (req, res) {
-  conn.query("select * from vendor_info", function (err, result) {
-    res.json(result);
-  });
-});
+    conn.query('select * from vendor_info', function (err, result) {
+        res.json(result)
+    })
+})
 
 shopRouter.get("/vendor/:id", function (req, res) {
-  conn.query(
-    "select * from vendor_info where vinfo = ?",
-    [req.params.id],
-    function (err, result) {
-      res.json(result);
-    }
-  );
-});
+    conn.query('select * from vendor_info where vinfo = ?', [req.params.id], function (err, result) {
+        res.json(result)
+    })
+})
 
 // 切換特定攤販類型
 shopRouter.get("/:type", function (req, res) {
-  conn.query(
-    "select * from vendor_info where brand_type = ?",
-    [req.params.type],
-    function (err, result) {
-      res.json(result);
-    }
-  );
-});
+    conn.query('select * from vendor_info where brand_type = ?', [req.params.type], function (err, result) {
+        res.json(result)
+    })
+})
 
 // 取得該攤販的商品
-shopRouter.get("/:vinfo/products", function (req, res) {
-  conn.query(
-    "select * from product where vid = ?",
-    [req.params.vinfo],
-    function (err, result) {
-      res.json(result);
-    }
-  );
-});
+shopRouter.get('/:vinfo/products', function (req, res) {
+    conn.query('select * from product where vid = ?', [req.params.vinfo], function (err, result) {
+        res.json(result)
+    })
+})
 
 // 取得單件商品
 shopRouter.get("/product/:pid", function (req, res) {
@@ -91,4 +79,4 @@ shopRouter.get("/like/:uid", async function (req, res) {
 
 // 加入購物車(目前在cartRouter，路徑還未處理)
 
-module.exports = shopRouter;
+module.exports = shopRouter
