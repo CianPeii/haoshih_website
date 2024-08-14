@@ -7,7 +7,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import useAxios from "axios-hooks";
+// import useAxios from "axios-hooks";
 import SubTitleYellow from "../../components/SubTitleYellow";
 
 const EditStallProfile = (props) => {
@@ -70,7 +70,7 @@ const EditStallProfile = (props) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImages((prev) => ({ ...prev, [fieldName]: reader.result }));
-        setStallData((prev) => ({ ...prev, [fieldName]: file }));
+        setStallData((prev) => ({ ...prev, [fieldName]: reader.result }));
       };
       reader.readAsDataURL(file);
     }
@@ -164,35 +164,10 @@ const EditStallProfile = (props) => {
     event.preventDefault();
     const formData = new FormData();
 
-    // 添加文本字段
-    formData.append("brand_name", stallData.brand_name);
-    formData.append("brand_type", stallData.brand_type);
-    formData.append("tag1", stallData.tag1);
-    formData.append("tag2", stallData.tag2);
-    formData.append("fb", stallData.fb);
-    formData.append("ig", stallData.ig);
-    formData.append("web", stallData.web);
-    formData.append("content", stallData.content);
-
-    // 添加文件字段
-    if (stallData.logo_img instanceof File) {
-      formData.append("logo_img", stallData.logo_img);
-    }
-    if (stallData.brand_img01 instanceof File) {
-      formData.append("brand_img01", stallData.brand_img01);
-    }
-    if (stallData.brand_img02 instanceof File) {
-      formData.append("brand_img02", stallData.brand_img02);
-    }
-    if (stallData.brand_img03 instanceof File) {
-      formData.append("brand_img03", stallData.brand_img03);
-    }
-    if (stallData.brand_img04 instanceof File) {
-      formData.append("brand_img04", stallData.brand_img04);
-    }
-    if (stallData.brand_img05 instanceof File) {
-      formData.append("brand_img05", stallData.brand_img05);
-    }
+    // 添加所有字段，包括圖片（現在是 Base64 字符串）
+    Object.keys(stallData).forEach((key) => {
+      formData.append(key, stallData[key]);
+    });
 
     let isValid = true;
 
@@ -244,6 +219,8 @@ const EditStallProfile = (props) => {
         console.log("Stall Data updated successfully:", response.data.message);
         console.log("Updated fields:", response.data.updatedFields);
 
+        const updatedStallProfile = { ...stallProfile, ...updatedFields };
+
         // 更新表單狀態
         setStallData((prevState) => ({
           ...prevState,
@@ -252,14 +229,11 @@ const EditStallProfile = (props) => {
 
         // 更新 stallProfile
         if (typeof props.onProfileUpdate === "function") {
-          props.onProfileUpdate({ ...stallProfile, ...updatedFields });
+          props.onProfileUpdate(updatedStallProfile);
         }
 
         alert("資料更新成功");
-        // 重新導回攤位資訊頁面 ==> 來不及抓到最新資料就渲染了 ==> 先不自動導回
-        setTimeout(() => {
-          navigate(`/vendor/${stallProfile.vid}/vendorInfo`);
-        }, 500);
+        navigate(`/vendor/${stallProfile.vid}/vendorInfo`);
       } else {
         console.log("Unexpected response status:", response.status);
       }
@@ -454,7 +428,7 @@ const EditStallProfile = (props) => {
           <Form.Label column sm="2" className="text-end">
             品牌視覺照
           </Form.Label>
-          <Col sm="6">
+          <Col sm="10">
             <div className="d-flex flex-wrap gap-3">
               {renderImageUpload("brand_img01")}
               {renderImageUpload("brand_img02")}

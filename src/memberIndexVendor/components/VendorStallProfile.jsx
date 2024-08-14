@@ -120,7 +120,7 @@ const VendorStallProfile = (props) => {
           <Col sm="2" className="text-end">
             <p>品牌視覺照</p>
           </Col>
-          <Col sm="6">
+          <Col sm="10">
             <div className="d-flex flex-wrap gap-3">
               {[
                 stallProfile.brand_img01,

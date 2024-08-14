@@ -7,39 +7,40 @@ import VendorCard from "./components/VendorCardYellow";
 import PageBtn from "../components/PageBtn";
 import Footer from "../components/Footer";
 import ChatBtn from "../components/ChatBtn";
-import axios from 'axios';
+import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Buffer } from "buffer";
-import  ProductModal  from "./components/ProductModal"
-
+import ProductModal from "./components/ProductModal";
 
 const Vendor = () => {
-  const [vendor, setVendor] = useState({})
+  const [vendor, setVendor] = useState({});
   const params = useParams();
-  const [logoImgSrc, setLogoImgSrc] = useState('');
+  const [logoImgSrc, setLogoImgSrc] = useState("");
   const cartVisible = 1;
   // console.log(params) // can get vid
   const [showModal, setShowModal] = useState(false);
-  const [product, setProduct] = useState({})
+  const [product, setProduct] = useState({});
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const fetchVendorData = async () => {
-    var url = "http://localhost:3200/shop/vendor/" + params.vid
+    var url = "http://localhost:3200/shop/vendor/" + params.vid;
     try {
       const response = await axios.get(url);
       setVendor(response.data[0]);
       // 檢查用：數據首次被獲取時顯示
       // console.log("Vendors Data:", response.data[0]);
 
-      const base64String = `data:image/jpeg;base64,${Buffer.from(response.data[0].logo_img.data).toString('base64')}`;
+      const base64String = `data:image/jpeg;base64,${Buffer.from(response.data[0].logo_img.data).toString("base64")}`;
       setLogoImgSrc(base64String);
 
       // 渲染輪播圖
       //選擇按鈕、圖片容器元素
-      const indicatorsContainer = document.getElementById("carousel-indicators");
+      const indicatorsContainer = document.getElementById(
+        "carousel-indicators"
+      );
       const imageContainer = document.getElementById("carousel-inner");
       if (!indicatorsContainer) return;
       //每次動態生成前先清空容器內容
@@ -93,17 +94,47 @@ const Vendor = () => {
 
   useEffect(() => {
     fetchVendorData();
-    console.log(vendor)
   }, [params.vid]);
 
   useEffect(() => {
     if (!vendor) return;
-    console.log("Vendor data updated:", vendor);
+    // console.log("Vendor data updated:", vendor);
   }, [vendor, params.vid]);
-  
+
   useEffect(() => {
-    console.log(product)
-  }, [product])
+    // console.log(product);
+  }, [product]);
+
+  //按讚攤位
+  const [likedData, setLikedData] = useState([]);
+
+  useEffect(() => {
+    const fetchLikedData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3200/shop/like/1`);
+        setLikedData(response.data);
+        // console.log('res',response.data)
+      } catch (error) {
+        console.error("Error fetching liked data:", error);
+      }
+    };
+    fetchLikedData();
+    // console.log('like',likedData)
+  }, []); // uid
+
+  // 收藏功能
+  const changeHeartList = () => {
+    console.log('OK')
+    if (likedData.includes(vendor.vinfo)) {
+      var index = likedData.indexOf(vendor.vinfo)
+      var list = likedData.splice(index, 0)
+      setLikedData(list)
+    } else {
+      var list = [...likedData]
+      list.push(vendor.vinfo)
+      setLikedData(list)
+    }
+  }
 
   return (
     <>
@@ -125,7 +156,8 @@ const Vendor = () => {
             {/*攤販資訊} */}
             <div className="d-flex align-items-center">
               <h3>{vendor.brand_name}</h3>
-              <i className=" fs-5 bi bi-heart px-3 text-black-50"></i>
+              <i className={`c-red fs-5 bi ${(likedData.includes(vendor.vinfo)) ? 'bi-heart-fill' : 'bi-heart'} px-3 text-black-50 cursor-pointer`}
+                onClick={() => { changeHeartList() }}></i>
             </div>
             <p className={`${styles.headerText} overflow-hidden`}>
               {vendor.content}
@@ -153,13 +185,9 @@ const Vendor = () => {
             data-bs-ride="carousel"
             data-bs-interval="3000" //控制播放
           >
-            <div className="carousel-indicators" id="carousel-indicators">
-
-            </div>
+            <div className="carousel-indicators" id="carousel-indicators"></div>
             {/* 輪播圖片 */}
-            <div className="carousel-inner " id="carousel-inner">
-
-            </div>
+            <div className="carousel-inner " id="carousel-inner"></div>
             {/*  */}
             <button
               className="carousel-control-prev"
@@ -224,7 +252,15 @@ const Vendor = () => {
       <div className="mb-5">
         <div className="container">
           <div className="row row-gap-4">
-            <VendorCard params={params} productDetail={(data) => { setProduct(data) }} showProduct={()=>{setShowModal(true)}}/>
+            <VendorCard
+              params={params}
+              productDetail={(data) => {
+                setProduct(data);
+              }}
+              showProduct={() => {
+                setShowModal(true);
+              }}
+            />
           </div>
         </div>
       </div>

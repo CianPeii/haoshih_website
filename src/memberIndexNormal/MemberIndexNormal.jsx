@@ -25,7 +25,7 @@ const MemberIndexNormal = () => {
           `http://localhost:3200/member/profile/${uid}`
         );
         setMemberData(response.data);
-        // console.log("Member Data:", response.data); // 數據首次被獲取時在控制台顯示
+        console.log("Member Data:", response.data); // 數據首次被獲取時在控制台顯示
       } catch (error) {
         console.error("Error fetching member data:", error);
       }

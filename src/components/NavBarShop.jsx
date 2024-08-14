@@ -3,6 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
+
 const NavBarShop = ({cartVisible}) => {
   const [productsData, setProductsData] = useState({});
   // console.log("cartVisible",cartVisible);
@@ -10,14 +11,17 @@ const NavBarShop = ({cartVisible}) => {
 
   useEffect(() => {
     // 檢查 localStorage 是否存在指定的 key
-    const name = JSON.parse(localStorage.getItem('name'));
-    if (name) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log('User data from localStorage:', user);
+    if (user) {
       setShowLogin(true);
     } else {
-      setShowLogin(true);
+      setShowLogin(false);
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
 
+
+  
   useEffect(() => {
     const fetchProductsData = async () => {
       try {

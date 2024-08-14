@@ -5,7 +5,6 @@ import ThirdTitle from "../components/ThirdTitle";
 import Footer from "../components/Footer";
 import VendorDetail from "./components/VendorDetail";
 import MarketFloorPlan from "./components/MarketFloorPlan";
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Col, Form } from "react-bootstrap";

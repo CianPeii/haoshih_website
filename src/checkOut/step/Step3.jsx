@@ -26,7 +26,7 @@ const Step3 = () => {
   // console.log("send_data",send_data);
   
 
-  const [selectedPayment, setSelectedPayment] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState("linepay"); // 將默認值設置為 "linepay"
   const [couponCode, setCouponCode] = useState("");
 
   const paymentMethods = [

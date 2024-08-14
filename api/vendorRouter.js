@@ -233,7 +233,7 @@ vendorRouter.get("/bankInfo/:vid", (req, res) => {
     "SELECT bank_code, bank_account FROM vendor WHERE vid = ?",
     [req.params.vid],
     (err, result) => {
-      res.json(result[0]);
+      res.json(result);
     }
   );
 });

@@ -16,6 +16,7 @@ import VendorProducts from "./components/VendorProducts";
 const MemberIndexVendor = () => {
   const [vendorData, setVendorData] = useState(null);
   const [stallProfile, setStallProfile] = useState(null);
+  const [productsData, setProductsData] = useState(null);
   const { vid } = useParams();
   const updateProfileData = (newData) => {
     setVendorData(newData);
@@ -53,7 +54,39 @@ const MemberIndexVendor = () => {
     };
 
     fetchStallProfile();
-  }, [vid]); // 空陣列表示這個效果只在組件首次渲染時運行
+  }, [vid]);
+
+  // 重抓攤位資訊
+  const refetchStallProfile = async (updatedData = null) => {
+    if (updatedData) {
+      setStallProfile((prevProfile) => ({ ...prevProfile, ...updatedData }));
+    } else {
+      try {
+        const response = await axios.get(
+          `http://localhost:3200/vendor/info/${vid}`
+        );
+        setStallProfile(response.data);
+      } catch (error) {
+        console.error("Error refetching StallProfile:", error);
+      }
+    }
+  };
+
+  // 抓商品資訊
+  useEffect(() => {
+    const fetchProductsData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3200/vendor/allProducts/${vid}`
+        );
+        setProductsData(response.data);
+      } catch (error) {
+        console.error("Error fetching Products Data:", error);
+      }
+    };
+
+    fetchProductsData();
+  }, [vid]);
 
   const VendorProfile = () => (
     <>
@@ -68,7 +101,7 @@ const MemberIndexVendor = () => {
 
   return (
     <>
-      <NavBarShop cartVisible={cartVisible}/>
+      <NavBarShop cartVisible={cartVisible} />
       <div className="row mw-100">
         <div className="col-3  border-end border-3">
           <MemberVenderSideBar />
@@ -93,6 +126,7 @@ const MemberIndexVendor = () => {
               element={
                 <EditStallProfile
                   stallProfile={stallProfile ? stallProfile : ""}
+                  onProfileUpdate={refetchStallProfile}
                 />
               }
             />
@@ -100,7 +134,16 @@ const MemberIndexVendor = () => {
             {/* http://localhost:3000/vendor/1/payment */}
             <Route path="payment" element={<VendorPaymentSettings />} />
 
-            <Route path="products" element={<VendorProducts />} />
+            <Route
+              path="products/*"
+              element={
+                productsData ? (
+                  <VendorProducts productsData={productsData} />
+                ) : (
+                  <p>Loading...</p>
+                )
+              }
+            />
 
             {/* <Route path="orders" element={<VendorOrders />} /> */}
           </Routes>

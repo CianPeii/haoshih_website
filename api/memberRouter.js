@@ -146,7 +146,7 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
         case 0:
           return "Line Pay";
         case 1:
-          return "銀行轉帳";
+          return "轉帳";
         case 2:
           return "貨到付款";
         default:
@@ -241,7 +241,7 @@ memberRouter.get("/like/:uid", async (req, res) => {
     // console.log(`likes: ${JSON.stringify(likes)}`);
 
     if (likes.length === 0 || !likes[0].list) {
-      return res.josn({
+      return res.json({
         uid: req.params.uid,
         likes: likes,
       });
