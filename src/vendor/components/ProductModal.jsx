@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, InputGroup, FormControl } from "react-bootstrap";
 import styled from "styled-components";
 import { X, Dash, Plus, Cart } from "react-bootstrap-icons";
-import { Buffer } from "buffer"
+import { Buffer } from "buffer";
 import axios from "axios";
 import { turnPrice } from "../../utils/turnPrice";
 // import { Alert } from "bootstrap";
@@ -58,10 +58,10 @@ const QuantitySelector = styled(InputGroup)`
 const AddToCartButton = styled(Button)`
   width: 150px;
   background-color: #e7f1ff;
-  color: #1f618d ;
-  border: 2px solid #1f618d ;
+  color: #1f618d;
+  border: 2px solid #1f618d;
   &:hover {
-    background-color:#1f618d ;
+    background-color: #1f618d;
   }
 `;
 
@@ -83,13 +83,12 @@ const ProductModal = ({ show, onHide, product }) => {
   // console.log("ProductModal 80", product);
 
   useEffect(() => {
-    const imageData = product.img01 || ''; // 提供一个默認值
+    const imageData = product.img01 || ""; // 提供一个默認值
     if (imageData) {
-      const base64String = Buffer.from(imageData).toString('base64');
+      const base64String = Buffer.from(imageData).toString("base64");
       setImgSrc(`data:image/jpeg;base64,${base64String}`);
     }
   }, [product.img01]);
-
 
   // useEffect(() => {
   //   // Fetch amountData when product changes
@@ -104,8 +103,6 @@ const ProductModal = ({ show, onHide, product }) => {
   //   fetchAmountData();
   // }, [product]);
 
-  
-
   const handleSubmit = async () => {
     // if (isSubmitting) return;
 
@@ -117,7 +114,7 @@ const ProductModal = ({ show, onHide, product }) => {
       const cartData = cartResponse.data;
 
       // 2. 查找當前商品在購物車中的數據
-      const cartItem = cartData.find(item => item.pid === product.pid);
+      const cartItem = cartData.find((item) => item.pid === product.pid);
       const currentCartAmount = cartItem ? cartItem.amount : 0;
 
       // 3. 檢查是否超出库存
@@ -127,18 +124,18 @@ const ProductModal = ({ show, onHide, product }) => {
       }
 
       // 4. 提交購物車更新請求
-      const response = await axios.post('http://localhost:3200/carts', {
-        uid: '2', 
-        pid: product.pid, 
+      const response = await axios.post("http://localhost:3200/carts", {
+        uid: "1",
+        pid: product.pid,
         amount: amount,
-        quantity: product.quantity
+        quantity: product.quantity,
       });
-    
-      console.log('Success:', response.data);
+
+      console.log("Success:", response.data);
 
       onHide(); // 成功後關閉彈跳窗
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       alert("加入購物車失敗，請稍後再試");
     }
   };
@@ -154,7 +151,7 @@ const ProductModal = ({ show, onHide, product }) => {
           <div style={{ width: "400px", flex: "1" }}>
             <img src={imgSrc} className="img-fluid rounded" alt="Loding..." />
           </div>
-        <div style={{ flex: "1", marginLeft: "100px" }}>
+          <div style={{ flex: "1", marginLeft: "100px" }}>
             <ProductTitle>{product.name}</ProductTitle>
             <ProductPrice>NT$ {turnPrice(product.price)}</ProductPrice>
             <QuantitySelector>
@@ -178,7 +175,9 @@ const ProductModal = ({ show, onHide, product }) => {
             <AddToCartButton onClick={handleSubmit}>
               <Cart /> 加入購物車
             </AddToCartButton>
-            <p style={{ marginTop: "10px" }}>小計 : {turnPrice(amount * product.price)}</p>
+            <p style={{ marginTop: "10px" }}>
+              小計 : {turnPrice(amount * product.price)}
+            </p>
           </div>
         </div>
 

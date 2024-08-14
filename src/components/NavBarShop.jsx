@@ -59,7 +59,8 @@ const NavBarShop = ({ cartVisible }) => {
               >
                 <div
                   id="123"
-                  style={{ display: cartVisible ? "visible" : "none" }}
+                  // style={{ display: cartVisible ? "visible" : "none" }}
+                  style={{ display: "none" }}
                 >
                   <a
                     className="position-relative text-decoration-none link-dark"
@@ -75,9 +76,11 @@ const NavBarShop = ({ cartVisible }) => {
                 </div>
                 <a
                   className="text-decoration-none c-black"
-                  href="http://localhost:3000/member/1"
+                  // href="http://localhost:3000/member/1"
+                  href="http://localhost:3000/vendor/1"
                 >
-                  <div>會員專區</div>
+                  {/* <div>小美</div> */}
+                  <div>范丞丞</div>
                 </a>
                 <div>登出</div>
               </div>
