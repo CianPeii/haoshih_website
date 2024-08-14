@@ -107,18 +107,20 @@ const Vendor = () => {
   }, [product]);
 
   //按讚攤位
-  const [likedData, setLikedData] = useState(null);
+  const [likedData, setLikedData] = useState([1,2]);
 
   useEffect(() => {
     const fetchLikedData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3200/member/like/1`);
+        const response = await axios.get(`http://localhost:3200/shop/like/1`);
         setLikedData(response.data);
+        console.log('res',response.data)
       } catch (error) {
         console.error("Error fetching liked data:", error);
       }
     };
     fetchLikedData();
+    console.log('like',likedData)
   }, []); // uid
 
   return (
@@ -141,7 +143,7 @@ const Vendor = () => {
             {/*攤販資訊} */}
             <div className="d-flex align-items-center">
               <h3>{vendor.brand_name}</h3>
-              <i className=" fs-5 bi bi-heart px-3 text-black-50"></i>
+              <i className={`c-red fs-5 bi ${(likedData.includes(vendor.vinfo))? 'bi-heart-fill':'bi-heart'} px-3 text-black-50`}></i>
             </div>
             <p className={`${styles.headerText} overflow-hidden`}>
               {vendor.content}
