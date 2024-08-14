@@ -33,7 +33,7 @@ const Footer = () => {
 
             <div className="d-flex flex-column">
               <div>
-                <div className="pb-2" onClick={() => openLink("/map")}>
+                <div className="pb-2" onClick={() => openLink("/mapå")}>
                   <i className="bi bi-bus-front" />
                   <span className="fw-light">交通資訊</span>
                 </div>
