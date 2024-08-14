@@ -8,26 +8,37 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+// import  FormSelect  from "react-bootstrap/FormSelect";
+
+const cities = ["台北市", "新北市", "桃園市", "台中市", "台南市", "高雄市"]; // 示例城市
 
 const Step2 = () => {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
+  const [postNum, setPostNum] = useState("");
+  const [city, setCity] = useState("");
+  const [district, setDistrict] = useState("");
   const [address, setAddress] = useState("");
   const navigate = useNavigate();
   const cartVisible = false;
 
   const handleNextStep = () => {
-    const checkoutData = JSON.parse(localStorage.getItem("checkoutData"));
-    // checkoutData 是前面的結帳商品的資訊
+    const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
+    const total = JSON.parse(localStorage.getItem("total"));
+
     const contactInfo = {
       fullName,
       phone,
+      postNum,
+      city,
+      district,
       address,
     };
+    console.log(total);
 
-    // 將聯絡訊息和 checkoutData 一起儲存到 localStorage 中
-    localStorage.setItem("contactInfo", JSON.stringify(contactInfo));
-    localStorage.setItem("checkoutData", JSON.stringify(checkoutData));
+
+    localStorage.setItem("Step1Data", JSON.stringify(Step1Data));
+    localStorage.setItem("Step2Data", JSON.stringify(contactInfo));
     navigate("/Step3");
   };
 
@@ -49,8 +60,6 @@ const Step2 = () => {
             <Col sm="8">
               <Form.Control
                 type="text"
-                placeholder=""
-                name=""
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
@@ -64,8 +73,6 @@ const Step2 = () => {
             <Col sm="8">
               <Form.Control
                 type="tel"
-                placeholder=""
-                name="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
@@ -74,13 +81,56 @@ const Step2 = () => {
 
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm="2" className="text-end">
-              收件人地址
+              收件地址
+            </Form.Label>
+            <Col sm="2">
+              <Form.Control
+                type="text"
+                placeholder="請輸入郵遞區號"
+                value={postNum}
+                onChange={(e) => setPostNum(e.target.value)}
+              />
+            </Col>
+            {/* <Form.Label column sm="1" className="text-center">
+              縣市
+            </Form.Label> */}
+            <Col sm="3">
+              <Form.Select
+                as="select"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                // className="text-center"
+              >
+                <option value="">請選擇縣市</option>
+                {cities.map((city, index) => (
+                  <option key={index} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
+            {/* <Form.Label column sm="2" className="text-end">
+              地區
+            </Form.Label> */}
+            <Col sm="3">
+              <Form.Control
+                type="text"
+                placeholder="請輸入鄉鎮市區"
+                value={district}
+                onChange={(e) => setDistrict(e.target.value)}
+              />
+            </Col>
+          </Form.Group>
+
+
+          <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm="2" className="text-end">
+              詳細地址
             </Form.Label>
             <Col sm="8">
               <Form.Control
-                type="textarea"
-                placeholder="請填寫郵遞區號"
-                name="address"
+                type="text"
+                placeholder="詳細地址"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
@@ -106,9 +156,10 @@ const Step2 = () => {
           </Button>
         </Col>
       </div>
-      <Footer />;
+      <Footer />
       <ChatBtn />
     </>
   );
 };
+
 export default Step2;

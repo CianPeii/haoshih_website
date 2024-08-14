@@ -44,17 +44,15 @@ const Step4 = () => {
           )}
           {paymentStatus === "success" && (
             <div className="text-center">
-              <h2 className="text-success">付款成功！</h2>
+              <img src="stickers/003.png" />
+              <h2 className="text-success ">付款成功！</h2>
               <p>感謝您的購買。您的訂單已經成功完成。</p>
-              <p>
-                訂單編號：ORD-
-                {Math.random().toString(36).substr(2, 9).toUpperCase()}
-              </p>
               <p>我們將盡快處理您的訂單並安排發貨。</p>
             </div>
           )}
           {paymentStatus === "failed" && (
             <div className="text-center">
+              <img src="stickers/022.png" />
               <h2 className="text-danger">付款失敗</h2>
               <p>很抱歉，您的付款未能成功處理。</p>
               <p>請檢查您的付款資訊並重試，或選擇其他付款方式。</p>
@@ -76,7 +74,7 @@ const Step4 = () => {
             className="rounded-pill px-4 py-2 bg-secondary  border border-2"
             type="button"
           >
-            <a href="/member/1/order" className="c-black text-decoration-none">
+            <a href="/" className="c-black text-decoration-none">
               我的訂單
             </a>
           </Button>
@@ -87,16 +85,24 @@ const Step4 = () => {
 
       <Modal show={showErrorModal} onHide={handleCloseErrorModal}>
         <Modal.Header closeButton>
-          <Modal.Title>付款失敗</Modal.Title>
+          <Modal.Title className="text-danger">付款失敗</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           很抱歉，您的付款未能成功處理。請檢查您的付款資訊並重試，或選擇其他付款方式。
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseErrorModal}>
+          <Button
+            variant="secondary"
+            className="rounded-pill"
+            onClick={handleCloseErrorModal}
+          >
             關閉
           </Button>
-          <Button variant="primary" onClick={() => window.history.back()}>
+          <Button
+            variant="primary"
+            className="rounded-pill"
+            onClick={() => window.history.back()}
+          >
             返回付款頁面
           </Button>
         </Modal.Footer>

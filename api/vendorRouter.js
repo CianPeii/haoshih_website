@@ -13,28 +13,6 @@ var conn = config.connection;
 // 設置 multer 用於處理文件上傳
 const upload = multer();
 
-// 處理圖片
-const convertImgToBase64 = (img) => {
-  if (img) {
-    if (Buffer.isBuffer(img)) {
-      // 如果是 Buffer，轉換為 Base64
-      img = `data:image/jpeg;base64,${img.toString("base64")}`;
-    } else if (typeof img === "string") {
-      // 如果已經是字串，檢查是否需要添加前綴
-      if (!img.startsWith("data:image/")) {
-        img = `data:image/jpeg;base64,${img}`;
-      }
-    } else {
-      // 如果是其他類型，設置為 null
-      console.log("Unexpected image data type");
-      img = null;
-    }
-  } else {
-    img = null;
-  }
-  return img;
-};
-
 // --------測試路由用----------
 // vendorRouter.get('/', function(req,res){res.send('OK')})
 
@@ -110,6 +88,28 @@ vendorRouter.get("/info/:vid", async (req, res) => {
     if (stallInfo.length === 0) {
       return res.status(404).json({ error: "Vendor not found" });
     }
+
+    // 處理圖片
+    const convertImgToBase64 = (img) => {
+      if (img) {
+        if (Buffer.isBuffer(img)) {
+          // 如果是 Buffer，轉換為 Base64
+          img = `data:image/jpeg;base64,${img.toString("base64")}`;
+        } else if (typeof img === "string") {
+          // 如果已經是字串，檢查是否需要添加前綴
+          if (!img.startsWith("data:image/")) {
+            img = `data:image/jpeg;base64,${img}`;
+          }
+        } else {
+          // 如果是其他類型，設置為 null
+          console.log("Unexpected image data type");
+          img = null;
+        }
+      } else {
+        img = null;
+      }
+      return img;
+    };
 
     const convertedImages = Object.entries(stallInfo[0]).reduce(
       (acc, [key, value]) => {
@@ -203,11 +203,8 @@ vendorRouter.put(
         "brand_img05",
       ];
       imageFields.forEach((field) => {
-        if (req.body[field] && req.body[field].startsWith("data:image")) {
-          // 從 Base64 字符串中提取實際的 base64 編碼部分
-          const base64Data = req.body[field].split(";base64,").pop();
-          // 將 Base64 字符串轉換為 buffer
-          updateFields[field] = Buffer.from(base64Data, "base64");
+        if (req.files && req.files[field] && req.files[field][0]) {
+          updateFields[field] = req.files[field][0].buffer;
         }
       });
 
@@ -236,7 +233,7 @@ vendorRouter.get("/bankInfo/:vid", (req, res) => {
     "SELECT bank_code, bank_account FROM vendor WHERE vid = ?",
     [req.params.vid],
     (err, result) => {
-      res.json(result[0]);
+      res.json(result);
     }
   );
 });
@@ -265,72 +262,6 @@ vendorRouter.put("/bankInfo/:vid", async (req, res) => {
   } catch (error) {
     console.error("Error updating bankInfo:", error);
     res.status(500).send("An error occurred while updating the bankInfo");
-  }
-});
-
-// 全商品資料 API
-vendorRouter.get("/allProducts/:vid", async (req, res) => {
-  try {
-    const allProductsQuery = `
-    SELECT
-      p.pid, p.name, p.content, p.quantity, p.price, p.is_show, p.launch,
-      v.vinfo, p.vid, p.img01
-    FROM product AS p
-    INNER JOIN vendor AS v
-    ON p.vid = v.vid
-    WHERE p.vid = ?`;
-
-    const allProductsData = await queryAsync(conn, allProductsQuery, [
-      req.params.vid,
-    ]);
-
-    if (allProductsData.length === 0) {
-      return res.status(404).json({ error: "There is no product." });
-    }
-
-    const allProductsWithConvertedImages = allProductsData.map((product) => ({
-      ...product,
-      img01: convertImgToBase64(product.img01),
-    }));
-
-    res.json(allProductsWithConvertedImages);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Fail to provide data" });
-  }
-});
-
-// 單一商品資料 API
-vendorRouter.get("/theProduct/:pid", async (req, res) => {
-  try {
-    const theProductQuery = `
-    SELECT *
-    FROM product
-    WHERE pid = ?`;
-
-    const theProductData = await queryAsync(conn, theProductQuery, [
-      req.params.pid,
-    ]);
-
-    if (theProductData.length === 0) {
-      return res
-        .status(404)
-        .json({ error: "There is no data for this product." });
-    }
-
-    const theProductWithConvertedImages = {
-      ...theProductData[0],
-      img01: convertImgToBase64(theProductData[0].img01),
-      img02: convertImgToBase64(theProductData[0].img02),
-      img03: convertImgToBase64(theProductData[0].img03),
-      img04: convertImgToBase64(theProductData[0].img04),
-      img05: convertImgToBase64(theProductData[0].img05),
-    };
-
-    res.json(theProductWithConvertedImages);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Fail to provide data" });
   }
 });
 
