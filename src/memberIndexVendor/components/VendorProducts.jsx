@@ -1,18 +1,19 @@
-import React from "react";
 import ProductCard from "./ProductCard";
 import SubTitleYellow from "../../components/SubTitleYellow";
 import Button from "react-bootstrap/Button";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useParams, Routes, Route, Outlet } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import EditProduct from "./EditProduct";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const VendorProducts = (props) => {
   const { productsData } = props;
-  // const navigate = useNavigate();
-  // const handleNavigation = (vid) => {
-  //   navigate("/shop/" + vid);
-  // };
+  const navigate = useNavigate();
+  const handleNavigation = (vid, pid) => {
+    navigate(`/vendor/${vid}/products/edit/${pid}`);
+  };
+
+  // 抓單一商品資訊
 
   const ShowAllProducts = () => {
     return (
@@ -27,13 +28,17 @@ const VendorProducts = (props) => {
             新增商品&nbsp;<i className="bi bi-plus-circle-fill"></i>
           </Button>
         </div>
-        <div className="d-flex flex-wrap justify-content-center align-items-center px-5">
+        <div className="d-flex flex-wrap align-items-center px-5">
           {productsData.map((product, index) => (
             <div
-              key={product.pid}
+              // key={product.pid}
               className="col-12 col-sm-6 col-md-6 col-lg-6 my-4 d-flex justify-content-center align-items-center"
             >
-              <ProductCard data={product} />
+              <ProductCard
+                key={product.pid}
+                linkTo={handleNavigation}
+                data={product}
+              />
             </div>
           ))}
         </div>

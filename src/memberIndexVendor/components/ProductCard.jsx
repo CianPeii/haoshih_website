@@ -1,9 +1,9 @@
 import styles from "./ProductCard.module.scss";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const ProductCard = (props) => {
-  const { data } = props;
+  const { data, linkTo } = props;
 
   return (
     <div className={styles.productCard}>
@@ -22,7 +22,12 @@ const ProductCard = (props) => {
           alt="product image"
         />
         <div className={styles.hoverCover}>
-          <div className={styles.productBtn}>
+          <div
+            className={styles.productBtn}
+            onClick={() => {
+              linkTo(data.vid, data.pid);
+            }}
+          >
             <i className="bi bi-pencil"></i>
           </div>
           <div className={styles.productBtn}>

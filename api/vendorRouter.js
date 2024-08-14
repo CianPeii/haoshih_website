@@ -268,7 +268,7 @@ vendorRouter.put("/bankInfo/:vid", async (req, res) => {
   }
 });
 
-// 商品資料 API
+// 全商品資料 API
 vendorRouter.get("/allProducts/:vid", async (req, res) => {
   try {
     const allProductsQuery = `
@@ -278,7 +278,7 @@ vendorRouter.get("/allProducts/:vid", async (req, res) => {
     FROM product AS p
     INNER JOIN vendor AS v
     ON p.vid = v.vid
-    WHERE p.vid = 1`;
+    WHERE p.vid = ?`;
 
     const allProductsData = await queryAsync(conn, allProductsQuery, [
       req.params.vid,
@@ -294,6 +294,40 @@ vendorRouter.get("/allProducts/:vid", async (req, res) => {
     }));
 
     res.json(allProductsWithConvertedImages);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Fail to provide data" });
+  }
+});
+
+// 單一商品資料 API
+vendorRouter.get("/theProduct/:pid", async (req, res) => {
+  try {
+    const theProductQuery = `
+    SELECT *
+    FROM product
+    WHERE pid = ?`;
+
+    const theProductData = await queryAsync(conn, theProductQuery, [
+      req.params.pid,
+    ]);
+
+    if (theProductData.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "There is no data for this product." });
+    }
+
+    const theProductWithConvertedImages = {
+      ...theProductData[0],
+      img01: convertImgToBase64(theProductData[0].img01),
+      img02: convertImgToBase64(theProductData[0].img02),
+      img03: convertImgToBase64(theProductData[0].img03),
+      img04: convertImgToBase64(theProductData[0].img04),
+      img05: convertImgToBase64(theProductData[0].img05),
+    };
+
+    res.json(theProductWithConvertedImages);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Fail to provide data" });

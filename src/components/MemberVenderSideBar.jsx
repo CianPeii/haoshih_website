@@ -8,7 +8,7 @@ const MemberVenderSideBar = () => {
           <div className={`w-100 ${styles.sideBarSubTitle}`}>
             <a
               className="text-decoration-none c-black"
-              href="http://localhost:3000/vendor/1"
+              href="http://localhost:3000/vendor/2"
             >
               <h4>會員資料</h4>
             </a>
@@ -19,19 +19,19 @@ const MemberVenderSideBar = () => {
             <div className="py-1 ps-3 ">
               <a
                 className="text-decoration-none c-black"
-                href="http://localhost:3000/vendor/1/vendorInfo"
+                href="http://localhost:3000/vendor/2/vendorInfo"
               >
                 <h5>攤位資訊</h5>
               </a>
               <a
                 className="text-decoration-none c-black"
-                href="http://localhost:3000/vendor/1/payment"
+                href="http://localhost:3000/vendor/2/payment"
               >
                 <h5>交易設定</h5>
               </a>
               <a
                 className="text-decoration-none c-black"
-                href="http://localhost:3000/vendor/1/products"
+                href="http://localhost:3000/vendor/2/products"
               >
                 <h5>商品管理</h5>
               </a>
