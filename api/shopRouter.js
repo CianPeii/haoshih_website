@@ -73,14 +73,15 @@ shopRouter.get("/like/:uid", async function (req, res) {
     const likes = await queryAsync(conn, heartQuery, [req.params.uid]);
     // console.log(`likes: ${JSON.stringify(likes)}`);
 
-    if (likes.length === 0 || !likes[0].list) {
-      return res.json({
-        uid: req.params.uid,
-        likes: likes,
-      });
-    }
+    // if (likes.length === 0 || !likes[0].list) {
+    //   return res.json({
+    //     uid: req.params.uid,
+    //     likes: likes,
+    //   });
+    // }
 
     const likesNumArr = likes[0]["list"].split(",").map(Number);
+    res.json(likesNumArr)
     // console.log(`likesNumArr: ${likesNumArr}`); // 1,2
   } catch (error) {
     console.error("Error in /shop/like/:uid:", error);
