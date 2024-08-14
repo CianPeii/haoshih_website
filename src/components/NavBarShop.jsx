@@ -75,7 +75,7 @@ const NavBarShop = ({ cartVisible }) => {
                 </div>
                 <a
                   className="text-decoration-none c-black"
-                  href="http://localhost:3000/vendor/1"
+                  href="http://localhost:3000/member/1"
                 >
                   <div>會員專區</div>
                 </a>
