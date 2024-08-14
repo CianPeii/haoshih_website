@@ -8,6 +8,7 @@ const MemberOrderNormal = (props) => {
   const [formData, setFormData] = useState({
     sortByOrderTime: "1",
   });
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({
@@ -15,6 +16,7 @@ const MemberOrderNormal = (props) => {
       [name]: value.trim(),
     }));
   };
+
   return (
     <>
       <SubTitleYellow title="我的訂單" />

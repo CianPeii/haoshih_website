@@ -2,21 +2,24 @@ import { Row, Col, Image } from "react-bootstrap";
 import styles from "../components/OrderItem.module.scss";
 
 const OrderItem = (props) => {
-  const { product, img, qty } = props;
+  const { item } = props;
   return (
     <>
       <Row className="mb-3">
         <Col xs={2}>
           <div className={styles.imgContainer}>
-            <Image src={img} className={styles.productImg} />
+            <Image
+              src={item.productData.productImage}
+              className={styles.productImg}
+            />
           </div>
         </Col>
         <Col xs={6}>
-          <h5>{product.name}</h5>
-          <p className="mb-0">x {qty}</p>
+          <h5>{item.productData.name}</h5>
+          <p className="mb-0">x {item.amount}</p>
         </Col>
         <Col xs={4} className="text-end">
-          <h5>NT$ {product.price}</h5>
+          <h5>NT$ {item.productData.price * item.amount}</h5>
         </Col>
       </Row>
     </>

@@ -4,7 +4,7 @@ shopRouter.use(express.urlencoded({ extended: false }));
 shopRouter.use(express.json());
 var config = require("./databaseConfig.js");
 var conn = config.connection;
-import { queryAsync } from "../src/utils/utils.js";
+const { queryAsync, hashPW } = require("../src/utils/utils.js");
 
 // --------測試路由用----------
 // shopRouter.get('/', function(req,res){res.send('OK')})

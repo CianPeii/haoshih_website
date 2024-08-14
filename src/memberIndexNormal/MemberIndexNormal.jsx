@@ -18,6 +18,7 @@ const MemberIndexNormal = () => {
   };
   const cartVisible = 1;
 
+  // 抓會員資料
   useEffect(() => {
     const fetchMemberData = async () => {
       try {
@@ -33,8 +34,8 @@ const MemberIndexNormal = () => {
     fetchMemberData();
   }, [uid]); // 空陣列表示這個效果只在組件首次渲染時運行
 
+  // 抓訂單資料
   const [orderData, setOrderData] = useState(null);
-
   useEffect(() => {
     const fetchOrderData = async () => {
       try {
@@ -49,8 +50,8 @@ const MemberIndexNormal = () => {
     fetchOrderData();
   }, [uid]);
 
+  // 抓按讚資料
   const [likedData, setLikedData] = useState(null);
-
   useEffect(() => {
     const fetchLikedData = async () => {
       try {

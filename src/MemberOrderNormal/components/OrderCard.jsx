@@ -6,8 +6,10 @@ import OrderItem from "./OrderItem";
 function OrderCard(props) {
   const navigate = useNavigate();
   const { orderData } = props;
-  const productData = orderData.productData;
-  // console.log(orderData);
+  const itemData = orderData.detail.item;
+
+  // console.log(itemData);
+
   return (
     <Container className="mt-4">
       <Card>
@@ -34,19 +36,14 @@ function OrderCard(props) {
         </Card.Header>
         <Card.Body>
           {/* Order items */}
-          {productData.map((product) => (
-            <OrderItem
-              key={product.pid}
-              product={product}
-              img={orderData.productImage}
-              qty={orderData.detail.amount}
-            />
+          {itemData.map((item) => (
+            <OrderItem key={item.pid} item={item} />
           ))}
 
           {/* Order total */}
           <Row className="mt-4">
             <Col className="text-end">
-              <p className="c-gray">付款方式：{orderData.detail.payment}</p>
+              <p className="c-gray">付款方式：{orderData.payment}</p>
               <p className="c-gray">訂單狀態：{orderData.status}</p>
               <h5 className="text-red">
                 訂單總額：NT$ {orderData.detail.total}
@@ -58,9 +55,15 @@ function OrderCard(props) {
           <Row className="c-gray">
             <Col>
               <p>收件資訊</p>
-              <p>收件人：王曉明</p>
-              <p>電話：0911-222-333</p>
-              <p>地址：{orderData.send_data}</p>
+              <p>收件人：{orderData.send_data.fullName}</p>
+              <p>電話：{orderData.send_data.phone}</p>
+              <p>
+                地址：
+                {orderData.send_data.address.postNum +
+                  orderData.send_data.address.city +
+                  orderData.send_data.address.district +
+                  orderData.send_data.address.address}
+              </p>
             </Col>
           </Row>
           <Col className="text-end">
