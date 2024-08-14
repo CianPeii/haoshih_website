@@ -116,7 +116,7 @@ const ShopCart = () => {
                 前往結帳
               </Button>
 
-              <WeatherApp />
+              {/* <WeatherApp /> */}
             </div>
           </div>
         </div>

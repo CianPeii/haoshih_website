@@ -3,8 +3,8 @@ import Main from "./components/Main";
 import About from "./components/About";
 import Menu from "./components/Menu";
 import Footer from "../components/Footer";
-import RainAnimation from '../weather/RainAnimation';
-import React, { useState, useEffect } from 'react';
+import RainAnimation from "../weather/RainAnimation";
+import React, { useState, useEffect } from "react";
 const Home = () => {
   const [isRaining, setIsRaining] = useState(false);
 
@@ -16,7 +16,7 @@ const Home = () => {
   }, []);
   return (
     <>
-      <RainAnimation isRaining={true} />
+      <RainAnimation isRaining={false} />
       <NavBar></NavBar>
       <Main></Main>
       <About></About>
