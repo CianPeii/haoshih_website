@@ -20,6 +20,7 @@ import Step1 from "./checkOut/step/Step1";
 import Step2 from "./checkOut/step/Step2";
 import Step3 from "./checkOut/step/Step3";
 import Step4 from "./checkOut/step/Step4";
+import VendorSignUp from "./SignUp/VendorSingUp";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -41,6 +42,9 @@ const Layout = () => {
             <Route path="/shop/:vid/*" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register/member" element={<Normal />} />
+            <Route path="/register/vendor" element={<VendorSignUp />} />
             <Route path="/SetStalls" element={<SetStalls />} />
             {/* TODO: default route  =- 已經在 default/Default.jsx */}
             <Route path="/member/:uid/*" element={<MemberIndexNormal />} />

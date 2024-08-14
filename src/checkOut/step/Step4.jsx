@@ -76,7 +76,7 @@ const Step4 = () => {
             className="rounded-pill px-4 py-2 bg-secondary  border border-2"
             type="button"
           >
-            <a href="/member/1/order" className="c-black text-decoration-none">
+            <a href="/" className="c-black text-decoration-none">
               我的訂單
             </a>
           </Button>

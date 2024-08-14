@@ -1,23 +1,27 @@
 import styles from "./NavBarShop.module.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios from 'axios';
 
-const NavBarShop = ({ cartVisible }) => {
+
+const NavBarShop = ({cartVisible}) => {
   const [productsData, setProductsData] = useState({});
   // console.log("cartVisible",cartVisible);
   const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
     // 檢查 localStorage 是否存在指定的 key
-    const name = JSON.parse(localStorage.getItem("name"));
-    if (name) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log('User data from localStorage:', user);
+    if (user) {
       setShowLogin(true);
     } else {
-      setShowLogin(true);
+      setShowLogin(false);
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
 
+
+  
   useEffect(() => {
     const fetchProductsData = async () => {
       try {
@@ -54,40 +58,37 @@ const NavBarShop = ({ cartVisible }) => {
               </a>
             </div>
             {showLogin ? (
-              <div
-                className={`d-flex flex-row justify-content-between align-items-center gap-1 ${styles.loginItem}`}
+        <div
+          className={`d-flex flex-row justify-content-between align-items-center gap-1 ${styles.loginItem}`}
+        >
+          <div id="123" style={{ display: cartVisible ? "visible" : "none" }}>
+            <a
+              className="position-relative text-decoration-none link-dark"
+              href="/ShopCart"
+            >
+              <div className="bi bi-cart h2 "></div>
+              <span
+                className={`c-white rounded-circle bg-gray c-black fw-bolder cursor-pointer ${styles.ShopQuantity}`}
               >
-                <div
-                  id="123"
-                  style={{ display: cartVisible ? "visible" : "none" }}
-                >
-                  <a
-                    className="position-relative text-decoration-none link-dark"
-                    href="/ShopCart"
-                  >
-                    <div className="bi bi-cart h2 "></div>
-                    <span
-                      className={`c-white rounded-circle bg-gray c-black fw-bolder cursor-pointer ${styles.ShopQuantity}`}
-                    >
-                      {Object.keys(productsData).length}
-                    </span>
-                  </a>
-                </div>
-                <a
-                  className="text-decoration-none c-black"
-                  href="http://localhost:3000/member/1"
-                >
-                  <div>會員專區</div>
-                </a>
-                <div>登出</div>
-              </div>
-            ) : (
-              <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>
-                <a className="link-dark text-decoration-none" href="https:">
-                  登入
-                </a>
-              </div>
-            )}
+                {Object.keys(productsData).length}
+              </span>
+            </a>
+          </div>
+          <a
+            className="text-decoration-none c-black"
+            href="http://localhost:3000/vendor/1"
+          >
+            <div>會員專區</div>
+          </a>
+          <div>登出</div>
+        </div>
+      ) : (
+        <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>
+          <a className="link-dark text-decoration-none" href="https:">
+            登入
+          </a>
+        </div>
+      )}
           </div>
         </nav>
       </div>
