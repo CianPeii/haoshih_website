@@ -46,7 +46,7 @@ const WeatherApp = () => {
   return (
     <div className="weather-card">
       <h2 className="city-name">{StationName}市 <span>{WeatherElement.Weather}</span></h2>
-      <p className="observation-time">觀測時間：{new Date(ObsTime.DateTime).toLocaleString()}</p>
+      <p className="observation-time">{new Date(ObsTime.DateTime).toLocaleString()}</p>
       <div className="weather-info">
         <div className="temperature-container">
           <p className="temperature">{Math.round(WeatherElement.AirTemperature)}<span>°C</span></p>

@@ -99,8 +99,8 @@ const Vendor = () => {
   useEffect(() => {
     if (!vendor) return;
     console.log("Vendor data updated:", vendor);
-
   }, [vendor, params.vid]);
+  
   useEffect(() => {
     console.log(product)
   }, [product])
