@@ -94,6 +94,13 @@ const SetStalls = () => {
                 </div>
                 <div className="d-flex align-items-center">
                   <div
+                    className="bg-lightBlue me-2"
+                    style={{ width: "20px", height: "20px" }}
+                  ></div>
+                  <span>已選攤位</span>
+                </div>
+                <div className="d-flex align-items-center">
+                  <div
                     className="bg-gray me-2"
                     style={{ width: "20px", height: "20px" }}
                   ></div>
