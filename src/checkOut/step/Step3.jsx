@@ -12,7 +12,7 @@ const Step3 = () => {
   console.log(checkoutData);
   console.log(contactInfo);
 
-  const [selectedPayment, setSelectedPayment] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState("linepay"); // 將默認值設置為 "linepay"
   const [couponCode, setCouponCode] = useState("");
 
   const paymentMethods = [
