@@ -150,7 +150,7 @@ const EditProduct = () => {
       </Form.Group>
       <Form.Group as={Row} controlId="productImages" className="mb-5">
         <Form.Label column sm="2" className="text-end">
-          商品照
+          商品照片
         </Form.Label>
         <Col sm="10">
           <div className="d-flex flex-wrap gap-3">
