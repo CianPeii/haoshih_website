@@ -44,7 +44,7 @@ const AllVendors = () => {
 
   return (
     <>
-      <NavBarShop cartVisible={cartVisible}/>
+      <NavBarShop cartVisible={cartVisible} />
       <MainBg title="市集商城" page="allVendors" />
       <Sections
         type={type}
