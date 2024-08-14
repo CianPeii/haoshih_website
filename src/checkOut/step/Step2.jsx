@@ -72,7 +72,7 @@ const Step2 = () => {
             </Col>
           </Form.Group>
 
-          <Form.Group as={Row} className="container">
+          <Form.Group as={Row} className="mb-3">
             <Form.Label column sm="2" className="text-end">
               收件人地址
             </Form.Label>
