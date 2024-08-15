@@ -25,7 +25,6 @@ const NavBarShop = ({ cartVisible }) => {
   useEffect(() => {
     if(user){
 
-
       const fetchProductsData = async () => {
         try {
           const response = await axios.get(`http://localhost:3200/carts/${user.uid}`);

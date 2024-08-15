@@ -80,6 +80,7 @@ const Step3 = () => {
     };
 
     console.log("detail", detail);
+    console.log(JSON.stringify(detail))
     localStorage.setItem("detail", JSON.stringify(detail));
     localStorage.setItem("send_data", JSON.stringify(send_data));
 
