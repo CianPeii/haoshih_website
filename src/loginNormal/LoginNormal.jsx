@@ -18,9 +18,9 @@ const LoginNormal = () => {
       });
 
       if (response.data.success) {
-        console.log('登入成功', response.data);
         const { uid, userType } = response.data;
-        
+        console.log('登入成功', response.data);
+
         // 獲取會員暱稱
         const nicknameResponse = await axios.get(`http://localhost:3200/login/${uid}`);
         const { nickname } = nicknameResponse.data;
@@ -30,10 +30,12 @@ const LoginNormal = () => {
           uid,
           nickname,
         };
-        localStorage.setItem('user', JSON.stringify(userData));        
+        localStorage.setItem('user', JSON.stringify(userData));
 
-        // 導航到用戶主頁
-        navigate(`/${userType}/${uid}`);
+        // 導到用戶主頁
+        // navigate(`/${userType}/${uid}`);
+        // 導到商城
+        navigate(`/shop`);
       } else {
         setError(response.data.error || '登入失敗');
       }

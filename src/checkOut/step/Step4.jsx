@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Col, Form, Modal, Container, Card } from "react-bootstrap";
+import { Button, Col, Modal, Container, Card } from "react-bootstrap";
 import NavBarShop from "../../components/NavBarShop";
 import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
