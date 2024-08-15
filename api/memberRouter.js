@@ -165,48 +165,63 @@ memberRouter.get("/orderList/:uid", async (req, res) => {
           "Order detail:",
           order.detail
         );
-        detailObj = { amount: 0, price: 0, total: 0 }; // 設置一個默認值
+        detailObj = { item: [], total: 0, payment: 0 }; // 設置一個默認值
       }
+
+      let sendDataObj = JSON.parse(order.send_data);
+
       // 抓商品資料
-      let productData = await queryAsync(
-        conn,
-        "SELECT * FROM product WHERE pid = ?",
-        [detailObj.pid]
-      );
 
-      // 假設 productData 中包含了名為 img01 的 Base64 圖片數據
-      let productImage = productData[0].img01;
+      const productPromises = detailObj.item.map(async (item) => {
+        let productData = await queryAsync(
+          conn,
+          "SELECT * FROM product WHERE pid = ?",
+          [item.pid]
+        );
 
-      // 檢查 productImage 的類型和內容
-      // console.log("Product Image Type:", typeof productImage);
-      // console.log("Product Image:", productImage);
+        // 假設 productData 中包含了名為 img01 的 Base64 圖片數據
+        let productImage = productData[0]?.img01;
 
-      // 根據 productImage 的實際類型進行處理
-      if (productImage) {
-        if (Buffer.isBuffer(productImage)) {
-          // 如果是 Buffer，轉換為 Base64
-          productImage = `data:image/jpeg;base64,${productImage.toString(
-            "base64"
-          )}`;
-        } else if (typeof productImage === "string") {
-          // 如果已經是字串，檢查是否需要添加前綴
-          if (!productImage.startsWith("data:image/")) {
-            productImage = `data:image/jpeg;base64,${productImage}`;
+        // 根據 productImage 的實際類型進行處理
+        if (productImage) {
+          if (Buffer.isBuffer(productImage)) {
+            // 如果是 Buffer，轉換為 Base64
+            productImage = `data:image/jpeg;base64,${productImage.toString(
+              "base64"
+            )}`;
+          } else if (typeof productImage === "string") {
+            // 如果已經是字串，檢查是否需要添加前綴
+            if (!productImage.startsWith("data:image/")) {
+              productImage = `data:image/jpeg;base64,${productImage}`;
+            }
+          } else {
+            // 如果是其他類型，設置為 null
+            console.log("Unexpected image data type");
+            productImage = null;
           }
         } else {
-          // 如果是其他類型，設置為 null
-          console.log("Unexpected image data type");
           productImage = null;
         }
-      } else {
-        productImage = null;
-      }
+
+        const { img01, img02, img03, img04, img05, ...restProductData } =
+          productData[0];
+
+        return {
+          ...item,
+          productData: {
+            ...restProductData,
+            productImage,
+          },
+        };
+      });
+
+      const products = await Promise.all(productPromises);
 
       return {
         ...order,
-        detail: { ...detailObj, payment: getPaymentText(detailObj.payment) },
-        productData: productData,
-        productImage: productImage,
+        detail: { ...detailObj, item: products },
+        send_data: sendDataObj,
+        payment: getPaymentText(detailObj.payment),
         status: getStatusText(order.status),
         formatted_order_time: new Date(order.order_time).toLocaleString(
           "zh-TW",
