@@ -20,7 +20,9 @@ const NavBarShop = ({cartVisible}) => {
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
 
-
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user);
+  
   
   useEffect(() => {
     const fetchProductsData = async () => {
