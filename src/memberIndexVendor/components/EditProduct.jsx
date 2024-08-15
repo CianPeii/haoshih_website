@@ -13,7 +13,44 @@ const EditProduct = () => {
 
   const { vid, pid } = useParams();
   const [loading, setLoading] = useState(true);
+  // 資料庫抓出來的
   const [productInfo, setProductInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchProductInfo = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `http://localhost:3200/vendor/theProduct/${pid}`
+        );
+        setProductInfo(response.data);
+      } catch (error) {
+        console.error("Error fetching Products Data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductInfo();
+  }, [pid]);
+
+  console.log("productInfo: ", productInfo);
+
+  // 重抓攤位資訊
+  // const refetchProductInfo = async (updatedData = null) => {
+  //   if (updatedData) {
+  //     setProductInfo((prevProfile) => ({ ...prevProfile, ...updatedData }));
+  //   } else {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:3200/vendor/theProduct/${pid}`
+  //       );
+  //       setProductInfo(response.data);
+  //     } catch (error) {
+  //       console.error("Error refetching ProductInfo:", error);
+  //     }
+  //   }
+  // };
 
   const [itemData, setItemData] = useState({
     is_show: "",
@@ -25,64 +62,64 @@ const EditProduct = () => {
   });
 
   // 管理預覽圖片的狀態
-  const [previewImages, setPreviewImages] = useState({
-    img01: null,
-  });
+  // const [previewImages, setPreviewImages] = useState({
+  //   img01: null,
+  // });
 
   // 當 productInfo 加載完成後，更新 previewImages
-  useEffect(() => {
-    setPreviewImages({
-      brand_img01: productInfo.img01 || null,
-    });
-  }, [productInfo]);
+  // useEffect(() => {
+  //   setPreviewImages({
+  //     img01: productInfo.img01 || null,
+  //   });
+  // }, [productInfo]);
 
   // 點擊圖片區域來觸發文件選擇
-  const fileInputRefs = {
-    img01: useRef(null),
-  };
+  // const fileInputRefs = {
+  //   img01: useRef(null),
+  // };
 
   // 創建一個預覽並更新 itemData 和 previewImages
-  const handleImageUpload = (event, fieldName) => {
-    const file = event.target.files[0];
-    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImages((prev) => ({ ...prev, [fieldName]: reader.result }));
-        setItemData((prev) => ({ ...prev, [fieldName]: reader.result }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageUpload = (event, fieldName) => {
+  //   const file = event.target.files[0];
+  //   if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setPreviewImages((prev) => ({ ...prev, [fieldName]: reader.result }));
+  //       setItemData((prev) => ({ ...prev, [fieldName]: reader.result }));
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   // 為每個圖片欄位渲染上傳區域
-  const renderImageUpload = (fieldName) => {
-    return (
-      <div
-        className="position-relative"
-        style={{ width: "210px", height: "150px", cursor: "pointer" }}
-        onClick={() => fileInputRefs[fieldName].current.click()}
-      >
-        {previewImages[fieldName] ? (
-          <img
-            src={previewImages[fieldName]}
-            alt={`商品照片 ${fieldName}`}
-            className="w-100 h-100 object-fit-cover rounded"
-          />
-        ) : (
-          <div className="w-100 h-100 bg-gray d-flex justify-content-center align-items-center rounded">
-            <i className="bi bi-plus-lg fs-1 c-white"></i>
-          </div>
-        )}
-        <input
-          type="file"
-          ref={fileInputRefs[fieldName]}
-          style={{ display: "none" }}
-          accept="image/png, image/jpeg"
-          onChange={(e) => handleImageUpload(e, fieldName)}
-        />
-      </div>
-    );
-  };
+  // const renderImageUpload = (fieldName) => {
+  //   return (
+  //     <div
+  //       className="position-relative"
+  //       style={{ width: "210px", height: "150px", cursor: "pointer" }}
+  //       // onClick={() => fileInputRefs[fieldName].current.click()}
+  //     >
+  //       {previewImages[fieldName] ? (
+  //         <img
+  //           src={previewImages[fieldName]}
+  //           alt={`商品照片 ${fieldName}`}
+  //           className="w-100 h-100 object-fit-cover rounded"
+  //         />
+  //       ) : (
+  //         <div className="w-100 h-100 bg-gray d-flex justify-content-center align-items-center rounded">
+  //           <i className="bi bi-plus-lg fs-1 c-white"></i>
+  //         </div>
+  //       )}
+  //       <input
+  //         type="file"
+  //         // ref={fileInputRefs[fieldName]}
+  //         style={{ display: "none" }}
+  //         accept="image/png, image/jpeg"
+  //         onChange={(e) => handleImageUpload(e, fieldName)}
+  //       />
+  //     </div>
+  //   );
+  // };
 
   // 表單是否已經被驗證
   const [validated, setValidated] = useState(false);
@@ -105,7 +142,7 @@ const EditProduct = () => {
   };
 
   const validateItemName = (name) => {
-    return name.length <= 30;
+    return name.length <= 20;
   };
 
   const handleSubmit = async (event) => {
@@ -165,9 +202,7 @@ const EditProduct = () => {
         }));
 
         // 更新 productInfo
-        // if (typeof props.onProfileUpdate === "function") {
-        //   props.onProfileUpdate(updatedProductInfo);
-        // }
+        // refetchProductInfo(updatedProductInfo);
 
         alert("資料更新成功");
         navigate(`/vendor/${productInfo.vid}/products`);
@@ -184,27 +219,7 @@ const EditProduct = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchProductInfo = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `http://localhost:3200/vendor/theProduct/${pid}`
-        );
-        setProductInfo(response.data);
-      } catch (error) {
-        console.error("Error fetching Products Data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProductInfo();
-  }, [pid]);
-
   if (loading) return <p>Loading...</p>;
-
-  console.log(productInfo);
 
   return (
     <Form
@@ -326,8 +341,17 @@ const EditProduct = () => {
           商品照片
         </Form.Label>
         <Col sm="10">
-          <div className="d-flex flex-wrap gap-3">
-            {renderImageUpload("brand_img01")}
+          <div
+            className="d-flex flex-wrap gap-3"
+            style={{ width: "210px", height: "150px" }}
+          >
+            {/* {renderImageUpload("img01")} */}
+            {/* <img src={productInfo.img01} alt="商品照片" /> */}
+            <img
+              src={productInfo.img01}
+              alt="商品照片"
+              className="w-100 h-100 object-fit-cover rounded"
+            />
           </div>
           <Form.Text muted>檔案類型限PNG或JPG</Form.Text>
         </Col>
