@@ -189,8 +189,12 @@ $layouts: (
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical; 
 }
-//forMarketFloorPlanB，已出租攤位
+//forMarketFloorPlanB
 .bg-select-gray {
   background: #9e9e9e;
   pointer-events: none;
+}
+.form-dec {
+  border-bottom: 1px #9e9e9e solid;
+  padding-bottom: 10px;
 }

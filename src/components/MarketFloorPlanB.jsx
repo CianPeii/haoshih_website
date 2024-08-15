@@ -1,16 +1,10 @@
 import React,  { useEffect, useState }from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import styles from "./MarketFloorPlan.module.scss";
+import styles from "./MarketFloorPlanB.module.scss";
 
 
 const MarketFloorPlan = ({fetchData}) => {
   const [selectedStalls, setSelectedStalls] = useState(new Set());
-  const booths = [
-    ["A01", "A02", "A03", "A04", "A05"],
-    ["B01", "B02", "B03", "B04", "B05"],
-    ["C01", "C02", "C03", "C04", "C05"],
-    ["D01", "D02", "D03", "D04", "D05"],
-  ];
   const getBoothClass = (booth) => {
     if (["A01", "A02", "B02", "C02", "D01", "D02"].includes(booth))
       return "bg-red";
@@ -35,10 +29,8 @@ const MarketFloorPlan = ({fetchData}) => {
     }
     
     const vendors = element.innerText;
-    // element.classList.toggle(`${styles.clicked}`);
     const newSelectedStalls = new Set(selectedStalls);
     
-
     if (newSelectedStalls.has(vendors)) {
       // 如果已經選擇了，則移除並清空資料
       newSelectedStalls.delete(vendors);
