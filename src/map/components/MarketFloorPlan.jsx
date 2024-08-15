@@ -1,8 +1,9 @@
-import React from "react";
+import {useEffect, useState} from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import styles from "./MarketFloorPlan.module.scss";
 
-const MarketFloorPlan = ({fetchData}) => {
+const MarketFloorPlan = ({fetchData, setVendorNumber}) => {
+ 
   const handleClick = (event) => {
     const letter_map = {
       'A': 1,
@@ -15,6 +16,8 @@ const MarketFloorPlan = ({fetchData}) => {
     const number = parseInt(number_to_vinfo.slice(1));  //取得數字部分，從索引1開始
     const vinfo = (letter_map[letter] - 1) * 5 + number;
     console.log(vinfo);
+    console.log(number_to_vinfo);
+    setVendorNumber(number_to_vinfo)
     fetchData(vinfo);
   };
   const position = ["A", "B", "C", "D"];

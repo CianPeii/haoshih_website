@@ -12,6 +12,7 @@ import { Col, Form } from "react-bootstrap";
 const Map = () => {
   const [data_from_parent, setVinfo] = useState([]);
   const [season_data, setSeason] = useState([]);
+  const [vendor_number, setVendorNumber] = useState("A01");
   const fetchData = async (vinfo) => {
     try {
       const response = await axios.get("http://localhost:3200/map/getdata", {
@@ -22,7 +23,6 @@ const Map = () => {
       console.log("Error fetching data", error);
     }
   };
-  
   const fetchSeasonData = async (season) => {
     try {
       const response = await axios.get(`http://localhost:3200/map/seasondata/${season}`, {
@@ -32,7 +32,7 @@ const Map = () => {
     } catch (error) {
       console.log("Error fetching data", error);
     }
-  };
+  };  
   //確保dataFromParent資料已動態更新
   useEffect(() => {
     console.log(data_from_parent);
@@ -63,11 +63,11 @@ const Map = () => {
                 </Col>
               </div>
               <div>
-                <MarketFloorPlan fetchData={fetchData} />
+                <MarketFloorPlan fetchData={fetchData} setVendorNumber={setVendorNumber}/>
               </div>
             </div>
             <div className="border border-dark p-3 w-50" id="shop">
-              <VendorDetail data_from_parent={data_from_parent} />
+              <VendorDetail data_from_parent={data_from_parent} vendor_number={vendor_number} />
             </div>
           </div>
         </div>
