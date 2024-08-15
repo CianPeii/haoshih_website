@@ -1,6 +1,7 @@
 // Message.js
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import moment from "moment";
 
 const Message = ({ msg }) => {
   const [showModal, setShowModal] = useState(false);
@@ -15,6 +16,8 @@ const Message = ({ msg }) => {
       setShowModal(true);
     }
   };
+  const formatMessageTime = (timestamp) =>
+    moment(timestamp).format("YYYY-MM-DD hh:mm:ss");
 
   return (
     <>
@@ -62,7 +65,7 @@ const Message = ({ msg }) => {
             {type === "text" && <p className="card-text">{content}</p>}
           </div>
           <div className="card-footer border-0 pt-0 pb-2">
-            <small className="text-muted">{timestamp}</small>
+            <small className="text-muted">{formatMessageTime(timestamp)}</small>
           </div>
         </div>
       </div>

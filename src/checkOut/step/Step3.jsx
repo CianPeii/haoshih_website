@@ -112,25 +112,14 @@ const Step3 = () => {
                   </Card.Body>
                 </Card>
               ))}
-              <Form.Group className="mb-3">
-                <Form.Label>優惠券代碼</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="輸入優惠券代碼"
-                  value={couponCode}
-                  onChange={handleCouponChange}
-                />
-              </Form.Group>
             </Form>
           </Col>
           <Col md={4}>
             <Card>
               <Card.Body>
-                <h5>訂單摘要</h5>
+                <h5 className="mb-4">訂單摘要</h5>
                 <p>商品總額: $1000</p>
                 <p>運費: $60</p>
-                <p>優惠折扣: -$0</p>
-                <hr />
                 <h5>總計: $1060</h5>
               </Card.Body>
             </Card>

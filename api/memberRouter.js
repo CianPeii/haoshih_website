@@ -266,10 +266,9 @@ memberRouter.get("/like/:uid", async (req, res) => {
     // console.log(`likesNumArr: ${likesNumArr}`); // 1,2
 
     const likesQuery = `
-    SELECT v.vid, vi.vinfo, vi.brand_name, vi.tag1, vi.tag2,vi.content, vi.brand_img01 
-    FROM vendor v 
-    JOIN vendor_info vi ON v.vinfo = vi.vinfo 
-    WHERE v.vid = ?
+    SELECT vi.vinfo, vi.brand_name, vi.tag1, vi.tag2,vi.content, vi.brand_img01 
+    FROM vendor_info vi
+    WHERE vi.vinfo = ?
   `;
 
     const likedBrandPromises = likesNumArr.map(async (value) => {
@@ -277,7 +276,7 @@ memberRouter.get("/like/:uid", async (req, res) => {
         const result = await queryAsync(conn, likesQuery, [value]);
         return result;
       } catch (error) {
-        console.error(`Error querying for vid ${value}:`, error);
+        console.error(`Error querying for vinfo ${value}:`, error);
         return null;
       }
     });
