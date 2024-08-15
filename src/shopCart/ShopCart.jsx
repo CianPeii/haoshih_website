@@ -16,10 +16,11 @@ const ShopCart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
   const cartVisible = true;
+  const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
     const fetchProductsData = async () => {
       try {
-        const response = await axios.get("http://localhost:3200/carts/2");
+        const response = await axios.get(`http://localhost:3200/carts/${user.uid}`);
         setProductsData(response.data);
         // console.log("Products Data:", response.data);
       } catch (error) {
