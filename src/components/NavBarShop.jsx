@@ -35,7 +35,7 @@ const NavBarShop = ({ cartVisible }) => {
     fetchProductsData();
 
 
-    setShowLogin(true);  /// 測試用，若有衝突請直接刪除
+    setShowLogin(false);  /// 測試用，若有衝突請直接刪除
 
   }, []);
   // console.log(productsData);
@@ -84,10 +84,10 @@ const NavBarShop = ({ cartVisible }) => {
                 </div>
                 <a
                   className="text-decoration-none c-black"
-                  href="http://localhost:3000/member/{user.uid}"
+                  href={`http://localhost:3000/member/${user.uid}`}
                   // href="http://localhost:3000/vendor/1"
                 >
-                  <div>{user.nickname || "你好像是攤主喔"}</div>
+                  <div>{user.nickname || user.brand_name}</div>
                   {/* <div>范丞丞</div> */}
                 </a>
                 <div>登出</div>

@@ -13,6 +13,7 @@ import { useParams, Routes, Route, Outlet } from "react-router-dom";
 const MemberIndexNormal = () => {
   const [memberData, setMemberData] = useState(null);
   const { uid } = useParams();
+  const user = JSON.parse(localStorage.getItem("user"));
   const updateProfileData = (newData) => {
     setMemberData(newData);
   };
@@ -56,7 +57,7 @@ const MemberIndexNormal = () => {
     const fetchLikedData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3200/member/like/${uid}`
+          `http://localhost:3200/member/like/${user.uid}`
         );
         setLikedData(response.data);
       } catch (error) {
