@@ -137,13 +137,13 @@ const SetStalls = () => {
                     租用天數：{rentDays}天(周一周二休市)
                   </p>
                 </div>
-                <div>
+                <div className="form-dec">
                   <span className="" style={{ fontSize: "20px" }}>
                     總計金額：{(vendorsPrice[`${selectedVendors}`] ? vendorsPrice[`${selectedVendors}`] * rentDays : 0).toLocaleString() || ""}元
                   </span>
                 </div>
                 <div className="f-center mt-3">
-                  <button className={`btn rounded-pill border border-4 ${styles.confirmbtn}`}
+                  <button className={`btn rounded-pill border border-3 ${styles.confirmbtn}`}
                   style={{ fontSize: "20px" }}>
                     確定租用
                   </button>

@@ -334,4 +334,138 @@ vendorRouter.get("/theProduct/:pid", async (req, res) => {
   }
 });
 
+// 攤販訂單 API
+vendorRouter.get("/allOrders/:vid", async (req, res) => {
+  try {
+    const orderQuery = `
+    SELECT * FROM orderlist WHERE vid = 1
+    ORDER BY order_time DESC
+  `;
+
+    const orders = await queryAsync(conn, orderQuery, [req.params.vid]);
+
+    // 將交易狀態轉為文字訊息
+    function getStatusText(status) {
+      switch (status) {
+        case 0:
+          return "待付款";
+        case 1:
+          return "待出貨";
+        case 2:
+          return "已出貨";
+        case 3:
+          return "待收貨";
+        case 4:
+          return "已完成";
+        default:
+          return "處理中";
+      }
+    }
+
+    // 將付款方式轉為文字
+    function getPaymentText(payment) {
+      switch (payment) {
+        case 0:
+          return "Line Pay";
+        case 1:
+          return "轉帳";
+        case 2:
+          return "貨到付款";
+        default:
+          return "其他";
+      }
+    }
+
+    const formattedOrdersPromises = orders.map(async (order) => {
+      let detailObj;
+      try {
+        detailObj = JSON.parse(order.detail);
+      } catch (error) {
+        console.error(
+          "Error parsing JSON:",
+          error,
+          "Order detail:",
+          order.detail
+        );
+        detailObj = { item: [], total: 0, payment: 0 }; // 設置一個默認值
+      }
+
+      let sendDataObj = JSON.parse(order.send_data);
+
+      // 抓商品資料
+
+      const productPromises = detailObj.item.map(async (item) => {
+        let productData = await queryAsync(
+          conn,
+          "SELECT * FROM product WHERE pid = ?",
+          [item.pid]
+        );
+
+        // 假設 productData 中包含了名為 img01 的 Base64 圖片數據
+        let productImage = productData[0]?.img01;
+
+        // 根據 productImage 的實際類型進行處理
+        if (productImage) {
+          if (Buffer.isBuffer(productImage)) {
+            // 如果是 Buffer，轉換為 Base64
+            productImage = `data:image/jpeg;base64,${productImage.toString(
+              "base64"
+            )}`;
+          } else if (typeof productImage === "string") {
+            // 如果已經是字串，檢查是否需要添加前綴
+            if (!productImage.startsWith("data:image/")) {
+              productImage = `data:image/jpeg;base64,${productImage}`;
+            }
+          } else {
+            // 如果是其他類型，設置為 null
+            console.log("Unexpected image data type");
+            productImage = null;
+          }
+        } else {
+          productImage = null;
+        }
+
+        const { img01, img02, img03, img04, img05, ...restProductData } =
+          productData[0];
+
+        return {
+          ...item,
+          productData: {
+            ...restProductData,
+            productImage,
+          },
+        };
+      });
+
+      const products = await Promise.all(productPromises);
+
+      return {
+        ...order,
+        detail: { ...detailObj, item: products },
+        send_data: sendDataObj,
+        payment: getPaymentText(detailObj.payment),
+        status: getStatusText(order.status),
+        formatted_order_time: new Date(order.order_time).toLocaleString(
+          "zh-TW",
+          {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          }
+        ),
+      };
+    });
+
+    const formattedOrders = await Promise.all(formattedOrdersPromises);
+
+    res.json(formattedOrders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Fail to provide data" });
+  }
+});
+
 module.exports = vendorRouter;

@@ -20,6 +20,7 @@ const Vendor = () => {
   // console.log(params) // can get vid
   const [showModal, setShowModal] = useState(false);
   const [product, setProduct] = useState({});
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -111,7 +112,7 @@ const Vendor = () => {
   useEffect(() => {
     const fetchLikedData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3200/shop/like/1`);
+        const response = await axios.get(`http://localhost:3200/shop/like/${user.uid}`);
         setLikedData(response.data);
         // console.log('res',response.data)
       } catch (error) {
@@ -137,7 +138,7 @@ const Vendor = () => {
       list.push(vendor.vinfo)
       setLikedData(list)
     }
-    let res = await axios.post("http://localhost:3200/shop/like/1",{list:list})
+    let res = await axios.post(`http://localhost:3200/shop/like/${user.uid}`,{list:list})
   }
 
 

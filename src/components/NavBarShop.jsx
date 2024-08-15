@@ -25,20 +25,20 @@ const NavBarShop = ({ cartVisible }) => {
   // console.log("user123",user.uid);
 
   useEffect(() => {
-    const fetchProductsData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3200/carts/${user.uid}`);
-        setProductsData(response.data);
-        // console.log("Products Data:", response.data);
-      } catch (error) {
-        console.error("Error fetching Products Data:", error);
-      }
-    };
-    fetchProductsData();
-
-
-    // setShowLogin();  /// 測試用，若有衝突請直接刪除
-
+    if (user) {
+      const fetchProductsData = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3200/carts/${user.uid}`
+          );
+          setProductsData(response.data);
+          // console.log("Products Data:", response.data);
+        } catch (error) {
+          console.error("Error fetching Products Data:", error);
+        }
+      };
+      fetchProductsData();
+    }
   }, []);
 
   const doLogout = async () => {
@@ -97,8 +97,8 @@ const NavBarShop = ({ cartVisible }) => {
                 </div>
                 <a
                   className="text-decoration-none c-black"
-                  href="http://localhost:3000/member/{user.uid}"
-                // href="http://localhost:3000/vendor/1"
+                  href={`http://localhost:3000/member/${user.uid}`}
+                  // href="http://localhost:3000/vendor/1"
                 >
                   <div>{user.nickname || user.brand_name}</div>
                   {/* <div>范丞丞</div> */}

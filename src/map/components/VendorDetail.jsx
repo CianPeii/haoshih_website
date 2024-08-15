@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
 import styles from "./VendorDetail.module.scss";
-const VendorDetail = ({data_from_parent}) => {
+const VendorDetail = ({data_from_parent,vendor_number}) => {
   var [data, setData] = useState();
   //useEffect用於畫面上有變化時動態更新資料
   useEffect(() => {
@@ -103,6 +103,7 @@ const VendorDetail = ({data_from_parent}) => {
       "#5a79ba",  // 顏色 6
       "#a58f86",  // 顏色 7
       "#b8cd1d",  // 顏色 8
+      // "linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)", //顏色9
     ];
     
     function getRandomColorFromPalette() {
@@ -115,8 +116,6 @@ const VendorDetail = ({data_from_parent}) => {
         if(tag !== null) {
           const brand_tag = document.createElement('span');
           const randomColor = getRandomColorFromPalette();
-          
-          console.log(brand_tag);
           brand_tag.className = `${styles.tagSpan}`;
           brand_tag.innerText = `#${tag}`;
           brand_tag.style.setProperty('--tag-background-color', randomColor); 
@@ -129,6 +128,7 @@ const VendorDetail = ({data_from_parent}) => {
   if (!data) {
     return <p>Loading</p>;
   }
+
   
   //攤位名稱
   var brandName = data.data_from_server[0].brand_name;
@@ -172,11 +172,12 @@ const VendorDetail = ({data_from_parent}) => {
   if (data_from_parent.length !== 0) {
     brandWeb = data_from_parent[0].web
   }
+  
   return (
     <div id="shop">
       <div className="f-row-center" id="shopnav">
         <h2 className="c-blueGray fw-bold flex-5 pad-5" id="brand_name">
-          {brandName}
+          {vendor_number}  {brandName}
         </h2>
         <h5 className="c-gray fw-600 flex-1 f-right" id="brand_type">
           {brandTypeList[`${brandType}`]}

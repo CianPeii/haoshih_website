@@ -12,7 +12,12 @@ const MemberVenderSideBar = () => {
             >
               <h4>會員資料</h4>
             </a>
-            <h4>我要擺攤</h4>
+            <a
+              className="text-decoration-none c-black"
+              href="http://localhost:3000/SetStalls"
+            >
+              <h4>我要擺攤</h4>
+            </a>
             <h4>
               攤位管理 <span className="bi bi-chevron-down fs-5" />
             </h4>
@@ -36,7 +41,12 @@ const MemberVenderSideBar = () => {
                 <h5>商品管理</h5>
               </a>
             </div>
-            <h4>訂單管理</h4>
+            <a
+              className="text-decoration-none c-black"
+              href="http://localhost:3000/vendor/1/orders"
+            >
+              <h4>訂單管理</h4>
+            </a>
             <h4>
               <a className="text-decoration-none c-black" href="/chatroom">
                 聊天室
