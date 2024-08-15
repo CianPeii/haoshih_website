@@ -80,18 +80,37 @@ shopRouter.get("/like/:uid", async function (req, res) {
     res.status(500).send("Internal Server Error");
   }
 });
-shopRouter.put("/like/:uid", async function (req, res) {
-  try {
-    const heartQuery = `
-        UPDATE heart set list=? WHERE uid = ?
+
+shopRouter.post("/like/:uid", async function (req, res) {
+  // console.log(req.body.list)
+  const list = req.body.list.toString()
+  // const list = [1,2,3].toString()
+  const heartQuery = `
+        SELECT * FROM heart WHERE uid = ?
     `;
-    const likes = await queryAsync(conn, heartQuery, [req.params.uid]);
-    
-  } catch (error) {
-    console.error("Error in /shop/like/:uid:", error);
-    res.status(500).send("Internal Server Error");
+  const likes = await queryAsync(conn, heartQuery, [req.params.uid]);
+  if (likes.length === 0) {
+    conn.query(
+      "INSERT INTO heart(uid, list) VALUES (?,?)",
+      [req.params.uid, list],
+      function (err, result) {
+        res.json(result);
+      }
+    )
+  } else {
+    try {
+      conn.query(
+        "UPDATE heart set list=? WHERE uid = ?",
+        [list, req.params.uid],
+        function (err, result) {
+          res.json(result);
+        }
+      );
+    } catch (error) {
+      console.error("Error in put data /shop/like/:uid:", error);
+      res.status(500).send("Internal Server Error");
+    }
   }
 })
-// 加入購物車(目前在cartRouter，路徑還未處理)
 
 module.exports = shopRouter;

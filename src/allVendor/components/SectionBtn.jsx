@@ -1,7 +1,7 @@
 import styles from "./SectionBtn.module.scss";
 
 const SectionBtn = ({ title, type, changeType, choose }) => {
-  console.log(choose)
+  // console.log(choose)
   return (
     <>
       <div
