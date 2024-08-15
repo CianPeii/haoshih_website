@@ -345,11 +345,11 @@ loginRouter.post('/', (req, res) => {
 loginRouter.get('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
-            console.error('登出時發生錯誤:', err);
-            return res.status(500).send('登出失敗');
+          console.error('登出時發生錯誤:', err);
+          return res.status(500).json({ success: false, message: '登出失敗' });
         }
-        res.redirect('/');
-    });
+        res.json({ success: true, message: '登出成功' });
+      });
 });
 
 loginRouter.use((err, req, res, next) => {

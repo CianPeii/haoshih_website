@@ -2,6 +2,7 @@ import styles from "./NavBarShop.module.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 const NavBarShop = ({ cartVisible }) => {
   const [productsData, setProductsData] = useState({});
@@ -18,7 +19,7 @@ const NavBarShop = ({ cartVisible }) => {
       setShowLogin(false);
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
-  
+
 
   useEffect(() => {
     const fetchProductsData = async () => {
@@ -36,6 +37,17 @@ const NavBarShop = ({ cartVisible }) => {
     setShowLogin(true);  /// 測試用，若有衝突請直接刪除
 
   }, []);
+
+  const doLogout = async () => {
+    try {
+      await axios.get('http://localhost:3200/login/logout');
+      localStorage.removeItem('user');
+      setShowLogin(false);
+      window.location.href = '/shop';
+    } catch (error) {
+      console.error('登出失敗', error);
+    }
+  }
   // console.log(productsData);
   // console.log(Object.keys(productsData).length);
   return (
@@ -66,7 +78,7 @@ const NavBarShop = ({ cartVisible }) => {
                 <div
                   id="123"
                   style={{ display: cartVisible ? "visible" : "none" }}
-                  // style={{ display: "none" }}
+                // style={{ display: "none" }}
                 >
                   <a
                     className="position-relative text-decoration-none link-dark"
@@ -88,7 +100,7 @@ const NavBarShop = ({ cartVisible }) => {
                   {/* <div>小美</div> */}
                   <div>范丞丞</div>
                 </a>
-                <div>登出</div>
+                <div className="link-dark text-decoration-none"  onClick={doLogout}>登出</div>
               </div>
             ) : (
               <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>
