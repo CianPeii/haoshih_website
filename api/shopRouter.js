@@ -71,14 +71,6 @@ shopRouter.get("/like/:uid", async function (req, res) {
         SELECT * FROM heart WHERE uid = ?
     `;
     const likes = await queryAsync(conn, heartQuery, [req.params.uid]);
-    // console.log(`likes: ${JSON.stringify(likes)}`);
-
-    // if (likes.length === 0 || !likes[0].list) {
-    //   return res.json({
-    //     uid: req.params.uid,
-    //     likes: likes,
-    //   });
-    // }
 
     const likesNumArr = likes[0]["list"].split(",").map(Number);
     res.json(likesNumArr)
@@ -88,7 +80,18 @@ shopRouter.get("/like/:uid", async function (req, res) {
     res.status(500).send("Internal Server Error");
   }
 });
-
+shopRouter.put("/like/:uid", async function (req, res) {
+  try {
+    const heartQuery = `
+        UPDATE heart set list=? WHERE uid = ?
+    `;
+    const likes = await queryAsync(conn, heartQuery, [req.params.uid]);
+    
+  } catch (error) {
+    console.error("Error in /shop/like/:uid:", error);
+    res.status(500).send("Internal Server Error");
+  }
+})
 // 加入購物車(目前在cartRouter，路徑還未處理)
 
 module.exports = shopRouter;
