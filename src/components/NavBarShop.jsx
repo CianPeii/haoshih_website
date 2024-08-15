@@ -23,21 +23,31 @@ const NavBarShop = ({ cartVisible }) => {
   // console.log("user123",user.uid);
 
   useEffect(() => {
-    const fetchProductsData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3200/carts/${user.uid}`);
-        setProductsData(response.data);
-        // console.log("Products Data:", response.data);
-      } catch (error) {
-        console.error("Error fetching Products Data:", error);
-      }
-    };
-    fetchProductsData();
+    if(user){
 
 
-    setShowLogin(false);  /// 測試用，若有衝突請直接刪除
+      const fetchProductsData = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3200/carts/${user.uid}`);
+          setProductsData(response.data);
+          // console.log("Products Data:", response.data);
+        } catch (error) {
+          console.error("Error fetching Products Data:", error);
+        }
+      };
+      fetchProductsData();
+
+    }
 
   }, []);
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setShowLogin(false);
+  }
+
+
   // console.log(productsData);
   // console.log(Object.keys(productsData).length);
   return (
@@ -90,7 +100,7 @@ const NavBarShop = ({ cartVisible }) => {
                   <div>{user.nickname || user.brand_name}</div>
                   {/* <div>范丞丞</div> */}
                 </a>
-                <div>登出</div>
+                <div onClick={handleLogout}>登出</div>
               </div>
             ) : (
               <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>

@@ -6,6 +6,7 @@ import { Buffer } from "buffer";
 import axios from "axios";
 import { turnPrice } from "../../utils/turnPrice";
 // import { Alert } from "bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const StyledModal = styled(Modal)`
   .modal-content {
@@ -76,8 +77,9 @@ const ProductModal = ({ show, onHide, product }) => {
   // const [amountData, setAmountData] = useState({});
   const [imgSrc, setImgSrc] = useState("");
   // const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [showLogin, setShowLogin] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
 
   const handleQuantityChange = (value) => {
     setAmount(amount + value);
@@ -92,58 +94,65 @@ const ProductModal = ({ show, onHide, product }) => {
     }
   }, [product.img01]);
 
-  // useEffect(() => {
-  //   // Fetch amountData when product changes
-  //   const fetchAmountData = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:3200/carts/2");
-  //       setAmountData(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching Products Data:", error);
-  //     }
-  //   };
-  //   fetchAmountData();
-  // }, [product]);
+
+  useEffect(() => {
+    if (user) {
+      setShowLogin(true);
+    } else {
+      setShowLogin(false);
+    }
+  }, []); // 空陣列表示只在組件掛載時執行一次
+  
+  console.log(user,showLogin);
+  
 
   const handleSubmit = async () => {
-    // if (isSubmitting) return;
+    if(showLogin) {
 
-    // setIsSubmitting(true);
-
-
-    try {
-      // 1. 首先獲取最新的購物車數據
-      const cartResponse = await axios.get(`http://localhost:3200/carts/{user.uid}`);
-      const cartData = cartResponse.data;
-
-      // 2. 查找當前商品在購物車中的數據
-      const cartItem = cartData.find((item) => item.pid === product.pid);
-      const currentCartAmount = cartItem ? cartItem.amount : 0;
-
-      // 3. 檢查是否超出庫存
-      if (amount + currentCartAmount > product.quantity) {
-        alert("該商品選購數量已達庫存上限，請至購物車進行數量更改");
-        return;
+      try {
+        // 1. 首先獲取最新的購物車數據
+        const cartResponse = await axios.get(`http://localhost:3200/carts/${user.uid}`);
+        const cartData = cartResponse.data;
+  
+        // 2. 查找當前商品在購物車中的數據
+        const cartItem = cartData.find((item) => item.pid === product.pid);
+        const currentCartAmount = cartItem ? cartItem.amount : 0;
+  
+        // 3. 檢查是否超出庫存
+        if (amount + currentCartAmount > product.quantity) {
+          alert("該商品選購數量已達庫存上限，請至購物車進行數量更改");
+          return;
+        }
+  
+        // 4. 提交購物車更新請求
+        const response = await axios.post("http://localhost:3200/carts", {
+          uid: user.uid,
+          pid: product.pid,
+          amount:
+            amount + currentCartAmount > product.quantity
+              ? product.quantity
+              : amount,
+          quantity: product.quantity,
+        });
+  
+        console.log("Success:", response.data);
+  
+        onHide(); // 成功後關閉彈跳窗
+      } catch (error) {
+        console.error("Error:", error);
+        alert("加入購物車失敗，請稍後再試");
       }
 
-      // 4. 提交購物車更新請求
-      const response = await axios.post("http://localhost:3200/carts", {
-        uid: user.uid,
-        pid: product.pid,
-        amount:
-          amount + currentCartAmount > product.quantity
-            ? product.quantity
-            : amount,
-        quantity: product.quantity,
-      });
 
-      console.log("Success:", response.data);
 
-      onHide(); // 成功後關閉彈跳窗
-    } catch (error) {
-      console.error("Error:", error);
-      alert("加入購物車失敗，請稍後再試");
+
+
+
+    } else {
+      navigate("/login");
     }
+
+
   };
 
   return (
