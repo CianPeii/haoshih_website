@@ -23,11 +23,12 @@ const NavBarShop = ({ cartVisible }) => {
   // console.log("user123",user.uid);
 
   useEffect(() => {
-    if(user){
-
+    if (user) {
       const fetchProductsData = async () => {
         try {
-          const response = await axios.get(`http://localhost:3200/carts/${user.uid}`);
+          const response = await axios.get(
+            `http://localhost:3200/carts/${user.uid}`
+          );
           setProductsData(response.data);
           // console.log("Products Data:", response.data);
         } catch (error) {
@@ -35,17 +36,13 @@ const NavBarShop = ({ cartVisible }) => {
         }
       };
       fetchProductsData();
-
     }
-
   }, []);
-
 
   const handleLogout = () => {
     localStorage.removeItem("user");
     setShowLogin(false);
-  }
-
+  };
 
   // console.log(productsData);
   // console.log(Object.keys(productsData).length);
@@ -97,7 +94,7 @@ const NavBarShop = ({ cartVisible }) => {
                   // href="http://localhost:3000/vendor/1"
                 >
                   <div>{user.nickname || user.brand_name}</div>
-                  {/* <div>范丞丞</div> */}
+                  {/* <div>丞丞</div> */}
                 </a>
                 <div onClick={handleLogout}>登出</div>
               </div>

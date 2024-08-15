@@ -5,38 +5,32 @@ import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 import { turnPrice } from "../../utils/turnPrice";
+import queryString from "query-string";
 
 const Step3 = () => {
-  const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
-  const Step2Data = JSON.parse(localStorage.getItem("Step2Data"));
-  const total = JSON.parse(localStorage.getItem("total"));
+  const [checkoutData, setCheckoutData] = useState([]);
+  const [contactInfo, setContactInfo] = useState({});
+  const [selectedPayment, setSelectedPayment] = useState("cod");
+  const [couponCode, setCouponCode] = useState("");
   const cartVisible = false;
 
-  const item = Step1Data.map(({ pid, amount, price }) => ({
-    pid,
-    amount,
-    price
-  }));
-  
-  const data = {
-    ...Step2Data
-  };
+  useEffect(() => {
+    const storedCheckoutData = JSON.parse(
+      localStorage.getItem("checkoutData") || "[]"
+    );
+    const storedContactInfo = JSON.parse(
+      localStorage.getItem("contactInfo") || "{}"
+    );
+    setCheckoutData(storedCheckoutData);
+    setContactInfo(storedContactInfo);
+  }, []);
 
-  const send_data = {
-    fullName: data.fullName,
-    phone: data.phone,
-    address: [
-      { postNum: data.postNum },
-      { city: data.city },
-      { district: data.district },
-      { address: data.address }
-    ]
+  const handleNextStep = () => {
+    const isSuccess = Math.random() < 0.5; // 50% 的成功率
+    const status = isSuccess ? "success" : "failed";
+    const url = `/step4?${queryString.stringify({ status })}`;
+    window.location.href = url;
   };
-  
-  console.log("send_data", send_data);
-
-  const [selectedPayment, setSelectedPayment] = useState("cod"); // 默認值設置為 "cod"
-  const [couponCode, setCouponCode] = useState("");
 
   const paymentMethods = [
     {
@@ -74,17 +68,16 @@ const Step3 = () => {
     }
 
     const detail = {
-      item: item,
-      ...total,
-      payment: paymentId
+      item: checkoutData,
+      total: calculateTotal(checkoutData),
+      payment: paymentId,
     };
 
     console.log("detail", detail);
     console.log(JSON.stringify(detail))
     localStorage.setItem("detail", JSON.stringify(detail));
-    localStorage.setItem("send_data", JSON.stringify(send_data));
-
-  }, [selectedPayment, total, item, send_data]); // 添加依賴項，確保所有依賴都能觸發更新
+    localStorage.setItem("send_data", JSON.stringify(contactInfo));
+  }, [selectedPayment, checkoutData, contactInfo]);
 
   const handlePaymentChange = (id) => {
     setSelectedPayment(id);
@@ -93,6 +86,21 @@ const Step3 = () => {
   const handleCouponChange = (e) => {
     setCouponCode(e.target.value);
   };
+
+  const calculateTotal = (items) => {
+    if (!Array.isArray(items) || items.length === 0) {
+      return { subtotal: 0, shipping: 0, total: 0 };
+    }
+    const subtotal = items.reduce((acc, item) => {
+      const price = parseFloat(item.price) || 0;
+      const amount = parseInt(item.amount) || 0;
+      return acc + price * amount;
+    }, 0);
+    const shipping = 60; // 假設運費固定為 60
+    return { subtotal, shipping, total: subtotal + shipping };
+  };
+
+  const { subtotal, shipping, total } = calculateTotal(checkoutData);
 
   return (
     <>
@@ -127,15 +135,26 @@ const Step3 = () => {
                   </Card.Body>
                 </Card>
               ))}
+              <Form.Group className="mb-3">
+                <Form.Label>優惠券代碼</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="輸入優惠券代碼"
+                  value={couponCode}
+                  onChange={handleCouponChange}
+                />
+              </Form.Group>
             </Form>
           </Col>
           <Col md={4}>
             <Card>
               <Card.Body>
                 <h5 className="mb-4">訂單摘要</h5>
-                <p>商品總額: {turnPrice(total.total)}</p>
-                <p>運費: $60</p>
-                <h5>總計: {turnPrice(total.total + 60)}</h5>
+                <p>商品總額: ${turnPrice(subtotal)}</p>
+                <p>運費: ${turnPrice(shipping)}</p>
+                <p>優惠折扣: -$0</p>
+                <hr />
+                <h5>總計: ${turnPrice(total)}</h5>
               </Card.Body>
             </Card>
             <Card className="mt-3">
@@ -163,10 +182,9 @@ const Step3 = () => {
           <Button
             className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
             type="button"
+            onClick={handleNextStep}
           >
-            <a href="/step4" className="c-black text-decoration-none">
-              下一步
-            </a>
+            下一步
           </Button>
         </Col>
       </Container>
