@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Col, Form, Modal, Container, Card } from "react-bootstrap";
+import { Button, Col, Modal, Container, Card } from "react-bootstrap";
 import NavBarShop from "../../components/NavBarShop";
 import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
@@ -9,18 +9,33 @@ const Step4 = () => {
   const [paymentStatus, setPaymentStatus] = useState("processing");
   const [showErrorModal, setShowErrorModal] = useState(false);
   const cartVisible = false;
+  const detail = JSON.parse(localStorage.getItem("detail"));
+  const send_data = JSON.parse(localStorage.getItem("send_data"));
+  console.log("打包成功!",detail,send_data);
+  
 
   useEffect(() => {
-    // 模擬付款過程
-    const simulatePayment = setTimeout(() => {
-      const isSuccessful = Math.random() > 0.3; // 70% 成功率
-      setPaymentStatus(isSuccessful ? "success" : "failed");
-      if (!isSuccessful) {
+    // 從 URL 讀取狀態參數
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get("status");
+
+    if (status === "success" || status === "failed") {
+      setPaymentStatus(status);
+      if (status === "failed") {
         setShowErrorModal(true);
       }
-    }, 3000);
+    } else {
+      // 如果 URL 中沒有有效的狀態，則模擬付款過程
+      const simulatePayment = setTimeout(() => {
+        const isSuccessful = Math.random() > 0.3; // 70% 成功率
+        setPaymentStatus(isSuccessful ? "success" : "failed");
+        if (!isSuccessful) {
+          setShowErrorModal(true);
+        }
+      }, 3000);
 
-    return () => clearTimeout(simulatePayment);
+      return () => clearTimeout(simulatePayment);
+    }
   }, []);
 
   const handleCloseErrorModal = () => setShowErrorModal(false);
@@ -44,7 +59,7 @@ const Step4 = () => {
           )}
           {paymentStatus === "success" && (
             <div className="text-center">
-              <img src="stickers/003.png" />
+              <img src="stickers/003.png" alt="成功圖標" />
               <h2 className="text-success ">付款成功！</h2>
               <p>感謝您的購買。您的訂單已經成功完成。</p>
               <p>我們將盡快處理您的訂單並安排發貨。</p>
@@ -52,7 +67,7 @@ const Step4 = () => {
           )}
           {paymentStatus === "failed" && (
             <div className="text-center">
-              <img src="stickers/022.png" />
+              <img src="stickers/022.png" alt="失敗圖標" />
               <h2 className="text-danger">付款失敗</h2>
               <p>很抱歉，您的付款未能成功處理。</p>
               <p>請檢查您的付款資訊並重試，或選擇其他付款方式。</p>
@@ -74,7 +89,7 @@ const Step4 = () => {
             className="rounded-pill px-4 py-2 bg-secondary  border border-2"
             type="button"
           >
-            <a href="/" className="c-black text-decoration-none">
+            <a href="/member/1/order" className="c-black text-decoration-none">
               我的訂單
             </a>
           </Button>
@@ -110,4 +125,5 @@ const Step4 = () => {
     </>
   );
 };
+
 export default Step4;

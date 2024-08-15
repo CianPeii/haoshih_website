@@ -71,14 +71,6 @@ shopRouter.get("/like/:uid", async function (req, res) {
         SELECT * FROM heart WHERE uid = ?
     `;
     const likes = await queryAsync(conn, heartQuery, [req.params.uid]);
-    // console.log(`likes: ${JSON.stringify(likes)}`);
-
-    // if (likes.length === 0 || !likes[0].list) {
-    //   return res.json({
-    //     uid: req.params.uid,
-    //     likes: likes,
-    //   });
-    // }
 
     const likesNumArr = likes[0]["list"].split(",").map(Number);
     res.json(likesNumArr);
@@ -89,6 +81,36 @@ shopRouter.get("/like/:uid", async function (req, res) {
   }
 });
 
-// 加入購物車(目前在cartRouter，路徑還未處理)
+shopRouter.post("/like/:uid", async function (req, res) {
+  // console.log(req.body.list)
+  const list = req.body.list.toString()
+  // const list = [1,2,3].toString()
+  const heartQuery = `
+        SELECT * FROM heart WHERE uid = ?
+    `;
+  const likes = await queryAsync(conn, heartQuery, [req.params.uid]);
+  if (likes.length === 0) {
+    conn.query(
+      "INSERT INTO heart(uid, list) VALUES (?,?)",
+      [req.params.uid, list],
+      function (err, result) {
+        res.json(result);
+      }
+    )
+  } else {
+    try {
+      conn.query(
+        "UPDATE heart set list=? WHERE uid = ?",
+        [list, req.params.uid],
+        function (err, result) {
+          res.json(result);
+        }
+      );
+    } catch (error) {
+      console.error("Error in put data /shop/like/:uid:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+})
 
 module.exports = shopRouter;

@@ -366,7 +366,7 @@ loginRouter.use((err, req, res, next) => {
 });
 
 //localstorage
-loginRouter.get('/:userType/:uid', function (req, res) {
+loginRouter.get('/:uid', function (req, res) {
     conn.query(
         "SELECT uid, nickname FROM member WHERE uid = ?",
         [req.params.uid],

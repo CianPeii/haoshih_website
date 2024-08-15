@@ -1,33 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Col, Form, Row, Container, Card } from "react-bootstrap";
 import NavBarShop from "../../components/NavBarShop";
 import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
+import { turnPrice } from "../../utils/turnPrice";
+import queryString from "query-string";
 
 const Step3 = () => {
-  const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
-  const Step2Data = JSON.parse(localStorage.getItem("Step2Data"));
-  const total = JSON.parse(localStorage.getItem("total"));
+  const checkoutData = JSON.parse(localStorage.getItem("checkoutData") || "[]");
+  const contactInfo = JSON.parse(localStorage.getItem("contactInfo") || "{}");
   const cartVisible = false;
-  // console.log(Step1Data,Step2Data,total);
-  const item = Step1Data.map(({ pid, amount, price }) => ({
-    pid,
-    amount,
-    price
-  }));
-  
 
-  // console.log("detail",detail);
-  
-  const send_data = {
-    ...Step2Data
-  };
-  // console.log("send_data",send_data);
-  
-
-  const [selectedPayment, setSelectedPayment] = useState("linepay"); // 將默認值設置為 "linepay"
+  const [selectedPayment, setSelectedPayment] = useState("cod");
   const [couponCode, setCouponCode] = useState("");
+
+  const handleNextStep = () => {
+    const isSuccess = Math.random() < 0.5; // 50% 的成功率
+    const status = isSuccess ? "success" : "failed";
+    const url = `/step4?${queryString.stringify({ status })}`;
+    window.location.href = url;
+  };
 
   const paymentMethods = [
     {
@@ -50,26 +43,49 @@ const Step3 = () => {
     },
   ];
 
+  useEffect(() => {
+    let paymentId;
+    switch (selectedPayment) {
+      case "linepay":
+        paymentId = 0;
+        break;
+      case "transfer":
+        paymentId = 1;
+        break;
+      default:
+        paymentId = 2;
+        break;
+    }
+
+    const detail = {
+      item: checkoutData,
+      total: calculateTotal(checkoutData),
+      payment: paymentId,
+    };
+
+    console.log("detail", detail);
+    localStorage.setItem("detail", JSON.stringify(detail));
+    localStorage.setItem("send_data", JSON.stringify(contactInfo));
+  }, [selectedPayment, checkoutData, contactInfo]);
+
   const handlePaymentChange = (id) => {
     setSelectedPayment(id);
-    if(id==="linepay"){
-      id=0;
-    }else if(id==="transfer"){
-      id=1;
-    }else{
-      id=2;
-    };
-    var detail = {
-      item:item,
-      payment:id,
-      ...total
-    };
-    console.log("detail", detail);
   };
 
   const handleCouponChange = (e) => {
     setCouponCode(e.target.value);
   };
+
+  const calculateTotal = (items) => {
+    const subtotal = items.reduce(
+      (acc, item) => acc + item.price * item.amount,
+      0
+    );
+    const shipping = 60; // 假設運費固定為 60
+    return { subtotal, shipping, total: subtotal + shipping };
+  };
+
+  const { subtotal, shipping, total } = calculateTotal(checkoutData);
 
   return (
     <>
@@ -118,12 +134,12 @@ const Step3 = () => {
           <Col md={4}>
             <Card>
               <Card.Body>
-                <h5>訂單摘要</h5>
-                <p>商品總額: $1000</p>
-                <p>運費: $60</p>
+                <h5 className="mb-4">訂單摘要</h5>
+                <p>商品總額: ${turnPrice(subtotal)}</p>
+                <p>運費: ${turnPrice(shipping)}</p>
                 <p>優惠折扣: -$0</p>
                 <hr />
-                <h5>總計: $1060</h5>
+                <h5>總計: ${turnPrice(total)}</h5>
               </Card.Body>
             </Card>
             <Card className="mt-3">
@@ -151,10 +167,9 @@ const Step3 = () => {
           <Button
             className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
             type="button"
+            onClick={handleNextStep}
           >
-            <a href="/step4" className="c-black text-decoration-none">
-              下一步
-            </a>
+            下一步
           </Button>
         </Col>
       </Container>

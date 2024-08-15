@@ -19,18 +19,31 @@ const NavBarShop = ({ cartVisible }) => {
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  // console.log("user123",user.uid);
+
   useEffect(() => {
-    const fetchProductsData = async () => {
-      try {
-        const response = await axios.get("http://localhost:3200/carts/2");
-        setProductsData(response.data);
-        // console.log("Products Data:", response.data);
-      } catch (error) {
-        console.error("Error fetching Products Data:", error);
-      }
-    };
-    fetchProductsData();
+    if (user) {
+      const fetchProductsData = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3200/carts/${user.uid}`
+          );
+          setProductsData(response.data);
+          // console.log("Products Data:", response.data);
+        } catch (error) {
+          console.error("Error fetching Products Data:", error);
+        }
+      };
+      fetchProductsData();
+    }
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setShowLogin(false);
+  };
+
   // console.log(productsData);
   // console.log(Object.keys(productsData).length);
   return (
@@ -60,8 +73,8 @@ const NavBarShop = ({ cartVisible }) => {
               >
                 <div
                   id="123"
-                  // style={{ display: cartVisible ? "visible" : "none" }}
-                  style={{ display: "none" }}
+                  style={{ display: cartVisible ? "visible" : "none" }}
+                  // style={{ display: "none" }}
                 >
                   <a
                     className="position-relative text-decoration-none link-dark"
@@ -77,13 +90,13 @@ const NavBarShop = ({ cartVisible }) => {
                 </div>
                 <a
                   className="text-decoration-none c-black"
-                  // href="http://localhost:3000/member/1"
-                  href="http://localhost:3000/vendor/1"
+                  href={`http://localhost:3000/member/${user.uid}`}
+                  // href="http://localhost:3000/vendor/1"
                 >
-                  {/* <div>小美</div> */}
-                  <div>丞丞</div>
+                  <div>{user.nickname || user.brand_name}</div>
+                  {/* <div>丞丞</div> */}
                 </a>
-                <div>登出</div>
+                <div onClick={handleLogout}>登出</div>
               </div>
             ) : (
               <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>

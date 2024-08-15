@@ -20,6 +20,7 @@ const Vendor = () => {
   // console.log(params) // can get vid
   const [showModal, setShowModal] = useState(false);
   const [product, setProduct] = useState({});
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -111,7 +112,7 @@ const Vendor = () => {
   useEffect(() => {
     const fetchLikedData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3200/shop/like/1`);
+        const response = await axios.get(`http://localhost:3200/shop/like/${user.uid}`);
         setLikedData(response.data);
         // console.log('res',response.data)
       } catch (error) {
@@ -123,18 +124,23 @@ const Vendor = () => {
   }, []); // uid
 
   // 收藏功能
-  const changeHeartList = () => {
+  const changeHeartList = async() => {
     console.log('OK')
+    var list = []
     if (likedData.includes(vendor.vinfo)) {
       var index = likedData.indexOf(vendor.vinfo)
-      var list = likedData.splice(index, 0)
+      list = [...likedData]
+      list.splice(index,1)
+      // console.log(list)
       setLikedData(list)
     } else {
-      var list = [...likedData]
+      list = [...likedData]
       list.push(vendor.vinfo)
       setLikedData(list)
     }
+    let res = await axios.post(`http://localhost:3200/shop/like/${user.uid}`,{list:list})
   }
+
 
   return (
     <>
