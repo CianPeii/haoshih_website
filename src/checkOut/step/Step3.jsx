@@ -8,12 +8,22 @@ import { turnPrice } from "../../utils/turnPrice";
 import queryString from "query-string";
 
 const Step3 = () => {
-  const checkoutData = JSON.parse(localStorage.getItem("checkoutData") || "[]");
-  const contactInfo = JSON.parse(localStorage.getItem("contactInfo") || "{}");
-  const cartVisible = false;
-
+  const [checkoutData, setCheckoutData] = useState([]);
+  const [contactInfo, setContactInfo] = useState({});
   const [selectedPayment, setSelectedPayment] = useState("cod");
   const [couponCode, setCouponCode] = useState("");
+  const cartVisible = false;
+
+  useEffect(() => {
+    const storedCheckoutData = JSON.parse(
+      localStorage.getItem("checkoutData") || "[]"
+    );
+    const storedContactInfo = JSON.parse(
+      localStorage.getItem("contactInfo") || "{}"
+    );
+    setCheckoutData(storedCheckoutData);
+    setContactInfo(storedContactInfo);
+  }, []);
 
   const handleNextStep = () => {
     const isSuccess = Math.random() < 0.5; // 50% 的成功率
@@ -77,10 +87,14 @@ const Step3 = () => {
   };
 
   const calculateTotal = (items) => {
-    const subtotal = items.reduce(
-      (acc, item) => acc + item.price * item.amount,
-      0
-    );
+    if (!Array.isArray(items) || items.length === 0) {
+      return { subtotal: 0, shipping: 0, total: 0 };
+    }
+    const subtotal = items.reduce((acc, item) => {
+      const price = parseFloat(item.price) || 0;
+      const amount = parseInt(item.amount) || 0;
+      return acc + price * amount;
+    }, 0);
     const shipping = 60; // 假設運費固定為 60
     return { subtotal, shipping, total: subtotal + shipping };
   };
