@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Col, Form, Row, Container, Card } from "react-bootstrap";
 import NavBarShop from "../../components/NavBarShop";
 import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
+import { turnPrice } from "../../utils/turnPrice";
 
 import queryString from "query-string";
 
@@ -11,10 +12,31 @@ const Step3 = () => {
   const checkoutData = JSON.parse(localStorage.getItem("checkoutData"));
   const contactInfo = JSON.parse(localStorage.getItem("contactInfo"));
   const cartVisible = false;
-  console.log(checkoutData);
-  console.log(contactInfo);
+  console.log(Step1Data, Step2Data, total);
+  const item = Step1Data.map(({ pid, amount, price }) => ({
+    pid,
+    amount,
+    price,
+  }));
 
-  const [selectedPayment, setSelectedPayment] = useState("linepay"); // 將默認值設置為 "linepay"
+  var data = {
+    ...Step2Data,
+  };
+
+  const send_data = {
+    fullName: data.fullName,
+    phone: data.phone,
+    address: [
+      { postNum: data.postNum },
+      { city: data.city },
+      { district: data.district },
+      { address: data.address },
+    ],
+  };
+
+  console.log("send_data", send_data);
+
+  const [selectedPayment, setSelectedPayment] = useState("cod"); // 默認值設置為 "cod"
   const [couponCode, setCouponCode] = useState("");
 
   const handleNextStep = () => {
@@ -47,6 +69,31 @@ const Step3 = () => {
       estimatedDelivery: "1-3 個工作天（待款項確認）",
     },
   ];
+
+  useEffect(() => {
+    let paymentId;
+    switch (selectedPayment) {
+      case "linepay":
+        paymentId = 0;
+        break;
+      case "transfer":
+        paymentId = 1;
+        break;
+      default:
+        paymentId = 2;
+        break;
+    }
+
+    const detail = {
+      item: item,
+      ...total,
+      payment: paymentId,
+    };
+
+    console.log("detail", detail);
+    localStorage.setItem("detail", JSON.stringify(detail));
+    localStorage.setItem("send_data", JSON.stringify(send_data));
+  }, [selectedPayment, total, item, send_data]); // 添加依賴項，確保所有依賴都能觸發更新
 
   const handlePaymentChange = (id) => {
     setSelectedPayment(id);
@@ -103,11 +150,9 @@ const Step3 = () => {
           <Col md={4}>
             <Card>
               <Card.Body>
-                <h5>訂單摘要</h5>
+                <h5 className="mb-4">訂單摘要</h5>
                 <p>商品總額: $1000</p>
                 <p>運費: $60</p>
-                <p>優惠折扣: -$0</p>
-                <hr />
                 <h5>總計: $1060</h5>
               </Card.Body>
             </Card>

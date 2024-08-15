@@ -9,6 +9,10 @@ const Step4 = () => {
   const [paymentStatus, setPaymentStatus] = useState("processing");
   const [showErrorModal, setShowErrorModal] = useState(false);
   const cartVisible = false;
+  const detail = JSON.parse(localStorage.getItem("detail"));
+  const send_data = JSON.parse(localStorage.getItem("send_data"));
+  console.log("打包成功!",detail,send_data);
+  
 
   useEffect(() => {
     // 從 URL 讀取狀態參數
