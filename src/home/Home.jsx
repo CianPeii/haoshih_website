@@ -4,23 +4,29 @@ import About from "./components/About";
 import Menu from "./components/Menu";
 import Footer from "../components/Footer";
 import RainAnimation from "../weather/RainAnimation";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import WeatherApp from "../weather/WeatherApp";
+
 const Home = () => {
   const [isRaining, setIsRaining] = useState(false);
 
-  useEffect(() => {
-    // 這裡可以根據實際天氣數據或其他邏輯來設置 isRaining
-    // 例如，可以使用 WeatherApp 組件的數據
-    // 這裡僅為示例，設置為 true
-    setIsRaining(true);
+  // 接收WeatherApp的值，判斷有無下雨
+  // 強制下雨需要到RainAnimation.jsx裡將if那行註解
+  const handleRainStatusChange = useCallback((rainStatus) => {
+    setIsRaining(rainStatus);
   }, []);
+
   return (
     <>
-      <RainAnimation isRaining={false} />
+      <RainAnimation isRaining={isRaining} />
       <NavBar></NavBar>
       <Main></Main>
       <About></About>
       <Menu></Menu>
+      <WeatherApp 
+        className="ms-auto sticky-bottom" 
+        onRainStatusChange={handleRainStatusChange} 
+      />
       <Footer></Footer>
     </>
   );
