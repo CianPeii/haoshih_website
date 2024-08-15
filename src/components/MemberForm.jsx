@@ -19,8 +19,8 @@ function MemberForm(props) {
   );
   // 管理表單資料
   const [formData, setFormData] = useState({
-    last_name: "",
     first_name: "",
+    last_name: "",
     nickname: "",
     phone: "",
     email: "",

@@ -81,7 +81,7 @@ shopRouter.get("/like/:uid", async function (req, res) {
     // }
 
     const likesNumArr = likes[0]["list"].split(",").map(Number);
-    res.json(likesNumArr)
+    res.json(likesNumArr);
     // console.log(`likesNumArr: ${likesNumArr}`); // 1,2
   } catch (error) {
     console.error("Error in /shop/like/:uid:", error);

@@ -10,18 +10,20 @@ const NavBarShop = ({ cartVisible }) => {
 
   useEffect(() => {
     // 檢查 localStorage 是否存在指定的 key
-    const name = JSON.parse(localStorage.getItem("name"));
-    if (name) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log("User data from localStorage:", user);
+    if (user) {
       setShowLogin(true);
     } else {
-      setShowLogin(true);
+      setShowLogin(false);
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
+  
 
   useEffect(() => {
     const fetchProductsData = async () => {
       try {
-        const response = await axios.get("http://localhost:3200/carts/1");
+        const response = await axios.get("http://localhost:3200/carts/2");
         setProductsData(response.data);
         // console.log("Products Data:", response.data);
       } catch (error) {
@@ -29,6 +31,10 @@ const NavBarShop = ({ cartVisible }) => {
       }
     };
     fetchProductsData();
+
+
+    setShowLogin(true);  /// 測試用，若有衝突請直接刪除
+
   }, []);
   // console.log(productsData);
   // console.log(Object.keys(productsData).length);
@@ -60,6 +66,7 @@ const NavBarShop = ({ cartVisible }) => {
                 <div
                   id="123"
                   style={{ display: cartVisible ? "visible" : "none" }}
+                  // style={{ display: "none" }}
                 >
                   <a
                     className="position-relative text-decoration-none link-dark"
@@ -75,9 +82,11 @@ const NavBarShop = ({ cartVisible }) => {
                 </div>
                 <a
                   className="text-decoration-none c-black"
-                  href="http://localhost:3000/member/1"
+                  // href="http://localhost:3000/member/1"
+                  href="http://localhost:3000/vendor/1"
                 >
-                  <div>會員專區</div>
+                  {/* <div>小美</div> */}
+                  <div>范丞丞</div>
                 </a>
                 <div>登出</div>
               </div>

@@ -6,11 +6,33 @@ import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 
 const Step3 = () => {
-  const checkoutData = JSON.parse(localStorage.getItem("checkoutData"));
-  const contactInfo = JSON.parse(localStorage.getItem("contactInfo"));
+  const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
+  const Step2Data = JSON.parse(localStorage.getItem("Step2Data"));
+  const total = JSON.parse(localStorage.getItem("total"));
   const cartVisible = false;
-  console.log(checkoutData);
-  console.log(contactInfo);
+  console.log(Step1Data,Step2Data,total);
+  const item = Step1Data.map(({ pid, amount, price }) => ({
+    pid,
+    amount,
+    price
+  }));
+  
+  var data = {
+    ...Step2Data
+  };
+
+  const send_data = {
+    fullName: data.fullName,
+    phone: data.phone,
+    address: [
+      { postNum: data.postNum },
+      { city: data.city },
+      { district: data.district },
+      { address: data.address }
+    ]
+  };
+  
+  console.log("send_data",send_data);
 
   const [selectedPayment, setSelectedPayment] = useState("linepay"); // 將默認值設置為 "linepay"
   const [couponCode, setCouponCode] = useState("");
@@ -38,6 +60,19 @@ const Step3 = () => {
 
   const handlePaymentChange = (id) => {
     setSelectedPayment(id);
+    if(id==="linepay"){
+      id=0;
+    }else if(id==="transfer"){
+      id=1;
+    }else{
+      id=2;
+    };
+    var detail = {
+      item:item,
+      ...total,
+      payment:id
+    };
+    console.log("detail", detail);
   };
 
   const handleCouponChange = (e) => {

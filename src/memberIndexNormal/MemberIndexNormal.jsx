@@ -18,6 +18,7 @@ const MemberIndexNormal = () => {
   };
   const cartVisible = 1;
 
+  // 抓會員資料
   useEffect(() => {
     const fetchMemberData = async () => {
       try {
@@ -25,7 +26,7 @@ const MemberIndexNormal = () => {
           `http://localhost:3200/member/profile/${uid}`
         );
         setMemberData(response.data);
-        // console.log("Member Data:", response.data); // 數據首次被獲取時在控制台顯示
+        console.log("Member Data:", response.data); // 數據首次被獲取時在控制台顯示
       } catch (error) {
         console.error("Error fetching member data:", error);
       }
@@ -33,8 +34,8 @@ const MemberIndexNormal = () => {
     fetchMemberData();
   }, [uid]); // 空陣列表示這個效果只在組件首次渲染時運行
 
+  // 抓訂單資料
   const [orderData, setOrderData] = useState(null);
-
   useEffect(() => {
     const fetchOrderData = async () => {
       try {
@@ -49,8 +50,8 @@ const MemberIndexNormal = () => {
     fetchOrderData();
   }, [uid]);
 
+  // 抓按讚資料
   const [likedData, setLikedData] = useState(null);
-
   useEffect(() => {
     const fetchLikedData = async () => {
       try {
@@ -78,12 +79,12 @@ const MemberIndexNormal = () => {
 
   return (
     <>
-      <NavBarShop cartVisible={cartVisible} />
+      <NavBarShop cartVisible={cartVisible}/>
       <div className="row mw-100">
-        <div className="col-2  border-end border-3">
+        <div className="col-3  border-end border-3">
           <MemberSideBar />
         </div>
-        <div className="col-10">
+        <div className="col-9">
           <Routes>
             <Route index element={<MemberProfile />} />
             <Route
