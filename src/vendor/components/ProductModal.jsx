@@ -134,21 +134,17 @@ const ProductModal = ({ show, onHide, product }) => {
               : amount,
           quantity: product.quantity,
         });
-  
+
         console.log("Success:", response.data);
-  
+
         onHide(); // 成功後關閉彈跳窗
       } catch (error) {
         console.error("Error:", error);
         alert("加入購物車失敗，請稍後再試");
       }
 
-
-
-
-
-
     } else {
+      alert('請先登入！')
       navigate("/login");
     }
 
