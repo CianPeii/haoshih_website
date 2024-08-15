@@ -10,21 +10,29 @@ const Step3 = () => {
   const Step2Data = JSON.parse(localStorage.getItem("Step2Data"));
   const total = JSON.parse(localStorage.getItem("total"));
   const cartVisible = false;
-  // console.log(Step1Data,Step2Data,total);
+  console.log(Step1Data,Step2Data,total);
   const item = Step1Data.map(({ pid, amount, price }) => ({
     pid,
     amount,
     price
   }));
   
-
-  // console.log("detail",detail);
-  
-  const send_data = {
+  var data = {
     ...Step2Data
   };
-  // console.log("send_data",send_data);
+
+  const send_data = {
+    fullName: data.fullName,
+    phone: data.phone,
+    address: [
+      { postNum: data.postNum },
+      { city: data.city },
+      { district: data.district },
+      { address: data.address }
+    ]
+  };
   
+  console.log("send_data",send_data);
 
   const [selectedPayment, setSelectedPayment] = useState("linepay"); // 將默認值設置為 "linepay"
   const [couponCode, setCouponCode] = useState("");
@@ -61,8 +69,8 @@ const Step3 = () => {
     };
     var detail = {
       item:item,
-      payment:id,
-      ...total
+      ...total,
+      payment:id
     };
     console.log("detail", detail);
   };
