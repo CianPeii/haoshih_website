@@ -5,47 +5,20 @@ import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 import { turnPrice } from "../../utils/turnPrice";
-
 import queryString from "query-string";
 
 const Step3 = () => {
-  const checkoutData = JSON.parse(localStorage.getItem("checkoutData"));
-  const contactInfo = JSON.parse(localStorage.getItem("contactInfo"));
+  const checkoutData = JSON.parse(localStorage.getItem("checkoutData") || "[]");
+  const contactInfo = JSON.parse(localStorage.getItem("contactInfo") || "{}");
   const cartVisible = false;
-  console.log(Step1Data, Step2Data, total);
-  const item = Step1Data.map(({ pid, amount, price }) => ({
-    pid,
-    amount,
-    price,
-  }));
 
-  var data = {
-    ...Step2Data,
-  };
-
-  const send_data = {
-    fullName: data.fullName,
-    phone: data.phone,
-    address: [
-      { postNum: data.postNum },
-      { city: data.city },
-      { district: data.district },
-      { address: data.address },
-    ],
-  };
-
-  console.log("send_data", send_data);
-
-  const [selectedPayment, setSelectedPayment] = useState("cod"); // 默認值設置為 "cod"
+  const [selectedPayment, setSelectedPayment] = useState("cod");
   const [couponCode, setCouponCode] = useState("");
 
   const handleNextStep = () => {
-    // 模擬支付過程
     const isSuccess = Math.random() < 0.5; // 50% 的成功率
     const status = isSuccess ? "success" : "failed";
     const url = `/step4?${queryString.stringify({ status })}`;
-
-    // 使用 window.location 進行跳轉
     window.location.href = url;
   };
 
@@ -85,15 +58,15 @@ const Step3 = () => {
     }
 
     const detail = {
-      item: item,
-      ...total,
+      item: checkoutData,
+      total: calculateTotal(checkoutData),
       payment: paymentId,
     };
 
     console.log("detail", detail);
     localStorage.setItem("detail", JSON.stringify(detail));
-    localStorage.setItem("send_data", JSON.stringify(send_data));
-  }, [selectedPayment, total, item, send_data]); // 添加依賴項，確保所有依賴都能觸發更新
+    localStorage.setItem("send_data", JSON.stringify(contactInfo));
+  }, [selectedPayment, checkoutData, contactInfo]);
 
   const handlePaymentChange = (id) => {
     setSelectedPayment(id);
@@ -102,6 +75,17 @@ const Step3 = () => {
   const handleCouponChange = (e) => {
     setCouponCode(e.target.value);
   };
+
+  const calculateTotal = (items) => {
+    const subtotal = items.reduce(
+      (acc, item) => acc + item.price * item.amount,
+      0
+    );
+    const shipping = 60; // 假設運費固定為 60
+    return { subtotal, shipping, total: subtotal + shipping };
+  };
+
+  const { subtotal, shipping, total } = calculateTotal(checkoutData);
 
   return (
     <>
@@ -151,9 +135,11 @@ const Step3 = () => {
             <Card>
               <Card.Body>
                 <h5 className="mb-4">訂單摘要</h5>
-                <p>商品總額: $1000</p>
-                <p>運費: $60</p>
-                <h5>總計: $1060</h5>
+                <p>商品總額: ${turnPrice(subtotal)}</p>
+                <p>運費: ${turnPrice(shipping)}</p>
+                <p>優惠折扣: -$0</p>
+                <hr />
+                <h5>總計: ${turnPrice(total)}</h5>
               </Card.Body>
             </Card>
             <Card className="mt-3">
