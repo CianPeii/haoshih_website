@@ -21,7 +21,7 @@ const NavBarShop = ({ cartVisible }) => {
   }, []); // 空陣列表示只在組件掛載時執行一次
 
   const user = JSON.parse(localStorage.getItem("user"));
-  // main 合併
+
   // console.log("user123",user.uid);
 
   useEffect(() => {

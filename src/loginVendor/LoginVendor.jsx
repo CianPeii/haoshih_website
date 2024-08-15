@@ -19,9 +19,17 @@ const LoginVendor = () => {
       });
       if (response.data.success) {
         // console.log('攤販登入成功:', response.data);
-        const { vid, userType, brand_name } = response.data;
+        const { vid, userType, } = response.data;
+
+        const brandnameResponse = await axios.get(`http://localhost:3200/login/vendor/${vid}`);
+        const { brand_name } = brandnameResponse.data;
+
+        const vendorData = {
+          vid,
+          brand_name
+        }
         
-        localStorage.setItem('user', JSON.stringify(response.data));
+        localStorage.setItem('user', JSON.stringify(vendorData));
         navigate(`/${userType}/${vid}`);
       } else {
         // 登入失敗

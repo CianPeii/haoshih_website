@@ -314,7 +314,7 @@ loginRouter.post('/', (req, res) => {
                     req.session.loggedin = true;
                     req.session.userName = results[0].account;
                     req.session.userType = userType;
-                    // console.log(`${userType} 登入成功:`, results[0].account);
+                    console.log(`${userType} 登入成功:`, results[0].account);
                     return res.json({
                         success: true,
                         userType: userType,
@@ -379,10 +379,10 @@ loginRouter.get('/:uid', function (req, res) {
 })
 
 //攤販vid抓取
-loginRouter.get('/:vid', function (req, res) {
+loginRouter.get('/vendor/:vid', function (req, res) {
     conn.query(
-        `vendor.vid, vendor_info.brand_nameFROM vendor JOIN vendor_info ON vendor.vinfo = vendor_info.vinfo WHERE vid = ?`,
-        [req.params.uid],
+        `SELECT vendor.vid, vendor_info.brand_name FROM vendor JOIN vendor_info ON vendor.vinfo = vendor_info.vinfo WHERE vid = ?`,
+        [req.params.vid],
         function (err, result) {
             // console.log(result);
             res.json(result[0]);

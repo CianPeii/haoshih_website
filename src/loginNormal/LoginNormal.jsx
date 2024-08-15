@@ -19,7 +19,7 @@ const LoginNormal = () => {
 
       if (response.data.success) {
         const { uid, userType } = response.data;
-        console.log('登入成功', response.data);
+        // console.log('登入成功', response.data);
 
         // 獲取會員暱稱
         const nicknameResponse = await axios.get(`http://localhost:3200/login/${uid}`);
