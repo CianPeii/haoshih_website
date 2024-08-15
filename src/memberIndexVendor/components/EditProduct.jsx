@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -7,9 +8,181 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 
 const EditProduct = () => {
+  // 重新導向功能
+  const navigate = useNavigate();
+
   const { vid, pid } = useParams();
   const [loading, setLoading] = useState(true);
   const [productInfo, setProductInfo] = useState(null);
+
+  const [itemData, setItemData] = useState({
+    is_show: "",
+    name: "",
+    quantity: "",
+    price: "",
+    content: "",
+    img01: "",
+  });
+
+  // 管理預覽圖片的狀態
+  const [previewImages, setPreviewImages] = useState({
+    img01: null,
+  });
+
+  // 當 productInfo 加載完成後，更新 previewImages
+  useEffect(() => {
+    setPreviewImages({
+      brand_img01: productInfo.img01 || null,
+    });
+  }, [productInfo]);
+
+  // 點擊圖片區域來觸發文件選擇
+  const fileInputRefs = {
+    img01: useRef(null),
+  };
+
+  // 創建一個預覽並更新 itemData 和 previewImages
+  const handleImageUpload = (event, fieldName) => {
+    const file = event.target.files[0];
+    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImages((prev) => ({ ...prev, [fieldName]: reader.result }));
+        setItemData((prev) => ({ ...prev, [fieldName]: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // 為每個圖片欄位渲染上傳區域
+  const renderImageUpload = (fieldName) => {
+    return (
+      <div
+        className="position-relative"
+        style={{ width: "210px", height: "150px", cursor: "pointer" }}
+        onClick={() => fileInputRefs[fieldName].current.click()}
+      >
+        {previewImages[fieldName] ? (
+          <img
+            src={previewImages[fieldName]}
+            alt={`商品照片 ${fieldName}`}
+            className="w-100 h-100 object-fit-cover rounded"
+          />
+        ) : (
+          <div className="w-100 h-100 bg-gray d-flex justify-content-center align-items-center rounded">
+            <i className="bi bi-plus-lg fs-1 c-white"></i>
+          </div>
+        )}
+        <input
+          type="file"
+          ref={fileInputRefs[fieldName]}
+          style={{ display: "none" }}
+          accept="image/png, image/jpeg"
+          onChange={(e) => handleImageUpload(e, fieldName)}
+        />
+      </div>
+    );
+  };
+
+  // 表單是否已經被驗證
+  const [validated, setValidated] = useState(false);
+  // 商品名稱驗證狀態
+  const [itemNameError, setItemNameError] = useState(false);
+
+  // 有 change => 更新 state
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setItemData((prevState) => ({
+      ...prevState,
+      [name]: value.trim(),
+    }));
+
+    if (name === "name" && value !== "") {
+      setItemNameError(!validateItemName(value));
+    } else if (name === "name" && value === "") {
+      setItemNameError(false);
+    }
+  };
+
+  const validateItemName = (name) => {
+    return name.length <= 30;
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+
+    // 添加所有字段，包括圖片（現在是 Base64 字符串）
+    Object.keys(itemData).forEach((key) => {
+      formData.append(key, itemData[key]);
+    });
+
+    let isValid = true;
+
+    if (itemData.name && !validateItemName(itemData.name)) {
+      setItemNameError(true);
+      isValid = false;
+    }
+
+    if (!isValid) {
+      event.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
+    try {
+      // 把有改變且與原始數據不同的項目打包成一個新物件 updatedFields
+      const updatedFields = Object.keys(itemData).reduce((acc, key) => {
+        if (itemData[key] !== "" && itemData[key] !== productInfo[key]) {
+          acc[key] = itemData[key];
+        }
+        return acc;
+      }, {});
+
+      console.log("Sending update request with:", updatedFields);
+      const response = await axios.put(
+        `http://localhost:3200/vendor/theProduct/${productInfo.pid}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Full response:", response);
+
+      // 根據響應決定是否導航
+      if (response.status === 200) {
+        console.log("Stall Data updated successfully:", response.data.message);
+        console.log("Updated fields:", response.data.updatedFields);
+
+        const updatedProductInfo = { ...productInfo, ...updatedFields };
+
+        // 更新表單狀態
+        setItemData((prevState) => ({
+          ...prevState,
+          ...updatedFields,
+        }));
+
+        // 更新 productInfo
+        // if (typeof props.onProfileUpdate === "function") {
+        //   props.onProfileUpdate(updatedProductInfo);
+        // }
+
+        alert("資料更新成功");
+        navigate(`/vendor/${productInfo.vid}/products`);
+      } else {
+        console.log("Unexpected response status:", response.status);
+      }
+    } catch (error) {
+      // 在這裡處理錯誤，例如顯示錯誤消息
+      console.error("Error updating data:", error);
+      if (error.response) {
+        console.log("Error response:", error.response.data);
+        console.log("Error status:", error.response.status);
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchProductInfo = async () => {
@@ -35,9 +208,9 @@ const EditProduct = () => {
 
   return (
     <Form
-      // noValidate
-      // validated={validated}
-      // onSubmit={handleSubmit}
+      noValidate
+      validated={validated}
+      onSubmit={handleSubmit}
       className="my-5"
     >
       <Form.Group as={Row} className="mb-3">
@@ -79,7 +252,7 @@ const EditProduct = () => {
 
       <Form.Group as={Row} controlId="productName" className="mb-3">
         <Form.Label column sm="2" className="text-end">
-          品牌名稱
+          商品名稱
         </Form.Label>
         <Col sm="8">
           <Form.Control
@@ -154,13 +327,9 @@ const EditProduct = () => {
         </Form.Label>
         <Col sm="10">
           <div className="d-flex flex-wrap gap-3">
-            {/* {renderImageUpload("brand_img01")}
-          {renderImageUpload("brand_img02")}
-          {renderImageUpload("brand_img03")}
-          {renderImageUpload("brand_img04")}
-          {renderImageUpload("brand_img05")} */}
+            {renderImageUpload("brand_img01")}
           </div>
-          <Form.Text muted>最多可上傳五張，檔案類型限PNG或JPG</Form.Text>
+          <Form.Text muted>檔案類型限PNG或JPG</Form.Text>
         </Col>
       </Form.Group>
 

@@ -81,7 +81,7 @@ const NavBarShop = ({ cartVisible }) => {
                   href="http://localhost:3000/vendor/1"
                 >
                   {/* <div>小美</div> */}
-                  <div>范丞丞</div>
+                  <div>丞丞</div>
                 </a>
                 <div>登出</div>
               </div>
