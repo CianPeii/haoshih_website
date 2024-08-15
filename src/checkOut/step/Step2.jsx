@@ -93,7 +93,7 @@ const Step2 = () => {
       district,
       address,
     };
-    console.log("contactInfo",contactInfo);
+    // console.log("contactInfo",contactInfo);
 
     localStorage.setItem("Step1Data", JSON.stringify(Step1Data));
     localStorage.setItem("Step2Data", JSON.stringify(contactInfo));

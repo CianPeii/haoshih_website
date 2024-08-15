@@ -77,6 +77,8 @@ const ProductModal = ({ show, onHide, product }) => {
   const [imgSrc, setImgSrc] = useState("");
   // const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const handleQuantityChange = (value) => {
     setAmount(amount + value);
   };
@@ -108,9 +110,10 @@ const ProductModal = ({ show, onHide, product }) => {
 
     // setIsSubmitting(true);
 
+
     try {
       // 1. 首先獲取最新的購物車數據
-      const cartResponse = await axios.get("http://localhost:3200/carts/2");
+      const cartResponse = await axios.get(`http://localhost:3200/carts/{user.uid}`);
       const cartData = cartResponse.data;
 
       // 2. 查找當前商品在購物車中的數據
@@ -125,7 +128,7 @@ const ProductModal = ({ show, onHide, product }) => {
 
       // 4. 提交購物車更新請求
       const response = await axios.post("http://localhost:3200/carts", {
-        uid: "2",
+        uid: user.uid,
         pid: product.pid,
         amount:
           amount + currentCartAmount > product.quantity
