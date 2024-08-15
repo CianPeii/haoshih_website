@@ -13,7 +13,7 @@ const menuItems = [
     img: "images/icon/Diversity.png",
     title: "攤販類型",
     link: "/type",
-    description: "介紹好集內好ㄕˋ集多元攤販",
+    description: "介紹事集內好ㄕˋ集多元攤販",
   },
   {
     id: 3,

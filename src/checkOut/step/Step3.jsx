@@ -5,37 +5,27 @@ import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 
-const Step3 = () => {
-  const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
-  const Step2Data = JSON.parse(localStorage.getItem("Step2Data"));
-  const total = JSON.parse(localStorage.getItem("total"));
-  const cartVisible = false;
-  console.log(Step1Data,Step2Data,total);
-  const item = Step1Data.map(({ pid, amount, price }) => ({
-    pid,
-    amount,
-    price
-  }));
-  
-  var data = {
-    ...Step2Data
-  };
+import queryString from "query-string";
 
-  const send_data = {
-    fullName: data.fullName,
-    phone: data.phone,
-    address: [
-      { postNum: data.postNum },
-      { city: data.city },
-      { district: data.district },
-      { address: data.address }
-    ]
-  };
-  
-  console.log("send_data",send_data);
+const Step3 = () => {
+  const checkoutData = JSON.parse(localStorage.getItem("checkoutData"));
+  const contactInfo = JSON.parse(localStorage.getItem("contactInfo"));
+  const cartVisible = false;
+  console.log(checkoutData);
+  console.log(contactInfo);
 
   const [selectedPayment, setSelectedPayment] = useState("linepay"); // 將默認值設置為 "linepay"
   const [couponCode, setCouponCode] = useState("");
+
+  const handleNextStep = () => {
+    // 模擬支付過程
+    const isSuccess = Math.random() < 0.5; // 50% 的成功率
+    const status = isSuccess ? "success" : "failed";
+    const url = `/step4?${queryString.stringify({ status })}`;
+
+    // 使用 window.location 進行跳轉
+    window.location.href = url;
+  };
 
   const paymentMethods = [
     {
@@ -60,19 +50,6 @@ const Step3 = () => {
 
   const handlePaymentChange = (id) => {
     setSelectedPayment(id);
-    if(id==="linepay"){
-      id=0;
-    }else if(id==="transfer"){
-      id=1;
-    }else{
-      id=2;
-    };
-    var detail = {
-      item:item,
-      ...total,
-      payment:id
-    };
-    console.log("detail", detail);
   };
 
   const handleCouponChange = (e) => {
@@ -112,14 +89,25 @@ const Step3 = () => {
                   </Card.Body>
                 </Card>
               ))}
+              <Form.Group className="mb-3">
+                <Form.Label>優惠券代碼</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="輸入優惠券代碼"
+                  value={couponCode}
+                  onChange={handleCouponChange}
+                />
+              </Form.Group>
             </Form>
           </Col>
           <Col md={4}>
             <Card>
               <Card.Body>
-                <h5 className="mb-4">訂單摘要</h5>
+                <h5>訂單摘要</h5>
                 <p>商品總額: $1000</p>
                 <p>運費: $60</p>
+                <p>優惠折扣: -$0</p>
+                <hr />
                 <h5>總計: $1060</h5>
               </Card.Body>
             </Card>
@@ -148,10 +136,9 @@ const Step3 = () => {
           <Button
             className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
             type="button"
+            onClick={handleNextStep}
           >
-            <a href="/step4" className="c-black text-decoration-none">
-              下一步
-            </a>
+            下一步
           </Button>
         </Col>
       </Container>
