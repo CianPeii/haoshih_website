@@ -345,11 +345,11 @@ loginRouter.post('/', (req, res) => {
 loginRouter.get('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
-          console.error('登出時發生錯誤:', err);
-          return res.status(500).json({ success: false, message: '登出失敗' });
+            console.error('登出時發生錯誤:', err);
+            return res.status(500).json({ success: false, message: '登出失敗' });
         }
         res.json({ success: true, message: '登出成功' });
-      });
+    });
 });
 
 loginRouter.use((err, req, res, next) => {
@@ -366,6 +366,7 @@ loginRouter.use((err, req, res, next) => {
 });
 
 //localstorage
+//會員uid抓取
 loginRouter.get('/:uid', function (req, res) {
     conn.query(
         "SELECT uid, nickname FROM member WHERE uid = ?",
@@ -376,6 +377,19 @@ loginRouter.get('/:uid', function (req, res) {
         }
     )
 })
+
+//攤販vid抓取
+loginRouter.get('/:vid', function (req, res) {
+    conn.query(
+        `vendor.vid, vendor_info.brand_nameFROM vendor JOIN vendor_info ON vendor.vinfo = vendor_info.vinfo WHERE vid = ?`,
+        [req.params.uid],
+        function (err, result) {
+            // console.log(result);
+            res.json(result[0]);
+        }
+    )
+})
+
 
 // // 設置 Passport(google)
 // const clientID = process.env.REACT_APP_GOOGLE_CLIENT_ID;

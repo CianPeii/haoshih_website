@@ -2,7 +2,7 @@ import styles from "./NavBarShop.module.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const NavBarShop = ({ cartVisible }) => {
   const [productsData, setProductsData] = useState({});
@@ -20,11 +20,14 @@ const NavBarShop = ({ cartVisible }) => {
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  // main 合併
+  // console.log("user123",user.uid);
 
   useEffect(() => {
     const fetchProductsData = async () => {
       try {
-        const response = await axios.get("http://localhost:3200/carts/2");
+        const response = await axios.get(`http://localhost:3200/carts/${user.uid}`);
         setProductsData(response.data);
         // console.log("Products Data:", response.data);
       } catch (error) {
@@ -34,7 +37,7 @@ const NavBarShop = ({ cartVisible }) => {
     fetchProductsData();
 
 
-    setShowLogin(true);  /// 測試用，若有衝突請直接刪除
+    // setShowLogin();  /// 測試用，若有衝突請直接刪除
 
   }, []);
 
@@ -94,20 +97,20 @@ const NavBarShop = ({ cartVisible }) => {
                 </div>
                 <a
                   className="text-decoration-none c-black"
-                  // href="http://localhost:3000/member/1"
-                  href="http://localhost:3000/vendor/1"
+                  href="http://localhost:3000/member/{user.uid}"
+                // href="http://localhost:3000/vendor/1"
                 >
-                  {/* <div>小美</div> */}
-                  <div>范丞丞</div>
+                  <div>{user.nickname || user.brand_name}</div>
+                  {/* <div>范丞丞</div> */}
                 </a>
-                <div className="link-dark text-decoration-none"  onClick={doLogout}>登出</div>
+                <div className="link-dark text-decoration-none" onClick={doLogout}>登出</div>
               </div>
             ) : (
-              <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>
-                <a className="link-dark text-decoration-none" href="http://localhost:3000/login">
+              <Link to="/login" style={{ textDecoration: 'none' }}>
+                <div className={`hover:bg-secondary px-4 ${styles.mallBtn}`}>
                   登入
-                </a>
-              </div>
+                </div>
+              </Link>
             )}
           </div>
         </nav>

@@ -19,7 +19,8 @@ const LoginVendor = () => {
       });
       if (response.data.success) {
         // console.log('攤販登入成功:', response.data);
-        const { vid, userType, userName } = response.data;
+        const { vid, userType, brand_name } = response.data;
+        
         localStorage.setItem('user', JSON.stringify(response.data));
         navigate(`/${userType}/${vid}`);
       } else {
