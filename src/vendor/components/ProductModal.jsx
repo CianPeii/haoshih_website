@@ -72,12 +72,13 @@ const ProductDescription = styled.div`
   margin-top: 15px;
 `;
 
-const ProductModal = ({ show, onHide, product }) => {
+const ProductModal = ({ show, onHide, product, count }) => {
   const [amount, setAmount] = useState(1);
   // const [amountData, setAmountData] = useState({});
   const [imgSrc, setImgSrc] = useState("");
   // const [isSubmitting, setIsSubmitting] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
@@ -136,8 +137,8 @@ const ProductModal = ({ show, onHide, product }) => {
         });
 
         console.log("Success:", response.data);
-
         onHide(); // 成功後關閉彈跳窗
+
       } catch (error) {
         console.error("Error:", error);
         alert("加入購物車失敗，請稍後再試");

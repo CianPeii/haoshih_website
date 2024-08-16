@@ -96,13 +96,6 @@ cartRouter.post('/', async (req, res) => {
     }
 });
 
-
-
-
-
-
-
-
 cartRouter.get('/:uid', function(req, res) {
     // const conn = req.app.get('connection') ???????????????????????????????????
     conn.query(
@@ -116,6 +109,7 @@ cartRouter.get('/:uid', function(req, res) {
     )
 })
 
+// 購物車刪除功能
 cartRouter.delete('/:uid/:pid', function(req, res) {
     const { uid, pid } = req.params;
     conn.query("DELETE FROM carts WHERE uid = ? AND pid = ?",
@@ -133,17 +127,6 @@ cartRouter.get('/products/:pid/:uid', function(req, res) {
     conn.query(
         "SELECT product.name, quantity, price, img01, vendor_info.vinfo, brand_name FROM product JOIN vendor ON product.vid = vendor.vid JOIN vendor_info ON vendor.vinfo = vendor_info.vinfo WHERE pid = ? ",
         [req.params.pid],
-        function(err, result) {
-            res.json(result);
-        }
-    )
-})
-
-// 在vendorCard那邊 攤販要獲取自己的商品
-cartRouter.get('/vendorProducts/:vid', function(req, res) {
-    conn.query(
-        "SELECT product.name, pid, content, quantity, price, img01, is_show, launch FROM vendor JOIN product ON vendor.vid = product.vid WHERE vendor.vid = ? ",
-        [req.params.vid],
         function(err, result) {
             res.json(result);
         }

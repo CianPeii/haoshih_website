@@ -8,6 +8,7 @@ const NavBarShop = ({ cartVisible }) => {
   const [productsData, setProductsData] = useState({});
   // console.log("cartVisible",cartVisible);
   const [showLogin, setShowLogin] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     // 檢查 localStorage 是否存在指定的 key
@@ -19,10 +20,6 @@ const NavBarShop = ({ cartVisible }) => {
       setShowLogin(false);
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
-
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  // console.log("user123",user.uid);
 
   useEffect(() => {
     if (user) {
@@ -52,7 +49,6 @@ const NavBarShop = ({ cartVisible }) => {
     }
   };
   // console.log(productsData);
-  // console.log(Object.keys(productsData).length);
   return (
     <>
       <div className="navBarShop">

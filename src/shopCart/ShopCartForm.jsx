@@ -5,7 +5,6 @@ import ShopList from "./ShopList";
 const ShopCartForm = ({ productsData, selectedProducts, onProductCheckChange, onProductAmountChange, onProductDelete }) => {
   const [groupedProducts, setGroupedProducts] = useState({});
   const [allChecked, setAllChecked] = useState({});
-
   useEffect(() => {
     // 按 vinfo 分組商品
     const grouped = productsData.reduce((acc, product) => {
