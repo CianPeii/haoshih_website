@@ -8,7 +8,6 @@ const NavBarShop = ({ cartVisible }) => {
   const [productsData, setProductsData] = useState({});
   // console.log("cartVisible",cartVisible);
   const [showLogin, setShowLogin] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     // 檢查 localStorage 是否存在指定的 key
@@ -20,6 +19,10 @@ const NavBarShop = ({ cartVisible }) => {
       setShowLogin(false);
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  // console.log("user123",user.uid);
 
   useEffect(() => {
     if (user) {
@@ -36,19 +39,20 @@ const NavBarShop = ({ cartVisible }) => {
       };
       fetchProductsData();
     }
-  }, [user]);
+  }, []);
 
   const doLogout = async () => {
     try {
-      await axios.get("http://localhost:3200/login/logout");
-      localStorage.removeItem("user");
+      await axios.get('http://localhost:3200/login/logout');
+      localStorage.removeItem('user');
       setShowLogin(false);
-      window.location.href = "/shop";
+      window.location.href = '/shop';
     } catch (error) {
-      console.error("登出失敗", error);
+      console.error('登出失敗', error);
     }
-  };
+  }
   // console.log(productsData);
+  // console.log(Object.keys(productsData).length);
   return (
     <>
       <div className="navBarShop">
@@ -74,49 +78,36 @@ const NavBarShop = ({ cartVisible }) => {
               <div
                 className={`d-flex flex-row justify-content-between align-items-center gap-1 ${styles.loginItem}`}
               >
-
-              { user.userType === "member" ? (
                 <div
-                style={{ display: cartVisible ? "visible" : "none" }}
+                  id="123"
+                  style={{ display: cartVisible ? "visible" : "none" }}
                 // style={{ display: "none" }}
-              >
-                <a
-                  className="position-relative text-decoration-none link-dark"
-                  href="/ShopCart"
                 >
-                  <div className="bi bi-cart h2 "></div>
-                  <span
-                    className={`c-white rounded-circle bg-gray c-black fw-bolder cursor-pointer ${styles.ShopQuantity}`}
+                  <a
+                    className="position-relative text-decoration-none link-dark"
+                    href="/ShopCart"
                   >
-                    {Object.keys(productsData).length}
-                  </span>
-                </a>
-              </div>
-              ) : null
-
-              }
-
-
-
+                    <div className="bi bi-cart h2 "></div>
+                    <span
+                      className={`c-white rounded-circle bg-gray c-black fw-bolder cursor-pointer ${styles.ShopQuantity}`}
+                    >
+                      {Object.keys(productsData).length}
+                    </span>
+                  </a>
+                </div>
                 <a
                   className="text-decoration-none c-black"
                   href={`http://localhost:3000/${user.nickname ? "member" : "vendor"}/${user.nickname ? user.uid : user.vid}`}
                   // href="http://localhost:3000/vendor/1"
                 >
-                  <div className="hover-c-primary fw-bold">
-                    {user.nickname || user.brand_name}
-                  </div>
+                  <div>{user.nickname || user.brand_name}</div>
+                  {/* <div>范丞丞</div> */}
                 </a>
-                <div
-                  className="link-dark text-decoration-none hover-c-red fw-bold cursor-pointer"
-                  onClick={doLogout}
-                >
-                  登出
-                </div>
+                <div className="link-dark text-decoration-none" onClick={doLogout}>登出</div>
               </div>
             ) : (
-              <Link to="/login" style={{ textDecoration: "none" }}>
-                <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>
+              <Link to="/login" style={{ textDecoration: 'none' }}>
+                <div className={`hover:bg-secondary px-4 ${styles.mallBtn}`}>
                   登入
                 </div>
               </Link>
