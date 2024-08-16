@@ -97,15 +97,15 @@ const NavBarShop = ({ cartVisible }) => {
                 </div>
                 <a
                   className="text-decoration-none c-black"
-                  href={`http://localhost:3000/member/${user.uid}`}
+                  href={`http://localhost:3000/${user.nickname ? "member" : "vendor"}/${user.nickname ? user.uid : user.vid}`}
                   // href="http://localhost:3000/vendor/1"
                 >
-                  <div className="hover-c-primary p-2 fw-bold">
+                  <div className="hover-c-primary fw-bold">
                     {user.nickname || user.brand_name}
                   </div>
                 </a>
                 <div
-                  className="link-dark text-decoration-none hover-c-red p-2 fw-bold cursor-pointer"
+                  className="link-dark text-decoration-none hover-c-red fw-bold cursor-pointer"
                   onClick={doLogout}
                 >
                   登出

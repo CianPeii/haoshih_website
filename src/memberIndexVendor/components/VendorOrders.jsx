@@ -27,16 +27,16 @@ const VendorOrders = (props) => {
           </Container>
         </Tab>
         <Tab eventKey="status0" title="待付款">
-          Tab content for Profile
+          目前沒有待付款訂單
         </Tab>
         <Tab eventKey="status1" title="待出貨">
           Tab content for Loooonger Tab
         </Tab>
         <Tab eventKey="status2" title="已出貨">
-          Tab content for Loooonger Tab
+          目前沒有已出貨訂單
         </Tab>
         <Tab eventKey="status3" title="待收貨">
-          Tab content for Loooonger Tab
+          目前沒有待出貨訂單
         </Tab>
         <Tab eventKey="status4" title="已完成">
           Tab content for Loooonger Tab
