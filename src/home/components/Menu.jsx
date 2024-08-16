@@ -46,7 +46,7 @@ const Menu = () => {
         <div className="container">
           <div className="row  d-flex justify-content-center mw-100">
             {menuItems.map((item) => (
-              <MenuItem key={item.id} item={item} />
+              <MenuItem key={item.id} item={item} id={item.id}/>
             ))}
           </div>
         </div>

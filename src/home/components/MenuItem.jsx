@@ -2,14 +2,25 @@ import { useState } from "react";
 import styles from "./MenuItem.module.scss";
 import { openLink } from "../../utils/link.js";
 
-const MenuItem = ({ item }) => {
+const MenuItem = ({ item, id }) => {
   const { img, title, link, description } = item;
   const [isHovered, setIsHovered] = useState(false);
-
+  const user = JSON.parse(localStorage.getItem("user"));
+  const redir = () => {
+    alert("請先登入攤主帳號");
+    openLink("/login");
+  }
   return (
     <div
       className={`d-flex flex-column align-items-center col-4 m-5 py-3 rounded-4 ${styles.menuItems} ${isHovered ? styles.hovered : styles.default}`}
-      onClick={() => openLink(link)}
+      onClick={() => {
+        if(id !== 4) {
+          openLink(link);
+        }else {
+          user ? (user.vid ? openLink(link) : 
+          redir()):openLink("/login")
+        }
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
