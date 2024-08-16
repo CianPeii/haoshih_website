@@ -1,4 +1,4 @@
-import { type } from "@testing-library/user-event/dist/type";
+// import { type } from "@testing-library/user-event/dist/type";
 import ChatBtn from "../components/ChatBtn";
 import Footer from "../components/Footer";
 import MainBg from "../components/MainBg";
@@ -8,7 +8,7 @@ import MarketFloorPlanB from "../components/MarketFloorPlanB";
 import styles from "./setStalls.module.scss";
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+// import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const SetStalls = () => {
@@ -17,8 +17,8 @@ const SetStalls = () => {
   const [season, setSeason] = useState(4);
   const [season_data, setSeasonData] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
-  const [showLogin, setShowLogin] = useState(false); //有無登入
-  const navigate = useNavigate();
+  // const [showLogin, setShowLogin] = useState(false); //有無登入
+  // const navigate = useNavigate();
   const rentDays = selectedPeriod === "1" ? 65 : 62;
   const handleSelectedChange = (event) => {
     setSelectedPeriod(event.target.value)
@@ -27,19 +27,11 @@ const SetStalls = () => {
   const handleSelectedVendor = (vendors) => {
     setSelectedVendors(vendors);
   }
-
-  // useEffect(() => {
-  //   //判斷用戶是否已登入
-  //   setShowLogin(!!user);
-  //   if (!showLogin) {
-  //     alert('請先登入！')
-  //     navigate("/login");
+  // const handleRentVendor = await () => {
+  //   try {
+  //     const 
   //   }
-  // }, []);
-  // console.log(showLogin);
-  // window.scrollTo(0, 0);
-  
-  
+  // }  
   useEffect(() => {
     const getSeasonData = async () => {
       try {
@@ -165,8 +157,10 @@ const SetStalls = () => {
                   </span>
                 </div>
                 <div className="f-center mt-3">
-                  <button className={`btn rounded-pill border border-3 ${styles.confirmbtn}`}
-                  style={{ fontSize: "20px" }}>
+                  <button 
+                  className={`btn rounded-pill border border-3 ${styles.confirmbtn}`}
+                  style={{ fontSize: "20px" }}
+                  onClick>
                     確定租用
                   </button>
                 </div>
