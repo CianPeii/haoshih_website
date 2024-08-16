@@ -16,10 +16,11 @@ const NavBarShop = ({ cartVisible }) => {
     console.log("User data from localStorage:", user);
     if (user) {
       setShowLogin(true);
+      
     } else {
       setShowLogin(false);
     }
-  }, []); // 空陣列表示只在組件掛載時執行一次
+  }, [cartVisible]); // 空陣列表示只在組件掛載時執行一次
 
   useEffect(() => {
     if (user) {
@@ -72,7 +73,7 @@ const NavBarShop = ({ cartVisible }) => {
             </div>
             {showLogin ? (
               <div
-                className={`d-flex flex-row justify-content-between align-items-center gap-1 ${styles.loginItem}`}
+                className={`d-flex flex-row justify-content-between align-items-center gap-1`}
               >
 
               { user.userType === "member" ? (
@@ -104,9 +105,10 @@ const NavBarShop = ({ cartVisible }) => {
                   // href="http://localhost:3000/vendor/1"
                 >
                   <div className="hover-c-primary fw-bold">
-                    {user.nickname || user.brand_name}
+                    {(user.nickname || user.brand_name)+",  你好 !"}
                   </div>
                 </a>
+                /
                 <div
                   className="link-dark text-decoration-none hover-c-red fw-bold cursor-pointer"
                   onClick={doLogout}
