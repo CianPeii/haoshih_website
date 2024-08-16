@@ -11,6 +11,9 @@ const MemberLike = (props) => {
   const handleNavigation = (vid) => {
     navigate("/shop/" + vid);
   };
+  if (!likedData.length) {
+    return <h4>目前無按讚的攤位～</h4>;
+  }
   return (
     <>
       <SubTitleYellow title="按讚攤位" />

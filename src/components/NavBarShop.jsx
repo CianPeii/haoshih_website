@@ -8,6 +8,7 @@ const NavBarShop = ({ cartVisible }) => {
   const [productsData, setProductsData] = useState({});
   // console.log("cartVisible",cartVisible);
   const [showLogin, setShowLogin] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     // 檢查 localStorage 是否存在指定的 key
@@ -19,10 +20,6 @@ const NavBarShop = ({ cartVisible }) => {
       setShowLogin(false);
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
-
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  // console.log("user123",user.uid);
 
   useEffect(() => {
     if (user) {
@@ -39,7 +36,7 @@ const NavBarShop = ({ cartVisible }) => {
       };
       fetchProductsData();
     }
-  }, []);
+  }, [user]);
 
   const doLogout = async () => {
     try {
@@ -52,7 +49,6 @@ const NavBarShop = ({ cartVisible }) => {
     }
   };
   // console.log(productsData);
-  // console.log(Object.keys(productsData).length);
   return (
     <>
       <div className="navBarShop">
@@ -78,30 +74,37 @@ const NavBarShop = ({ cartVisible }) => {
               <div
                 className={`d-flex flex-row justify-content-between align-items-center gap-1 ${styles.loginItem}`}
               >
+
+              { user.userType === "member" ? (
                 <div
-                  id="123"
-                  style={{ display: cartVisible ? "visible" : "none" }}
-                  // style={{ display: "none" }}
+                style={{ display: cartVisible ? "visible" : "none" }}
+                // style={{ display: "none" }}
+              >
+                <a
+                  className="position-relative text-decoration-none link-dark"
+                  href="/ShopCart"
                 >
-                  <a
-                    className="position-relative text-decoration-none link-dark"
-                    href="/ShopCart"
+                  <div className="bi bi-cart h2 "></div>
+                  <span
+                    className={`c-white rounded-circle bg-gray c-black fw-bolder cursor-pointer ${styles.ShopQuantity}`}
                   >
-                    <div className="bi bi-cart h2 "></div>
-                    <span
-                      className={`c-white rounded-circle bg-gray c-black fw-bolder cursor-pointer ${styles.ShopQuantity}`}
-                    >
-                      {Object.keys(productsData).length}
-                    </span>
-                  </a>
-                </div>
+                    {Object.keys(productsData).length}
+                  </span>
+                </a>
+              </div>
+              ) : null
+
+              }
+
+
+
                 <a
                   className="text-decoration-none c-black"
                   href={`http://localhost:3000/${user.nickname ? "member" : "vendor"}/${user.nickname ? user.uid : user.vid}`}
                   // href="http://localhost:3000/vendor/1"
                 >
                   <div className="hover-c-primary fw-bold">
-                    {user.nickname || user.brand_name}
+                    {user.nickname + " ,  你好 !"  || user.brand_name}
                   </div>
                 </a>
                 <div

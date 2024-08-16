@@ -3,7 +3,8 @@ import { Form, Button, Image, InputGroup } from "react-bootstrap";
 import { turnPrice } from "../utils/turnPrice";
 import { Buffer } from 'buffer';
 
-const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProductAmountChange, onProductDelete, uid }) => {
+const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProductAmountChange, onProductDelete }) => {
+  const user = JSON.parse(localStorage.getItem("user"))
   const handleAmountChange = (pid, increment) => {
     const product = productsData.find(p => p.pid === pid);
     if (product) {
@@ -15,10 +16,10 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
   };
 
   const clickDelete = async (pid) => {
-    console.log(`uid: ${uid}, pid: ${pid}`)
+    console.log("uid:" ,user.uid, "pid:" ,pid)
     if (window.confirm("確定要刪除此商品嗎？")) {
       try {
-        const response = await fetch(`http://localhost:3200/carts/2/${pid}`, {
+        const response = await fetch(`http://localhost:3200/carts/${user.uid}/${pid}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -42,10 +43,10 @@ const ShopList = ({ productsData, selectedProducts, onProductCheckChange, onProd
 
   // console.log(productsData);
   if (!productsData) {
-    
     return <tr><td colSpan="5">Loading...</td></tr>;
   }
 
+  
   return (
     <>
       {productsData.map((product, index) => {
