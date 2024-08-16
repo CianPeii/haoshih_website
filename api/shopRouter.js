@@ -45,7 +45,7 @@ shopRouter.get("/:type", function (req, res) {
 // 取得該攤販的商品
 shopRouter.get("/:vinfo/products", function (req, res) {
   conn.query(
-    "select * from product where vid = ?",
+    "select * from product where vid = ? and is_show = 1",
     [req.params.vinfo],
     function (err, result) {
       res.json(result);

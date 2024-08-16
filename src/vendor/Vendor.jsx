@@ -23,7 +23,9 @@ const Vendor = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [showLogin, setShowLogin] = useState(false); //有無登入
   const navigate = useNavigate();
+  const [sortType, setSortType] = useState(0)
 
+  const type = ["最新上架", "價格高 → 低", "價格低 → 高"]
 
   useEffect(() => {
     window.scrollTo(0, 0);
