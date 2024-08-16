@@ -74,8 +74,6 @@ const ShopCart = () => {
       .filter((product) => selectedProducts.has(product.pid))
       .map((product) => ({ pid: product.pid, amount: product.amount }));
 
-      
-
     const queryString = new URLSearchParams({
       data: JSON.stringify(checkoutData),
     }).toString();
@@ -106,7 +104,7 @@ const ShopCart = () => {
                 onProductDelete={handleProductDelete}
               />
             )}
-            <div className="f-end-end mt-5 gap-3">
+            <div className="f-end-end mt-5 gap-3 sticky-bottom ">
               <h4>總金額：NT{turnPrice(totalPrice)}</h4>
 
               <Button

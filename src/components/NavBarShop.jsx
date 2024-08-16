@@ -104,7 +104,7 @@ const NavBarShop = ({ cartVisible }) => {
                   // href="http://localhost:3000/vendor/1"
                 >
                   <div className="hover-c-primary fw-bold">
-                    {user.nickname + " ,  你好 !"  || user.brand_name}
+                    {user.nickname || user.brand_name}
                   </div>
                 </a>
                 <div

@@ -398,7 +398,22 @@ const Step2 = () => {
   const [districts, setDistricts] = useState([]);
   const navigate = useNavigate();
   const cartVisible = false;
+  const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
 
+
+  const vendorProducts = Step1Data.reduce((acc, product) => {
+    const {vinfo} = product;
+    if(!acc[vinfo]) {
+      acc[vinfo] = [];
+    }
+    acc[vinfo].push(product);
+    return  acc;
+  }, {});
+
+  console.log("使用說明: 調用vendorProducts[1]即可得到->",vendorProducts[1]);
+  console.log("vendorProducts[1][1] 即可得到vid",vendorProducts[1][1]);
+  
+  
   useEffect(() => {
     if (city) {
       setDistricts(taiwanCities[city] || []);
@@ -436,8 +451,6 @@ const Step2 = () => {
       alert("請填寫詳細地址！");
       return;
     }
-
-    const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
 
     const contactInfo = {
       fullName,

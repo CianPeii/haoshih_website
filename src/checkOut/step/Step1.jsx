@@ -88,7 +88,10 @@ const Step1 = () => {
     
   };
 
-  // console.log("Step1:",typeof productsData);
+  if (!productsData){
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <>
