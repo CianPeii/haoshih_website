@@ -8,7 +8,6 @@ import MarketFloorPlanB from "../components/MarketFloorPlanB";
 import styles from "./setStalls.module.scss";
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-// import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const SetStalls = () => {
@@ -17,8 +16,6 @@ const SetStalls = () => {
   const [season, setSeason] = useState(4);
   const [season_data, setSeasonData] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
-  // const [showLogin, setShowLogin] = useState(false); //有無登入
-  // const navigate = useNavigate();
   const rentDays = selectedPeriod === "1" ? 65 : 62;
   const handleSelectedChange = (event) => {
     setSelectedPeriod(event.target.value)
@@ -27,11 +24,40 @@ const SetStalls = () => {
   const handleSelectedVendor = (vendors) => {
     setSelectedVendors(vendors);
   }
-  // const handleRentVendor = await () => {
-  //   try {
-  //     const 
-  //   }
-  // }  
+  const submitRentInfo = async (season, selectedVendors, user) => {
+    console.log(selectedVendors);
+    
+    //分解為區域+號碼
+    const splitVendorNumber = selectedVendors.split('0');
+    //區域
+    const postion = splitVendorNumber[0];
+    //號碼
+    const number = splitVendorNumber[1];
+    //租用的攤主帳號
+    const vinfo  = user.vid
+    console.log(selectedVendors);
+    
+    const rentInfo = { postion, number, season, vinfo };
+
+    //確保所有必填欄位都有值
+    try {
+      const response = await fetch('http://localhost:3200/Map/rentvendor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(rentInfo),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not OK');
+      }
+      const result = await response.json();
+      console.log('Success:', result);
+    }
+    catch (error) {
+      console.error('Error:', error);
+    }
+  }
   useEffect(() => {
     const getSeasonData = async () => {
       try {
@@ -44,8 +70,11 @@ const SetStalls = () => {
     };
     getSeasonData();
   }, [season])
-  console.log(season);
   
+  console.log(season); //租用季節
+  console.log(selectedVendors); //租用攤位，需要拆解成postion、number
+  console.log(user.vid); //租用攤主
+
   const cartVisible = 1;
   //攤位價目表
   const vendorsPrice = {
@@ -160,7 +189,7 @@ const SetStalls = () => {
                   <button 
                   className={`btn rounded-pill border border-3 ${styles.confirmbtn}`}
                   style={{ fontSize: "20px" }}
-                  onClick>
+                  onClick={() => submitRentInfo(season, selectedVendors, user)}>
                     確定租用
                   </button>
                 </div>
