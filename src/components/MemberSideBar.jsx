@@ -1,5 +1,8 @@
 import styles from "./MemberSideBar.module.scss";
 const MemberSideBar = () => {
+
+  const user = JSON.parse(localStorage.getItem("user"));
+    console.log("User data from localStorage:", user);
   return (
     <>
       <div className="p-3 d-flex flex-column align-items-center font-special ">
@@ -8,19 +11,20 @@ const MemberSideBar = () => {
           <div className={`w-100 ${styles.sideBarSubTitle}`}>
             <a
               className="text-decoration-none c-black"
-              href="http://localhost:3000/member/1"
+              href={`http://localhost:3000/member/${user.uid}`}
             >
               <h4>會員資料</h4>
             </a>
             <a
               className="text-decoration-none c-black"
-              href="http://localhost:3000/member/1/order"
+              href={`http://localhost:3000/member/${user.uid}/order`}
+              // href="http://localhost:3000/member/1/order"
             >
               <h4>我的訂單</h4>
             </a>
             <a
               className="text-decoration-none c-black"
-              href="http://localhost:3000/member/1/like"
+              href={`http://localhost:3000/member/${user.uid}/like`}
             >
               <h4>按讚攤位</h4>
             </a>
