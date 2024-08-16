@@ -29,6 +29,7 @@ const LoginNormal = () => {
         const userData = {
           uid,
           nickname,
+          userType,
         };
         localStorage.setItem('user', JSON.stringify(userData));
 

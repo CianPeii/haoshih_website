@@ -26,7 +26,8 @@ const LoginVendor = () => {
 
         const vendorData = {
           vid,
-          brand_name
+          brand_name,
+          userType
         }
         
         localStorage.setItem('user', JSON.stringify(vendorData));
