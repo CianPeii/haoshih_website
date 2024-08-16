@@ -243,26 +243,26 @@ const Vendor = () => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          最新上架
+          {type[sortType]}
         </button>
         <ul
           className="dropdown-menu  text-center"
           aria-labelledby="dropdownMenuButton1"
         >
           <li>
-            <a className="dropdown-item" href="#">
+            <span className="dropdown-item" onClick={()=>setSortType(0)}>
               最新上架
-            </a>
+            </span>
           </li>
           <li>
-            <a className="dropdown-item" href="#">
+            <span className="dropdown-item" onClick={()=>setSortType(1)}>
               價格高 → 低
-            </a>
+            </span>
           </li>
           <li>
-            <a className="dropdown-item" href="#">
-              價格高 → 低
-            </a>
+            <span className="dropdown-item" onClick={()=>setSortType(2)}>
+              價格低 → 高
+            </span>
           </li>
         </ul>
       </div>
@@ -273,6 +273,7 @@ const Vendor = () => {
           <div className="row row-gap-4">
             <VendorCard
               params={params}
+              type={sortType}
               productDetail={(data) => {
                 setProduct(data);
               }}
