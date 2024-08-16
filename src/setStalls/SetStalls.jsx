@@ -13,27 +13,31 @@ import axios from "axios";
 const SetStalls = () => {
   const [selectedVendors, setSelectedVendors] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState("4");
+  const [season, setSeason] = useState(4);
+  const [season_data, setSeasonData] = useState([]);
   const rentDays = selectedPeriod === "1" ? 65 : 62;
   const handleSelectedChange = (event) => {
     setSelectedPeriod(event.target.value)
+    setSeason(event.target.value)
   }
   const handleSelectedVendor = (vendors) => {
     setSelectedVendors(vendors);
   }
-  const booths = [
-    ["A01", "A02", "A03", "A04", "A05"],
-    ["B01", "B02", "B03", "B04", "B05"],
-    ["C01", "C02", "C03", "C04", "C05"],
-    ["D01", "D02", "D03", "D04", "D05"],
-  ];
+  useEffect(() => {
+    const getSeasonData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3200/map/seasondata/${season}`,
+        );
+        setSeasonData(response.data.season_data.map(item => `${item.postion}0${item.number}`))
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+    getSeasonData();
+  }, [season])
+  console.log(season);
+  
   const cartVisible = 1;
-
-  const getBoothClass = (booth) => {
-    if (["A01", "A02", "B02", "C02", "D01", "D02"].includes(booth))
-      return "bg-red";
-    if (["A03", "B01", "C01"].includes(booth)) return "bg-gray";
-    return "bg-secondary";
-  };
   //攤位價目表
   const vendorsPrice = {
     'A01': 800,
@@ -72,6 +76,7 @@ const SetStalls = () => {
           <MarketFloorPlanB
             className="flex-1"
             fetchData={handleSelectedVendor}
+            season_data={season_data}
           ></MarketFloorPlanB>
           </div>
           <Col md={6} className="d-flex flex-1">

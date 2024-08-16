@@ -3,13 +3,15 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import styles from "./MarketFloorPlanB.module.scss";
 
 
-const MarketFloorPlan = ({fetchData}) => {
+const MarketFloorPlan = ({fetchData, season_data}) => {
   const [selectedStalls, setSelectedStalls] = useState(new Set());
+  console.log(season_data);
   const getBoothClass = (booth) => {
-    if (["A01", "A02", "B02", "C02", "D01", "D02"].includes(booth))
+    if (season_data.includes(booth)) {
+      return "bg-select-gray";
+    }else if (["A01", "A02", "B01", "B02", "C01", "C02", "D01", "D02"].includes(booth)) {
       return "bg-red";
-    if (["A03", "B01", "C01"].includes(booth)) return "bg-select-gray";
-    return "bg-secondary";
+    }return "bg-secondary";
   };
   const handleClick = (event) => {
     const element = event.target;

@@ -28,7 +28,6 @@ const Map = () => {
       const response = await axios.get(`http://localhost:3200/map/seasondata/${season}`, {
       });
       setSeason(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log("Error fetching data", error);
     }
@@ -40,7 +39,20 @@ const Map = () => {
   
   //確保seasondata資料已動態更新
   useEffect(() => {
-    console.log(season_data);
+    const getSeasonData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3200/map/seasondata/3",
+        );
+        setSeason(response)
+        console.log(response.data.season_data.map(item => `${item.postion}${item.number}`));
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+    getSeasonData();
+  }, [])
+  useEffect(() => {
+    console.log(season_data.season_data);
   }, [season_data])
   return (
     <>
