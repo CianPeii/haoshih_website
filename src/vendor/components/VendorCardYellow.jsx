@@ -11,7 +11,7 @@ const VendorCard = ({params, productDetail, showProduct}) => {
   useEffect(() => {
     const fetchVendorData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3200/carts/vendorProducts/${params.vid}`);
+        const response = await axios.get(`http://localhost:3200/shop/${params.vid}/products`);
         setVendorData(response.data);
         // console.log(response.data)
       } catch (error) {
