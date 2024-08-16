@@ -2,6 +2,7 @@ import styles from "./NavBarShop.module.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const NavBarShop = ({ cartVisible }) => {
   const [productsData, setProductsData] = useState({});
@@ -20,6 +21,7 @@ const NavBarShop = ({ cartVisible }) => {
   }, []); // 空陣列表示只在組件掛載時執行一次
 
   const user = JSON.parse(localStorage.getItem("user"));
+
   // console.log("user123",user.uid);
 
   useEffect(() => {
@@ -39,11 +41,16 @@ const NavBarShop = ({ cartVisible }) => {
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setShowLogin(false);
+  const doLogout = async () => {
+    try {
+      await axios.get("http://localhost:3200/login/logout");
+      localStorage.removeItem("user");
+      setShowLogin(false);
+      window.location.href = "/shop";
+    } catch (error) {
+      console.error("登出失敗", error);
+    }
   };
-
   // console.log(productsData);
   // console.log(Object.keys(productsData).length);
   return (
@@ -90,20 +97,26 @@ const NavBarShop = ({ cartVisible }) => {
                 </div>
                 <a
                   className="text-decoration-none c-black"
-                  href={`http://localhost:3000/member/${user.uid}`}
+                  href={`http://localhost:3000/${user.nickname ? "member" : "vendor"}/${user.nickname ? user.uid : user.vid}`}
                   // href="http://localhost:3000/vendor/1"
                 >
-                  <div>{user.nickname || user.brand_name}</div>
-                  {/* <div>丞丞</div> */}
+                  <div className="hover-c-primary fw-bold">
+                    {user.nickname || user.brand_name}
+                  </div>
                 </a>
-                <div onClick={handleLogout}>登出</div>
+                <div
+                  className="link-dark text-decoration-none hover-c-red fw-bold cursor-pointer"
+                  onClick={doLogout}
+                >
+                  登出
+                </div>
               </div>
             ) : (
-              <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>
-                <a className="link-dark text-decoration-none" href="https:">
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>
                   登入
-                </a>
-              </div>
+                </div>
+              </Link>
             )}
           </div>
         </nav>

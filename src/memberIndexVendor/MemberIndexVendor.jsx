@@ -11,12 +11,13 @@ import VendorStallProfile from "./components/VendorStallProfile";
 import EditStallProfile from "./components/EditStallProfile";
 import VendorPaymentSettings from "./components/VendorPaymentSettings";
 import VendorProducts from "./components/VendorProducts";
-// import VendorOrders from './components/VendorOrders';
+import VendorOrders from "./components/VendorOrders";
 
 const MemberIndexVendor = () => {
   const [vendorData, setVendorData] = useState(null);
   const [stallProfile, setStallProfile] = useState(null);
   const [productsData, setProductsData] = useState(null);
+  const [orderData, setOrderData] = useState(null);
   const { vid } = useParams();
   const updateProfileData = (newData) => {
     setVendorData(newData);
@@ -88,6 +89,24 @@ const MemberIndexVendor = () => {
     fetchProductsData();
   }, [vid]);
 
+  // 抓訂單資料
+  useEffect(() => {
+    const fetchOrderData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3200/vendor/allOrders/${vid}`
+        );
+        setOrderData(response.data);
+      } catch (error) {
+        console.error("Error fetching Order Data:", error);
+      }
+    };
+
+    fetchOrderData();
+  }, [vid]);
+
+  console.log(orderData);
+
   const VendorProfile = () => (
     <>
       <SubTitleYellow title="會員資料" />
@@ -145,7 +164,16 @@ const MemberIndexVendor = () => {
               }
             />
 
-            {/* <Route path="orders" element={<VendorOrders />} /> */}
+            <Route
+              path="orders"
+              element={
+                orderData ? (
+                  <VendorOrders orderData={orderData} />
+                ) : (
+                  <p>Loading...</p>
+                )
+              }
+            />
           </Routes>
           <Outlet />
 

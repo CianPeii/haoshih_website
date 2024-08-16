@@ -4,14 +4,14 @@ import axios from 'axios';
 import { Buffer } from 'buffer';
 import { turnPrice } from "../../utils/turnPrice";
 
-const VendorCard = ({params, productDetail, showProduct}) => {
+const VendorCard = ({ params, productDetail, showProduct, type }) => {
   const [vendorData, setVendorData] = useState([])
   // console.log(params.vid); 檢查是哪一個攤販
-
+  // console.log(type)
   useEffect(() => {
     const fetchVendorData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3200/carts/vendorProducts/${params.vid}`);
+        const response = await axios.get(`http://localhost:3200/shop/${params.vid}/products/${type}`);
         setVendorData(response.data);
         // console.log(response.data)
       } catch (error) {
@@ -19,7 +19,7 @@ const VendorCard = ({params, productDetail, showProduct}) => {
       }
     };
     fetchVendorData();
-  }, []);
+  }, [type]);
 
   if (!vendorData) {
     return <tr><td colSpan="5">Loading...</td></tr>;
@@ -34,11 +34,11 @@ const VendorCard = ({params, productDetail, showProduct}) => {
 
         return (
           <div className="col-3" key={index}>
-            <div className={`card ${styles.cardBg} cursor-pointer`} 
-                onClick={()=>{
-                  productDetail(product)
-                  showProduct()
-                }}>
+            <div className={`card ${styles.cardBg} cursor-pointer`}
+              onClick={() => {
+                productDetail(product)
+                showProduct()
+              }}>
               <img
                 className="rounded-3 overflow-hidden mx-3 mt-3"
                 src={imgSrc}

@@ -43,14 +43,33 @@ shopRouter.get("/:type", function (req, res) {
 });
 
 // 取得該攤販的商品
-shopRouter.get("/:vinfo/products", function (req, res) {
-  conn.query(
-    "select * from product where vid = ?",
-    [req.params.vinfo],
-    function (err, result) {
-      res.json(result);
-    }
-  );
+shopRouter.get("/:vinfo/products/:sortType", function (req, res) {
+  var query = "select * from product where vid = ? and is_show = 1 and quantity>0 order by "
+  if (req.params.sortType == 0) {
+    conn.query(
+      query+"launch desc",
+      [req.params.vinfo],
+      function (err, result) {
+        res.json(result);
+      }
+    );
+  } else if(req.params.sortType == 1){
+    conn.query(
+      query+"price desc",
+      [req.params.vinfo],
+      function (err, result) {
+        res.json(result);
+      }
+    );
+  }else {
+    conn.query(
+      query+"price",
+      [req.params.vinfo],
+      function (err, result) {
+        res.json(result);
+      }
+    );
+  }
 });
 
 // 取得單件商品
