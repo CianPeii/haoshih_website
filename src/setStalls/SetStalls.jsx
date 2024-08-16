@@ -1,4 +1,3 @@
-// import { type } from "@testing-library/user-event/dist/type";
 import ChatBtn from "../components/ChatBtn";
 import Footer from "../components/Footer";
 import MainBg from "../components/MainBg";
@@ -99,7 +98,6 @@ const SetStalls = () => {
     'D04': 600,
     'D05': 600
   }
-  
 
   return (
     <div>
