@@ -44,7 +44,7 @@ shopRouter.get("/:type", function (req, res) {
 
 // 取得該攤販的商品
 shopRouter.get("/:vinfo/products/:sortType", function (req, res) {
-  var query = "select * from product where vid = ? and is_show = 1 order by "
+  var query = "select * from product where vid = ? and is_show = 1 and quantity>0 order by "
   if (req.params.sortType == 0) {
     conn.query(
       query+"launch desc",
