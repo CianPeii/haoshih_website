@@ -43,14 +43,14 @@ const NavBarShop = ({ cartVisible }) => {
 
   const doLogout = async () => {
     try {
-      await axios.get('http://localhost:3200/login/logout');
-      localStorage.removeItem('user');
+      await axios.get("http://localhost:3200/login/logout");
+      localStorage.removeItem("user");
       setShowLogin(false);
-      window.location.href = '/shop';
+      window.location.href = "/shop";
     } catch (error) {
-      console.error('登出失敗', error);
+      console.error("登出失敗", error);
     }
-  }
+  };
   // console.log(productsData);
   // console.log(Object.keys(productsData).length);
   return (
@@ -81,7 +81,7 @@ const NavBarShop = ({ cartVisible }) => {
                 <div
                   id="123"
                   style={{ display: cartVisible ? "visible" : "none" }}
-                // style={{ display: "none" }}
+                  // style={{ display: "none" }}
                 >
                   <a
                     className="position-relative text-decoration-none link-dark"
@@ -100,14 +100,20 @@ const NavBarShop = ({ cartVisible }) => {
                   href={`http://localhost:3000/member/${user.uid}`}
                   // href="http://localhost:3000/vendor/1"
                 >
-                  <div>{user.nickname || user.brand_name}</div>
-                  {/* <div>范丞丞</div> */}
+                  <div className="hover-c-primary p-2 fw-bold">
+                    {user.nickname || user.brand_name}
+                  </div>
                 </a>
-                <div className="link-dark text-decoration-none" onClick={doLogout}>登出</div>
+                <div
+                  className="link-dark text-decoration-none hover-c-red p-2 fw-bold cursor-pointer"
+                  onClick={doLogout}
+                >
+                  登出
+                </div>
               </div>
             ) : (
-              <Link to="/login" style={{ textDecoration: 'none' }}>
-                <div className={`hover:bg-secondary px-4 ${styles.mallBtn}`}>
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                <div className={`hover-bg-secondary px-4 ${styles.mallBtn}`}>
                   登入
                 </div>
               </Link>
