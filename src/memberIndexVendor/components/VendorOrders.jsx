@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Tab, Tabs } from "react-bootstrap";
+// import styles from "./VendorOrders.module.scss";
 import SubTitleYellow from "../../components/SubTitleYellow";
 import VendorOrderCard from "./VendorOrderCard";
 
@@ -18,7 +19,11 @@ const VendorOrders = (props) => {
         className="mb-3"
         justify
       >
-        <Tab eventKey="allStatus" title="全部">
+        <Tab
+          eventKey="allStatus"
+          title="全部"
+          // className={`${styles["custom-tab"]} custom-tab`}
+        >
           <Container className="px-5">
             {orderData
               ? orderData.map((order) => (
@@ -56,40 +61,52 @@ const VendorOrders = (props) => {
         </Tab>
         {/* 以下文字顯示邏輯須修正，不能以是否有orderData作為判斷 */}
         <Tab eventKey="status1" title="待出貨">
-          {orderData
-            ? orderData
-                .filter(orderFilter("待出貨"))
-                .map((order) => (
-                  <VendorOrderCard key={order.oid} orderData={order} />
-                ))
-            : "目前沒有待出貨訂單"}
+          {orderData && orderData.length > 0
+            ? (() => {
+                const filteredOrders = orderData.filter(orderFilter("待出貨"));
+                return filteredOrders.length > 0
+                  ? filteredOrders.map((order) => (
+                      <VendorOrderCard key={order.oid} orderData={order} />
+                    ))
+                  : "目前沒有待出貨訂單";
+              })()
+            : "正在加載訂單..."}
         </Tab>
         <Tab eventKey="status2" title="已出貨">
-          {orderData
-            ? orderData
-                .filter(orderFilter("已出貨"))
-                .map((order) => (
-                  <VendorOrderCard key={order.oid} orderData={order} />
-                ))
-            : "目前沒有已出貨訂單"}
+          {orderData && orderData.length > 0
+            ? (() => {
+                const filteredOrders = orderData.filter(orderFilter("已出貨"));
+                return filteredOrders.length > 0
+                  ? filteredOrders.map((order) => (
+                      <VendorOrderCard key={order.oid} orderData={order} />
+                    ))
+                  : "目前沒有已出貨訂單";
+              })()
+            : "正在加載訂單..."}
         </Tab>
         <Tab eventKey="status3" title="待收貨">
-          {orderData
-            ? orderData
-                .filter(orderFilter("待收貨"))
-                .map((order) => (
-                  <VendorOrderCard key={order.oid} orderData={order} />
-                ))
-            : "目前沒有待出貨訂單"}
+          {orderData && orderData.length > 0
+            ? (() => {
+                const filteredOrders = orderData.filter(orderFilter("待收貨"));
+                return filteredOrders.length > 0
+                  ? filteredOrders.map((order) => (
+                      <VendorOrderCard key={order.oid} orderData={order} />
+                    ))
+                  : "目前沒有待收貨訂單";
+              })()
+            : "正在加載訂單..."}
         </Tab>
         <Tab eventKey="status4" title="已完成">
-          {orderData
-            ? orderData
-                .filter(orderFilter("已完成"))
-                .map((order) => (
-                  <VendorOrderCard key={order.oid} orderData={order} />
-                ))
-            : "尚無已完成訂單"}
+          {orderData && orderData.length > 0
+            ? (() => {
+                const filteredOrders = orderData.filter(orderFilter("已完成"));
+                return filteredOrders.length > 0
+                  ? filteredOrders.map((order) => (
+                      <VendorOrderCard key={order.oid} orderData={order} />
+                    ))
+                  : "尚無已完成訂單";
+              })()
+            : "正在加載訂單..."}
         </Tab>
       </Tabs>
     </>
