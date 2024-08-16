@@ -24,7 +24,6 @@ const Vendor = () => {
   const [showLogin, setShowLogin] = useState(false); //有無登入
   const navigate = useNavigate();
   const [sortType, setSortType] = useState(0)
-
   const type = ["最新上架", "價格高 → 低", "價格低 → 高"]
 
   useEffect(() => {
@@ -157,7 +156,7 @@ const Vendor = () => {
 
   return (
     <>
-      <NavBarShop cartVisible={cartVisible} />
+      <NavBarShop cartVisible={cartVisible}/>
       {/* vendorHeader */}
       <div
         className={`p-4 d-flex justify-content-center align-items-center d-grid gap-4 ${styles.header}`}

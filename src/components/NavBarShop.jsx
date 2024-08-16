@@ -36,7 +36,7 @@ const NavBarShop = ({ cartVisible }) => {
       };
       fetchProductsData();
     }
-  }, []);
+  }, [user]);
 
   const doLogout = async () => {
     try {
@@ -74,23 +74,30 @@ const NavBarShop = ({ cartVisible }) => {
               <div
                 className={`d-flex flex-row justify-content-between align-items-center gap-1 ${styles.loginItem}`}
               >
+
+              { user.userType === "member" ? (
                 <div
-                  id="123"
-                  style={{ display: cartVisible ? "visible" : "none" }}
-                  // style={{ display: "none" }}
+                style={{ display: cartVisible ? "visible" : "none" }}
+                // style={{ display: "none" }}
+              >
+                <a
+                  className="position-relative text-decoration-none link-dark"
+                  href="/ShopCart"
                 >
-                  <a
-                    className="position-relative text-decoration-none link-dark"
-                    href="/ShopCart"
+                  <div className="bi bi-cart h2 "></div>
+                  <span
+                    className={`c-white rounded-circle bg-gray c-black fw-bolder cursor-pointer ${styles.ShopQuantity}`}
                   >
-                    <div className="bi bi-cart h2 "></div>
-                    <span
-                      className={`c-white rounded-circle bg-gray c-black fw-bolder cursor-pointer ${styles.ShopQuantity}`}
-                    >
-                      {Object.keys(productsData).length}
-                    </span>
-                  </a>
-                </div>
+                    {Object.keys(productsData).length}
+                  </span>
+                </a>
+              </div>
+              ) : null
+
+              }
+
+
+
                 <a
                   className="text-decoration-none c-black"
                   href={`http://localhost:3000/${user.nickname ? "member" : "vendor"}/${user.nickname ? user.uid : user.vid}`}

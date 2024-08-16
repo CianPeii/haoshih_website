@@ -72,13 +72,12 @@ const ProductDescription = styled.div`
   margin-top: 15px;
 `;
 
-const ProductModal = ({ show, onHide, product, count }) => {
+const ProductModal = ({ show, onHide, product}) => {
   const [amount, setAmount] = useState(1);
   // const [amountData, setAmountData] = useState({});
   const [imgSrc, setImgSrc] = useState("");
   // const [isSubmitting, setIsSubmitting] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
@@ -103,9 +102,6 @@ const ProductModal = ({ show, onHide, product, count }) => {
       setShowLogin(false);
     }
   }, []); // 空陣列表示只在組件掛載時執行一次
-  
-  console.log(user,showLogin);
-  
 
   const handleSubmit = async () => {
     if(showLogin) {
@@ -118,7 +114,7 @@ const ProductModal = ({ show, onHide, product, count }) => {
         // 2. 查找當前商品在購物車中的數據
         const cartItem = cartData.find((item) => item.pid === product.pid);
         const currentCartAmount = cartItem ? cartItem.amount : 0;
-  
+
         // 3. 檢查是否超出庫存
         if (amount + currentCartAmount > product.quantity) {
           alert("該商品選購數量已達庫存上限，請至購物車進行數量更改");
