@@ -8,7 +8,6 @@ import { turnPrice } from "../utils/turnPrice";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import WeatherApp from "../weather/WeatherApp";
 
 const ShopCart = () => {
   const [productsData, setProductsData] = useState(null);
@@ -116,8 +115,6 @@ const ShopCart = () => {
               >
                 前往結帳
               </Button>
-
-              <WeatherApp />
             </div>
           </div>
         </div>
