@@ -18,12 +18,20 @@ const Vendor = () => {
   const [logoImgSrc, setLogoImgSrc] = useState("");
   const cartVisible = 1;
   // console.log(params) // can get vid
-  const [showModal, setShowModal] = useState(false);
-  const [product, setProduct] = useState({});
+  const [showModal, setShowModal] = useState(false); //商品彈窗顯示
+  const [product, setProduct] = useState({}); //商品彈窗資料
   const user = JSON.parse(localStorage.getItem("user"));
+  const [showLogin, setShowLogin] = useState(false); //有無登入
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (user) {
+      setShowLogin(true);
+    } else {
+      setShowLogin(false);
+    }
   }, []);
 
   const fetchVendorData = async () => {
@@ -102,9 +110,6 @@ const Vendor = () => {
     // console.log("Vendor data updated:", vendor);
   }, [vendor, params.vid]);
 
-  useEffect(() => {
-    // console.log(product);
-  }, [product]);
 
   //按讚攤位
   const [likedData, setLikedData] = useState([]);
@@ -124,21 +129,27 @@ const Vendor = () => {
   }, []); // uid
 
   // 收藏功能
-  const changeHeartList = async() => {
-    console.log('OK')
-    var list = []
-    if (likedData.includes(vendor.vinfo)) {
-      var index = likedData.indexOf(vendor.vinfo)
-      list = [...likedData]
-      list.splice(index,1)
-      // console.log(list)
-      setLikedData(list)
+  const changeHeartList = async () => {
+    // console.log('OK')
+    if (!showLogin) {
+      alert('請先登入！')
+      navigate("/login");
     } else {
-      list = [...likedData]
-      list.push(vendor.vinfo)
-      setLikedData(list)
+
+      var list = []
+      if (likedData.includes(vendor.vinfo)) {
+        var index = likedData.indexOf(vendor.vinfo)
+        list = [...likedData]
+        list.splice(index, 1)
+        // console.log(list)
+        setLikedData(list)
+      } else {
+        list = [...likedData]
+        list.push(vendor.vinfo)
+        setLikedData(list)
+      }
+      let res = await axios.post(`http://localhost:3200/shop/like/${user.uid}`, { list: list })
     }
-    let res = await axios.post(`http://localhost:3200/shop/like/${user.uid}`,{list:list})
   }
 
 
