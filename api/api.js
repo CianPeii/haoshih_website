@@ -63,6 +63,9 @@ app.use("/vendor", vendorRouter);
 var chatroomRouter = require("./chatroomRouter.js");
 app.use("/chatroom", chatroomRouter);
 
+var linePayRouter = require("./linePayRouter.js");
+app.use("/Step3", linePayRouter);
+
 const PORT = 3200;
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

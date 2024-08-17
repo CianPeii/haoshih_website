@@ -6,28 +6,31 @@ import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 import { turnPrice } from "../../utils/turnPrice";
 import queryString from "query-string";
+import axios from "axios";
 
 const Step3 = () => {
-  const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
+  const cartData = JSON.parse(localStorage.getItem("Step1Data"));
   const addressData = JSON.parse(localStorage.getItem("Step2Data"));
-  console.log(Step1Data);
-  console.log(addressData);
 
   const total = JSON.parse(localStorage.getItem("total"));
 
   const cartVisible = false;
 
-  const item = Step1Data.map(({ pid, amount, price }) => ({
-    pid,
-    amount,
-    price,
-  }));
+  const products = [];
+  cartData.map(({ name, amount, price }) =>
+    products.push({ name, quantity: amount, price })
+  );
 
-  const handleNextStep = () => {
-    const isSuccess = Math.random() < 0.5; // 50% 的成功率
-    const status = isSuccess ? "success" : "failed";
-    const url = `/step4?${queryString.stringify({ status })}`;
-    window.location.href = url;
+  const handleNextStep = async () => {
+    // 打付款的 api
+    await axios.post("http://localhost:3200/Step3", {
+      products,
+    });
+
+    // const isSuccess = Math.random() < 0.5; // 50% 的成功率
+    // const status = isSuccess ? "success" : "failed";
+    // const url = `/step4?${queryString.stringify({ status })}`;
+    // window.location.href = url;
   };
 
   const sendData = {
@@ -80,7 +83,7 @@ const Step3 = () => {
     }
 
     const detail = {
-      item: item,
+      item: products,
       ...total,
       payment: paymentId,
     };
@@ -89,7 +92,7 @@ const Step3 = () => {
     // console.log(JSON.stringify(detail));
     localStorage.setItem("detail", JSON.stringify(detail));
     localStorage.setItem("send_data", JSON.stringify(sendData));
-  }, [selectedPayment, total, item, sendData]); // 添加依賴項，確保所有依賴都能觸發更新
+  }, [selectedPayment, total, products, sendData]); // 添加依賴項，確保所有依賴都能觸發更新
 
   const handlePaymentChange = (id) => {
     setSelectedPayment(id);
