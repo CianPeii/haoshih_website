@@ -17,8 +17,10 @@ const SetStalls = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const rentDays = selectedPeriod === "1" ? 65 : 62;
   const handleSelectedChange = (event) => {
-    setSelectedPeriod(event.target.value)
-    setSeason(event.target.value)
+    setSelectedPeriod(event.target.value);
+    setSeason(event.target.value);
+    //切換季度時先清空已選的攤位
+    setSelectedVendors('');
   }
   const handleSelectedVendor = (vendors) => {
     setSelectedVendors(vendors);
@@ -112,6 +114,7 @@ const SetStalls = () => {
           <MarketFloorPlanB
             className="flex-1"
             fetchData={handleSelectedVendor}
+            selectedPeriod={selectedPeriod}
             season_data={season_data}
           ></MarketFloorPlanB>
           </div>

@@ -28,6 +28,7 @@ const Vendor = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    //以下可簡寫為setShowLogin(!!user)
     if (user) {
       setShowLogin(true);
     } else {
