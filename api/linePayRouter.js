@@ -47,9 +47,9 @@ linePayRouter.post("/", async function (req, res) {
 
     const linePayRes = await axios.post(url, linePayReqBody, { headers });
 
-    // if (linePayRes?.data.returnCode === "0000") {
-    //   window.open(linePayRes?.data?.info.paymentUrl.web);
-    // }
+    if (linePayRes?.data.returnCode === "0000") {
+      res.json(linePayRes?.data?.info.paymentUrl.web);
+    }
   } catch (error) {}
 });
 
