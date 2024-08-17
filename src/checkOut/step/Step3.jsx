@@ -11,12 +11,12 @@ import axios from "axios";
 const Step3 = () => {
   const cartData = JSON.parse(localStorage.getItem("Step1Data"));
   const addressData = JSON.parse(localStorage.getItem("Step2Data"));
-
   const total = JSON.parse(localStorage.getItem("total"));
 
   const cartVisible = false;
 
   const products = [];
+
   cartData.map(({ name, amount, price }) =>
     products.push({ name, quantity: amount, price })
   );
@@ -25,6 +25,7 @@ const Step3 = () => {
     // 打付款的 api
     await axios.post("http://localhost:3200/Step3", {
       products,
+      ...total,
     });
 
     // const isSuccess = Math.random() < 0.5; // 50% 的成功率

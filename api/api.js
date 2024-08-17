@@ -4,9 +4,6 @@ var cors = require("cors");
 const { Server } = require("socket.io");
 var app = express();
 
-// TODO: remove -> 這樣會起一個獨立的 http server，socketio 沒辦法共用 server
-// app.listen(3200);
-
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
