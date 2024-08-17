@@ -2,6 +2,10 @@ var express = require("express");
 var linePayRouter = express.Router();
 linePayRouter.use(express.urlencoded({ extended: false }));
 linePayRouter.use(express.json());
+const axios = require("axios");
+const { v4: uuid } = require("uuid");
+const { HmacSHA256 } = require("crypto-js");
+const Base64 = require("crypto-js/enc-base64");
 var config = require("./databaseConfig.js");
 var conn = config.connection;
 
@@ -16,28 +20,63 @@ const linePayConst = {
   CANCEL_PATH: "/Step4?status=failed",
 };
 
-linePayRouter.post("/", function (req, res) {
+linePayRouter.post("/", async function (req, res) {
   try {
     const { products, total } = req.body;
 
     const linePayReqBody = {
-      1: {
-        amount: total,
-        currency: "TWD",
-        packages: [
-          {
-            id: "order_1",
-            amount: total,
-            products,
-          },
-        ],
-      },
+      amount: total,
+      currency: "TWD",
+      orderId: uuid(),
+      packages: [
+        {
+          id: "order_1",
+          amount: total,
+          products,
+        },
+      ],
       redirectUrls: {
         confirmUrl: linePayConst.HOST + linePayConst.CONFIRM_PATH,
         cancelUrl: linePayConst.HOST + linePayConst.CANCEL_PATH,
       },
     };
+
+    const uri = "/payments/request";
+    const headers = createHeaders(uri, linePayReqBody);
+    const url = createUrl(uri);
+
+    const linePayRes = await axios.post(url, linePayReqBody, { headers });
+
+    // if (linePayRes?.data.returnCode === "0000") {
+    //   window.open(linePayRes?.data?.info.paymentUrl.web);
+    // }
   } catch (error) {}
 });
+
+const createHeaders = (uri, reqBody) => {
+  const nonce = uuid();
+  const signature = Base64.stringify(
+    HmacSHA256(
+      linePayConst.CHANNEL_SECRET_KEY +
+        "/" +
+        linePayConst.VERSION +
+        uri +
+        JSON.stringify(reqBody) +
+        nonce,
+      linePayConst.CHANNEL_SECRET_KEY
+    )
+  );
+
+  const headers = {
+    "Content-Type": "application/json",
+    "X-LINE-ChannelId": linePayConst.CHANNEL_ID,
+    "X-LINE-Authorization-Nonce": nonce,
+    "X-LINE-Authorization": signature,
+  };
+
+  return headers;
+};
+
+const createUrl = (uri) => linePayConst.DEV_SITE + linePayConst.VERSION + uri;
 
 module.exports = linePayRouter;
