@@ -8,6 +8,27 @@ import { turnPrice } from "../../utils/turnPrice";
 import queryString from "query-string";
 import axios from "axios";
 
+const paymentMethods = [
+  {
+    id: "cod",
+    label: "貨到付款",
+    details: "收到商品時以現金付款",
+    estimatedDelivery: "3-5 個工作天",
+  },
+  {
+    id: "linepay",
+    label: "LinePay",
+    details: "使用 LINE 應用程式進行安全支付",
+    estimatedDelivery: "2-4 個工作天",
+  },
+  {
+    id: "transfer",
+    label: "銀行轉帳",
+    details: "使用網路銀行或 ATM 轉帳",
+    estimatedDelivery: "1-3 個工作天（待款項確認）",
+  },
+];
+
 const Step3 = () => {
   const cartData = JSON.parse(localStorage.getItem("Step1Data"));
   const addressData = JSON.parse(localStorage.getItem("Step2Data"));
@@ -22,13 +43,16 @@ const Step3 = () => {
   );
 
   const handleNextStep = async () => {
-    // 打付款的 api
-    const res = await axios.post("http://localhost:3200/linePay", {
-      products,
-      ...total,
-    });
+    if (selectedPayment === paymentMethods[1].id) {
+      const res = await axios.post("http://localhost:3200/linePay", {
+        products,
+        ...total,
+      });
 
-    window.open(res.data, "_blank");
+      window.open(res.data, "_blank");
+    } else {
+      // ...
+    }
   };
 
   const sendData = {
@@ -42,29 +66,8 @@ const Step3 = () => {
     ],
   };
 
-  const [selectedPayment, setSelectedPayment] = useState("cod"); // 默認值設置為 "cod"
+  const [selectedPayment, setSelectedPayment] = useState(paymentMethods[0].id); // 默認值設置為 "cod"
   const [couponCode, setCouponCode] = useState("");
-
-  const paymentMethods = [
-    {
-      id: "cod",
-      label: "貨到付款",
-      details: "收到商品時以現金付款",
-      estimatedDelivery: "3-5 個工作天",
-    },
-    {
-      id: "linepay",
-      label: "LinePay",
-      details: "使用 LINE 應用程式進行安全支付",
-      estimatedDelivery: "2-4 個工作天",
-    },
-    {
-      id: "transfer",
-      label: "銀行轉帳",
-      details: "使用網路銀行或 ATM 轉帳",
-      estimatedDelivery: "1-3 個工作天（待款項確認）",
-    },
-  ];
 
   useEffect(() => {
     let paymentId;
