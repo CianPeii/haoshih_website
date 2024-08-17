@@ -9,7 +9,10 @@ import queryString from "query-string";
 
 const Step3 = () => {
   const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
-  const Step2Data = JSON.parse(localStorage.getItem("Step2Data"));
+  const addressData = JSON.parse(localStorage.getItem("Step2Data"));
+  console.log(Step1Data);
+  console.log(addressData);
+
   const total = JSON.parse(localStorage.getItem("total"));
 
   const cartVisible = false;
@@ -20,10 +23,6 @@ const Step3 = () => {
     price,
   }));
 
-  const data = {
-    ...Step2Data,
-  };
-
   const handleNextStep = () => {
     const isSuccess = Math.random() < 0.5; // 50% 的成功率
     const status = isSuccess ? "success" : "failed";
@@ -31,14 +30,14 @@ const Step3 = () => {
     window.location.href = url;
   };
 
-  const send_data = {
-    fullName: data.fullName,
-    phone: data.phone,
+  const sendData = {
+    fullName: addressData.fullName,
+    phone: addressData.phone,
     address: [
-      { postNum: data.postNum },
-      { city: data.city },
-      { district: data.district },
-      { address: data.address },
+      { postNum: addressData.postNum },
+      { city: addressData.city },
+      { district: addressData.district },
+      { address: addressData.address },
     ],
   };
 
@@ -86,11 +85,11 @@ const Step3 = () => {
       payment: paymentId,
     };
 
-    console.log("detail", detail);
-    console.log(JSON.stringify(detail));
+    // console.log("detail", detail);
+    // console.log(JSON.stringify(detail));
     localStorage.setItem("detail", JSON.stringify(detail));
-    localStorage.setItem("send_data", JSON.stringify(send_data));
-  }, [selectedPayment, total, item, send_data]); // 添加依賴項，確保所有依賴都能觸發更新
+    localStorage.setItem("send_data", JSON.stringify(sendData));
+  }, [selectedPayment, total, item, sendData]); // 添加依賴項，確保所有依賴都能觸發更新
 
   const handlePaymentChange = (id) => {
     setSelectedPayment(id);
