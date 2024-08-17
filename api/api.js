@@ -61,7 +61,7 @@ var chatroomRouter = require("./chatroomRouter.js");
 app.use("/chatroom", chatroomRouter);
 
 var linePayRouter = require("./linePayRouter.js");
-app.use("/Step3", linePayRouter);
+app.use("/linePay", linePayRouter);
 
 const PORT = 3200;
 server.listen(PORT, () => {

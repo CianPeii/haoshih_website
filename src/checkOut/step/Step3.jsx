@@ -23,17 +23,12 @@ const Step3 = () => {
 
   const handleNextStep = async () => {
     // 打付款的 api
-    const res = await axios.post("http://localhost:3200/Step3", {
+    const res = await axios.post("http://localhost:3200/linePay", {
       products,
       ...total,
     });
 
     window.open(res.data, "_blank");
-
-    // const isSuccess = Math.random() < 0.5; // 50% 的成功率
-    // const status = isSuccess ? "success" : "failed";
-    // const url = `/step4?${queryString.stringify({ status })}`;
-    // window.location.href = url;
   };
 
   const sendData = {

@@ -20,38 +20,70 @@ const linePayConst = {
   CANCEL_PATH: "/Step4?status=failed",
 };
 
-linePayRouter.post("/", async function (req, res) {
-  try {
-    const { products, total } = req.body;
+let orders = {};
 
-    const linePayReqBody = {
-      amount: total,
-      currency: "TWD",
-      orderId: uuid(),
-      packages: [
-        {
-          id: "order_1",
-          amount: total,
-          products,
+linePayRouter
+  .post("/", async function (req, res) {
+    try {
+      const { products, total } = req.body;
+
+      const linePayReqBody = {
+        amount: total,
+        currency: "TWD",
+        orderId: uuid(),
+        packages: [
+          {
+            id: "order_1",
+            amount: total,
+            products,
+          },
+        ],
+        redirectUrls: {
+          confirmUrl: linePayConst.HOST + linePayConst.CONFIRM_PATH,
+          cancelUrl: linePayConst.HOST + linePayConst.CANCEL_PATH,
         },
-      ],
-      redirectUrls: {
-        confirmUrl: linePayConst.HOST + linePayConst.CONFIRM_PATH,
-        cancelUrl: linePayConst.HOST + linePayConst.CANCEL_PATH,
-      },
-    };
+      };
 
-    const uri = "/payments/request";
-    const headers = createHeaders(uri, linePayReqBody);
-    const url = createUrl(uri);
+      orders = { orderId: { amount: total, currency: "TWD" } };
 
-    const linePayRes = await axios.post(url, linePayReqBody, { headers });
+      const uri = "/payments/request";
+      const headers = createHeaders(uri, linePayReqBody);
+      const url = createUrl(uri);
 
-    if (linePayRes?.data.returnCode === "0000") {
-      res.json(linePayRes?.data?.info.paymentUrl.web);
+      const linePayRes = await axios.post(url, linePayReqBody, { headers });
+
+      if (linePayRes?.data.returnCode === "0000") {
+        res.json(linePayRes?.data?.info.paymentUrl.web);
+      }
+    } catch (error) {
+      console.error("createOrder" + error);
+      res.end();
     }
-  } catch (error) {}
-});
+  })
+  .get("/Step4", async (req, res) => {
+    console.log(123);
+
+    try {
+      const { transactionId, orderId } = req.query;
+
+      const linePayReqBody = orders[orderId];
+
+      const uri = `/payments/${transactionId}/confirm`;
+      const headers = createHeaders(uri, linePayReqBody);
+      const url = createUrl(uri);
+
+      const linePayRes = await axios.post(url, linePayReqBody, { headers });
+
+      if (linePayRes?.data.returnCode === "0000") {
+        console.log("payment success");
+      }
+
+      res.end();
+    } catch (error) {
+      console.error("confirmOrder" + error);
+      res.end();
+    }
+  });
 
 const createHeaders = (uri, reqBody) => {
   const nonce = uuid();
