@@ -89,8 +89,9 @@ const Step3 = () => {
       payment: paymentId,
     };
 
-    // console.log("detail", detail);
-    // console.log(JSON.stringify(detail));
+    console.log("detail", detail);
+    console.log(JSON.stringify(detail));
+
     localStorage.setItem("detail", JSON.stringify(detail));
     localStorage.setItem("send_data", JSON.stringify(sendData));
   }, [selectedPayment, total, products, sendData]); // 添加依賴項，確保所有依賴都能觸發更新

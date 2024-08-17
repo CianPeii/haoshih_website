@@ -61,8 +61,6 @@ linePayRouter
     }
   })
   .get("/Step4", async (req, res) => {
-    console.log(123);
-
     try {
       const { transactionId, orderId } = req.query;
 
