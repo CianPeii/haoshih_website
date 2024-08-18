@@ -133,4 +133,52 @@ cartRouter.get('/products/:pid/:uid', function(req, res) {
     )
 })
 
+
+// 將結帳後的商品存入資料庫裡的orderlist
+cartRouter.post('/postData', async (req, res) => {
+    try {
+        // 使用 Promise 來包裝資料庫查詢
+        const query = (sql, params) => {
+            return new Promise((resolve, reject) => {
+                conn.query(sql, params, (err, results) => {
+                    if (err) return reject(err);
+                    resolve(results);
+                });
+            });
+        };
+
+        // 生成當前時間戳
+        const currentTimestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        // 生成唯一的訂單ID（這裡使用時間戳+隨機數，您可能需要更複雜的邏輯）
+        const oid = Date.now() + Math.floor(Math.random() * 1000);
+
+        // post進去資料
+        await query("INSERT INTO `orderlist` (`oid`, `uid`, `vid`, `detail`, `send_data`, `status`, `order_time`, `pay`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
+            [oid, req.body.uid, req.body.vid, JSON.stringify(req.body.detail), JSON.stringify(req.body.send_data), req.body.status, currentTimestamp, req.body.pay]);
+        
+        console.log('INSERT INTO!');
+        res.send('Insert OK!');
+    } catch (err) {
+        console.log('Error:', err);
+        res.status(500).send('Server error');
+    }
+});
+
+
+cartRouter.put('/putData', function (req, res) {
+    conn.query("SELECT * FROM product WHERE pid = ?", [req.body.pid], function (err,result) {console.log(result)});
+    const quantity = result[0].quantity - req.body.amount;
+    conn.query("UPDATE product SET quantity = ? WHERE pid = ?;",
+        [quantity, req.body.pid],
+        function(err, result) {
+            if (err) {
+                return res.status(500).send('Update error');
+            }
+            res.send('Update OK!');
+        }
+    );
+})
+
+
 module.exports = cartRouter

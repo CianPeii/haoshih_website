@@ -32,16 +32,20 @@ const paymentMethods = [
 const Step3 = () => {
   const cartData = JSON.parse(localStorage.getItem("Step1Data"));
   const addressData = JSON.parse(localStorage.getItem("Step2Data"));
+  const vendorProducts = JSON.parse(localStorage.getItem("vendorProducts"));
+  const user = JSON.parse(localStorage.getItem("user"));
   const total = JSON.parse(localStorage.getItem("total"));
+  
 
   const cartVisible = false;
 
   const products = [];
 
   cartData.map(({ name, amount, price }) =>
-    products.push({ name, quantity: amount, price })
+    products.push({ name, amount: amount, price })
   );
-
+  // console.log("cartData",cartData,products);
+  // console.log("vendorProducts",vendorProducts);
   const handleNextStep = async () => {
     if (selectedPayment === paymentMethods[1].id) {
       const res = await axios.post("http://localhost:3200/linePay", {
@@ -55,7 +59,7 @@ const Step3 = () => {
     }
   };
 
-  const sendData = {
+  const send_data = {
     fullName: addressData.fullName,
     phone: addressData.phone,
     address: [
@@ -68,6 +72,7 @@ const Step3 = () => {
 
   const [selectedPayment, setSelectedPayment] = useState(paymentMethods[0].id); // 默認值設置為 "cod"
   const [couponCode, setCouponCode] = useState("");
+  const [detail, setDetail] = useState(null); // Added this line to fix the issue
 
   useEffect(() => {
     let paymentId;
@@ -83,17 +88,16 @@ const Step3 = () => {
         break;
     }
 
-    const detail = {
+    const newDetail = {
       item: products,
       ...total,
       payment: paymentId,
     };
 
-    // console.log("detail", detail);
-    // console.log(JSON.stringify(detail));
-    localStorage.setItem("detail", JSON.stringify(detail));
-    localStorage.setItem("send_data", JSON.stringify(sendData));
-  }, [selectedPayment, total, products, sendData]); // 添加依賴項，確保所有依賴都能觸發更新
+    setDetail(newDetail);  // Update the state
+    localStorage.setItem("detail", JSON.stringify(newDetail));
+    localStorage.setItem("send_data", JSON.stringify(send_data));
+  }, [selectedPayment, total, products, send_data]); // 添加依賴項，確保所有依賴都能觸發更新
 
   const handlePaymentChange = (id) => {
     setSelectedPayment(id);
@@ -101,6 +105,29 @@ const Step3 = () => {
 
   const handleCouponChange = (e) => {
     setCouponCode(e.target.value);
+  };
+
+
+  const handleNext = async () => {
+    try {
+      if (!detail) {
+        console.error("Detail is not available");
+        return;
+      }
+      const response = await axios.post("http://localhost:3200/carts/postData", {
+        uid: user.uid,
+        vid: vendorProducts[1][1].vinfo,
+        detail: detail,  // Use the state here
+        send_data: send_data,
+        status: 1,
+        pay: 1,
+      }
+      );
+      alert("訂單已送出");
+      // console.log(response);
+    } catch (error) {
+      console.error("Error fetching Products Data:", error);
+    }
   };
 
   return (
@@ -184,6 +211,13 @@ const Step3 = () => {
             onClick={handleNextStep}
           >
             下一步
+          </Button>
+          <Button
+            className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
+            type="button"
+            onClick={handleNext}
+          >
+            測試下一步
           </Button>
         </Col>
       </Container>
