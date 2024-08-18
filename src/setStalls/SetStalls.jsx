@@ -5,6 +5,7 @@ import NavBarShop from "../components/NavBarShop";
 import ThirdTitle from "../components/ThirdTitle";
 import MarketFloorPlanB from "../components/MarketFloorPlanB";
 import styles from "./setStalls.module.scss";
+import Swal from "sweetalert2";
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
@@ -14,9 +15,15 @@ const SetStalls = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("4");
   const [season, setSeason] = useState(4);
   const [season_data, setSeasonData] = useState([]);
+  const [rentTimePeriod, setrentTimePeriod] = useState("2024/10-2024/12")
   const user = JSON.parse(localStorage.getItem("user"));
   const rentDays = selectedPeriod === "1" ? 65 : 62;
+  const today = new Date();
+  const dueDate = new Date(today);
+  dueDate.setDate(today.getDate() + 3);
+  const formattedDueDate = `${dueDate.getFullYear()}/${String(dueDate.getMonth() + 1).padStart(2, '0')}/${String(dueDate.getDate()).padStart(2, '0')}下午03:00`;
   const handleSelectedChange = (event) => {
+    setrentTimePeriod(event.target.options[event.target.selectedIndex].innerText);
     setSelectedPeriod(event.target.value);
     setSeason(event.target.value);
     //切換季度時先清空已選的攤位
@@ -27,7 +34,6 @@ const SetStalls = () => {
   }
   const submitRentInfo = async (season, selectedVendors, user) => {
     console.log(selectedVendors);
-    
     //分解為區域+號碼
     const splitVendorNumber = selectedVendors.split('0');
     //區域
@@ -58,6 +64,30 @@ const SetStalls = () => {
     catch (error) {
       console.error('Error:', error);
     }
+    Swal.fire({
+      title: '租用明細',
+      html: `
+      <div style="text-align: left; font-weight: bold;">
+        <h3 style="text-align: center">歡迎您加入好ㄕˋ集!</h3> <br>
+        請於${formattedDueDate}前，將攤位租金全額匯款至以下帳戶(請勿扣除手續費)，<span style="color: red; font-weight: 550;">逾時攤位將自動釋出‧</span><br><br>
+        收款銀行：國泰世華(013)公益分行(232)<br>
+        收款戶名：好市集股份有限公司<br>
+        收款帳號：9876-5432-1024<br>
+        <span style="color: red; font-weight: 550;">匯款後請來電 04-1234-4321 告知，謝謝您。</span><br><br>
+          <div style="text-align: left; line-height: 1.7; display: flex; justify-content: center;">
+            租用季度： ${rentTimePeriod}<br>
+            攤位編號： ${selectedVendors}<br>
+            攤位價格： ${vendorsPrice[selectedVendors]}元/天<br>
+            租用天數： ${rentDays}天(周一周二休市)<br>
+            總計金額： ${(vendorsPrice[selectedVendors] ? vendorsPrice[selectedVendors] * rentDays : 0).toLocaleString() || ""} 元
+          </div>
+        </div>
+        `,
+        confirmButtonText: '確定',
+        customClass: {
+          confirmButton: 'custom-confirm-button'  // 使用自定義按鈕樣式
+        }
+    });
   }
   useEffect(() => {
     const getSeasonData = async () => {
@@ -161,7 +191,7 @@ const SetStalls = () => {
                       className="form-select d-flex flex-1 "
                       style={{ maxWidth: "200px" }}
                       value={selectedPeriod}
-                      onChange={handleSelectedChange}
+                      onChange={handleSelectedChange} 
                     >
                       <option value="4">2024/10-2024/12</option>  
                       <option value="1">2025/1-2025/3</option>
