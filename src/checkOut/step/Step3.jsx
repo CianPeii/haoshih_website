@@ -54,6 +54,28 @@ const Step3 = () => {
       });
 
       window.open(res.data, "_blank");
+
+      // 新增 增加資料庫欄位  By Leo
+      try {
+        if (!detail) {
+          console.error("Detail is not available");
+          return;
+        }
+        const response = await axios.post("http://localhost:3200/carts/postData", {
+          uid: user.uid,
+          vid: vendorProducts[1][1].vinfo,
+          detail: detail,  // Use the state here
+          send_data: send_data,
+          status: 1,
+          pay: 1,
+        }
+        );
+        alert("訂單已送出");
+        // console.log(response);
+      } catch (error) {
+        console.error("Error fetching Products Data:", error);
+      }
+
     } else {
       // ...
     }
@@ -108,27 +130,27 @@ const Step3 = () => {
   };
 
 
-  const handleNext = async () => {
-    try {
-      if (!detail) {
-        console.error("Detail is not available");
-        return;
-      }
-      const response = await axios.post("http://localhost:3200/carts/postData", {
-        uid: user.uid,
-        vid: vendorProducts[1][1].vinfo,
-        detail: detail,  // Use the state here
-        send_data: send_data,
-        status: 1,
-        pay: 1,
-      }
-      );
-      alert("訂單已送出");
-      // console.log(response);
-    } catch (error) {
-      console.error("Error fetching Products Data:", error);
-    }
-  };
+  // const handleNext = async () => {
+  //   try {
+  //     if (!detail) {
+  //       console.error("Detail is not available");
+  //       return;
+  //     }
+  //     const response = await axios.post("http://localhost:3200/carts/postData", {
+  //       uid: user.uid,
+  //       vid: vendorProducts[1][1].vinfo,
+  //       detail: detail,  // Use the state here
+  //       send_data: send_data,
+  //       status: 1,
+  //       pay: 1,
+  //     }
+  //     );
+  //     alert("訂單已送出");
+  //     // console.log(response);
+  //   } catch (error) {
+  //     console.error("Error fetching Products Data:", error);
+  //   }
+  // };
 
   return (
     <>
@@ -211,13 +233,6 @@ const Step3 = () => {
             onClick={handleNextStep}
           >
             下一步
-          </Button>
-          <Button
-            className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
-            type="button"
-            onClick={handleNext}
-          >
-            測試下一步
           </Button>
         </Col>
       </Container>

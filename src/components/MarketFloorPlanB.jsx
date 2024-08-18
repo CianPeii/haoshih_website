@@ -3,8 +3,9 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import styles from "./MarketFloorPlanB.module.scss";
 
 
-const MarketFloorPlan = ({fetchData, season_data}) => {
+const MarketFloorPlan = ({fetchData, season_data, selectedPeriod}) => {
   const [selectedStalls, setSelectedStalls] = useState(new Set());
+  const [lastClickedElement, setLastClickedElement] = useState(null);
   console.log(season_data);
   const getBoothClass = (booth) => {
     if (season_data.includes(booth)) {
@@ -15,7 +16,23 @@ const MarketFloorPlan = ({fetchData, season_data}) => {
   };
   const handleClick = (event) => {
     const element = event.target;
+    console.log(lastClickedElement);
     console.log(element);
+
+    //更新上次點擊的元素的狀態
+    setLastClickedElement((preLastClickedElement) => {
+      if(preLastClickedElement && preLastClickedElement !== element) {
+        preLastClickedElement.classList.remove("bg-lightBlue");
+        if (preLastClickedElement.dataset.originalClass === "bg-red") {
+          preLastClickedElement.classList.add("bg-red");
+        }else {
+          preLastClickedElement.classList.add("bg-secondary");
+        }
+      }
+      return element;
+    })
+
+    //更新當前點擊元素的狀態
     if(element.classList.contains("bg-lightBlue")) {
       //如果已經是bg-lightBlue，則恢復originalClass
       element.classList.remove("bg-lightBlue");
@@ -24,30 +41,42 @@ const MarketFloorPlan = ({fetchData, season_data}) => {
       }else {
         element.classList.add("bg-secondary");
       }
+      setSelectedStalls((prevStalls) => {
+        const newStalls = new Set(prevStalls);
+        newStalls.delete(vendors);
+        fetchData(''); //清空父元件資料
+        return newStalls;
+      });
     }else {
       element.dataset.originalClass = element.classList.contains("bg-red") ? "bg-red" : "bg-secondary";
       element.classList.remove("bg-red", "bg-secondary");
       element.classList.add("bg-lightBlue")
+      setSelectedStalls((prevStalls) => {
+        const newStalls = new Set(prevStalls);
+        newStalls.add(vendors);
+        fetchData(vendors); //更新父元件資料
+        return newStalls;
+      });
     }
-    
     const vendors = element.innerText;
     const newSelectedStalls = new Set(selectedStalls);
-    
-    if (newSelectedStalls.has(vendors)) {
-      // 如果已經選擇了，則移除並清空資料
-      newSelectedStalls.delete(vendors);
-      fetchData(''); // 清空父元件資料
-    } else {
-      // 如果未選擇，則添加
-      newSelectedStalls.add(vendors);
-      fetchData(vendors); // 更新父元件資料
-    }
-
-    setSelectedStalls(newSelectedStalls);
   };
   const position = ["A", "B", "C", "D"];
   const vendor_unmber = ["01", "02", "03", "04", "05"];
-  
+  //切換季度時還原已選攤位的顏色
+  useEffect(() => {
+    const reColor =  document.querySelectorAll('#vendorPosition');
+    reColor.forEach(element => {
+      if(element.classList.contains("bg-lightBlue")) {
+        //如果已經是bg-lightBlue，則恢復originalClass
+        element.classList.remove("bg-lightBlue");
+        if(element.dataset.originalClass  === "bg-red") {
+          element.classList.add("bg-red");
+        }else {
+          element.classList.add("bg-secondary");
+        }}
+    });
+  },[selectedPeriod])
   return (
     <Container fluid className={styles.containerSize}>
       <Row className={styles.floorPlanRow}>
@@ -61,8 +90,10 @@ const MarketFloorPlan = ({fetchData, season_data}) => {
                 style={{ top: `${20 + rowIndex * 20}%` }} 
                 >
                 {[...Array(5)].map((_, colIndex) => (
-                  <div key={colIndex} 
-                  className={`${styles.stall} ${styles.hover} ${getBoothClass(position[rowIndex] + vendor_unmber[colIndex])}`}
+                  <div 
+                  key={colIndex}
+                  id="vendorPosition" 
+                  className={`${styles.stall} ${getBoothClass(position[rowIndex] + vendor_unmber[colIndex])}`}
                   onClick={handleClick}
                   >
                     {position[rowIndex] + vendor_unmber[colIndex]}

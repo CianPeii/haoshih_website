@@ -338,7 +338,7 @@ vendorRouter.get("/theProduct/:pid", async (req, res) => {
 vendorRouter.get("/allOrders/:vid", async (req, res) => {
   try {
     const orderQuery = `
-    SELECT * FROM orderlist WHERE vid = 1
+    SELECT * FROM orderlist WHERE vid = ?
     ORDER BY order_time DESC
   `;
 

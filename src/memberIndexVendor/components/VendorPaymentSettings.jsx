@@ -1,14 +1,10 @@
-import NavBarShop from "../../components/NavBarShop";
-import MemberVenderSideBar from "../../components/MemberVenderSideBar";
 import SubTitleYellow from "../../components/SubTitleYellow";
 import ChatBtn from "../../components/ChatBtn";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useAxios from "axios-hooks";
 import { useParams, useNavigate } from "react-router-dom";
-import Footer from "../../components/Footer";
-import { Form, InputGroup, Button, Row, Col } from "react-bootstrap";
-import Container from "react-bootstrap/Container";
+import { Form, Button, Row, Col } from "react-bootstrap";
 
 const VendorPaymentSettings = () => {
   // 控制使用中帳戶
@@ -146,7 +142,7 @@ const VendorPaymentSettings = () => {
 
   return (
     <>
-      <div className="col-9 ">
+      <div>
         <SubTitleYellow title="交易設定" />
 
         <div className="tempPaymentArea">
