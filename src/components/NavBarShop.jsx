@@ -15,14 +15,11 @@ const NavBarShop = ({ cartVisible }) => {
     console.log("User data from localStorage:", user);
     if (user) {
       setShowLogin(true);
+      
     } else {
       setShowLogin(false);
     }
-  }, []); // 空陣列表示只在組件掛載時執行一次
-
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  // console.log("user123",user.uid);
+  }, [cartVisible]); // 空陣列表示只在組件掛載時執行一次
 
   useEffect(() => {
     if (user) {
@@ -76,7 +73,7 @@ const NavBarShop = ({ cartVisible }) => {
             </div>
             {showLogin ? (
               <div
-                className={`d-flex flex-row justify-content-between align-items-center gap-1 ${styles.loginItem}`}
+                className={`d-flex flex-row justify-content-between align-items-center gap-1`}
               >
                 <div
                   id="123"
@@ -100,10 +97,17 @@ const NavBarShop = ({ cartVisible }) => {
                   href={`http://localhost:3000/${user.nickname ? "member" : "vendor"}/${user.nickname ? user.uid : user.vid}`}
                   // href="http://localhost:3000/vendor/1"
                 >
-                  <div>{user.nickname || user.brand_name}</div>
-                  {/* <div>范丞丞</div> */}
+                  <div className="hover-c-primary fw-bold">
+                    {(user.nickname || user.brand_name)+",  你好 !"}
+                  </div>
                 </a>
-                <div className="link-dark text-decoration-none" onClick={doLogout}>登出</div>
+                /
+                <div
+                  className="link-dark text-decoration-none hover-c-red fw-bold cursor-pointer"
+                  onClick={doLogout}
+                >
+                  登出
+                </div>
               </div>
             ) : (
               <Link to="/login" style={{ textDecoration: 'none' }}>

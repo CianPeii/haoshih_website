@@ -92,6 +92,7 @@ const ProductModal = ({ show, onHide, product}) => {
       const base64String = Buffer.from(imageData).toString("base64");
       setImgSrc(`data:image/jpeg;base64,${base64String}`);
     }
+    setAmount(1);
   }, [product.img01]);
 
 

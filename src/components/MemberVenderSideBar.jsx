@@ -1,9 +1,7 @@
 import styles from "./MemberVenderSideBar.module.scss";
+
 const MemberVenderSideBar = () => {
-
   const user = JSON.parse(localStorage.getItem("user"));
-    console.log("User data from localStorage:", user);
-
   return (
     <>
       <div className="p-3 d-flex flex-column align-items-center font-special">
@@ -40,14 +38,14 @@ const MemberVenderSideBar = () => {
               </a>
               <a
                 className="text-decoration-none c-black"
-                href="http://localhost:3000/vendor/1/products"
+                href={`http://localhost:3000/vendor/${user.vid}/products`}
               >
                 <h5>商品管理</h5>
               </a>
             </div>
             <a
               className="text-decoration-none c-black"
-              href="http://localhost:3000/vendor/1/orders"
+              href={`http://localhost:3000/vendor/${user.vid}/orders`}
             >
               <h4>訂單管理</h4>
             </a>

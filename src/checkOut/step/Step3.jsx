@@ -6,65 +6,95 @@ import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
 import { turnPrice } from "../../utils/turnPrice";
 import queryString from "query-string";
+import axios from "axios";
+
+const paymentMethods = [
+  {
+    id: "cod",
+    label: "貨到付款",
+    details: "收到商品時以現金付款",
+    estimatedDelivery: "3-5 個工作天",
+  },
+  {
+    id: "linepay",
+    label: "LinePay",
+    details: "使用 LINE 應用程式進行安全支付",
+    estimatedDelivery: "2-4 個工作天",
+  },
+  {
+    id: "transfer",
+    label: "銀行轉帳",
+    details: "使用網路銀行或 ATM 轉帳",
+    estimatedDelivery: "1-3 個工作天（待款項確認）",
+  },
+];
 
 const Step3 = () => {
-  const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
-  const Step2Data = JSON.parse(localStorage.getItem("Step2Data"));
+  const cartData = JSON.parse(localStorage.getItem("Step1Data"));
+  const addressData = JSON.parse(localStorage.getItem("Step2Data"));
+  const vendorProducts = JSON.parse(localStorage.getItem("vendorProducts"));
+  const user = JSON.parse(localStorage.getItem("user"));
   const total = JSON.parse(localStorage.getItem("total"));
+  
 
   const cartVisible = false;
 
-  const item = Step1Data.map(({ pid, amount, price }) => ({
-    pid,
-    amount,
-    price,
-  }));
+  const products = [];
 
-  const data = {
-    ...Step2Data,
-  };
+  cartData.map(({ name, amount, price }) =>
+    products.push({ name, amount: amount, price })
+  );
+  // console.log("cartData",cartData,products);
+  // console.log("vendorProducts",vendorProducts);
+  const handleNextStep = async () => {
+    if (selectedPayment === paymentMethods[1].id) {
+      const res = await axios.post("http://localhost:3200/linePay", {
+        products,
+        ...total,
+      });
 
-  const handleNextStep = () => {
-    const isSuccess = Math.random() < 0.5; // 50% 的成功率
-    const status = isSuccess ? "success" : "failed";
-    const url = `/step4?${queryString.stringify({ status })}`;
-    window.location.href = url;
+      window.open(res.data, "_blank");
+
+      // 新增 增加資料庫欄位  By Leo
+      try {
+        if (!detail) {
+          console.error("Detail is not available");
+          return;
+        }
+        const response = await axios.post("http://localhost:3200/carts/postData", {
+          uid: user.uid,
+          vid: vendorProducts[1][1].vinfo,
+          detail: detail,  // Use the state here
+          send_data: send_data,
+          status: 1,
+          pay: 1,
+        }
+        );
+        alert("訂單已送出");
+        // console.log(response);
+      } catch (error) {
+        console.error("Error fetching Products Data:", error);
+      }
+
+    } else {
+      // ...
+    }
   };
 
   const send_data = {
-    fullName: data.fullName,
-    phone: data.phone,
+    fullName: addressData.fullName,
+    phone: addressData.phone,
     address: [
-      { postNum: data.postNum },
-      { city: data.city },
-      { district: data.district },
-      { address: data.address },
+      { postNum: addressData.postNum },
+      { city: addressData.city },
+      { district: addressData.district },
+      { address: addressData.address },
     ],
   };
 
-  const [selectedPayment, setSelectedPayment] = useState("cod"); // 默認值設置為 "cod"
+  const [selectedPayment, setSelectedPayment] = useState(paymentMethods[0].id); // 默認值設置為 "cod"
   const [couponCode, setCouponCode] = useState("");
-
-  const paymentMethods = [
-    {
-      id: "cod",
-      label: "貨到付款",
-      details: "收到商品時以現金付款",
-      estimatedDelivery: "3-5 個工作天",
-    },
-    {
-      id: "linepay",
-      label: "LinePay",
-      details: "使用 LINE 應用程式進行安全支付",
-      estimatedDelivery: "2-4 個工作天",
-    },
-    {
-      id: "transfer",
-      label: "銀行轉帳",
-      details: "使用網路銀行或 ATM 轉帳",
-      estimatedDelivery: "1-3 個工作天（待款項確認）",
-    },
-  ];
+  const [detail, setDetail] = useState(null); // Added this line to fix the issue
 
   useEffect(() => {
     let paymentId;
@@ -80,17 +110,16 @@ const Step3 = () => {
         break;
     }
 
-    const detail = {
-      item: item,
+    const newDetail = {
+      item: products,
       ...total,
       payment: paymentId,
     };
 
-    console.log("detail", detail);
-    console.log(JSON.stringify(detail));
-    localStorage.setItem("detail", JSON.stringify(detail));
+    setDetail(newDetail);  // Update the state
+    localStorage.setItem("detail", JSON.stringify(newDetail));
     localStorage.setItem("send_data", JSON.stringify(send_data));
-  }, [selectedPayment, total, item, send_data]); // 添加依賴項，確保所有依賴都能觸發更新
+  }, [selectedPayment, total, products, send_data]); // 添加依賴項，確保所有依賴都能觸發更新
 
   const handlePaymentChange = (id) => {
     setSelectedPayment(id);
@@ -99,6 +128,29 @@ const Step3 = () => {
   const handleCouponChange = (e) => {
     setCouponCode(e.target.value);
   };
+
+
+  // const handleNext = async () => {
+  //   try {
+  //     if (!detail) {
+  //       console.error("Detail is not available");
+  //       return;
+  //     }
+  //     const response = await axios.post("http://localhost:3200/carts/postData", {
+  //       uid: user.uid,
+  //       vid: vendorProducts[1][1].vinfo,
+  //       detail: detail,  // Use the state here
+  //       send_data: send_data,
+  //       status: 1,
+  //       pay: 1,
+  //     }
+  //     );
+  //     alert("訂單已送出");
+  //     // console.log(response);
+  //   } catch (error) {
+  //     console.error("Error fetching Products Data:", error);
+  //   }
+  // };
 
   return (
     <>

@@ -42,4 +42,20 @@ mapRouter.get('/seasondata/:season', function(request, response) {
             }
         )
 })
+//租用攤位
+mapRouter.post('/rentvendor', function (request, response) {
+    const {postion, number, season, vinfo} = request.body;
+    if(!postion || !number || !season || !vinfo) {
+        return response.status(400).json({error: "All fields are required"});
+    }
+    const sql = "INSERT INTO map (postion,number,season,vinfo) VALUES (?,?,?,?)";
+    conn.query(
+        sql,[postion, number, season, vinfo], function (error, result) {
+            if(error) {
+                return response.status(500).send('Database query failed.');
+            }
+            response.json({message: "Data inserted successfully.", id: result})
+        }
+    )
+})
 module.exports = mapRouter

@@ -366,7 +366,7 @@ const EditProduct = () => {
               type="button"
               onClick={() => {
                 alert("確定要取消變更嗎？");
-                // navigate(`/vendor/${stallProfile.vid}/vendorInfo`);
+                navigate(-1);
               }}
             >
               取消變更

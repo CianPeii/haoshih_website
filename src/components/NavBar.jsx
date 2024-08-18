@@ -1,3 +1,5 @@
+import { openLink } from "../utils/link";
+import {useNavigate} from "react-router-dom"
 const data = [
   {
     id: 1,
@@ -28,8 +30,21 @@ const data = [
 訊與攤位出租申請`,
   },
 ]; // 改物件
-
+const user = JSON.parse(localStorage.getItem("user"));
 const NavBar = () => {
+  const navigate = useNavigate()
+  const redir = (url) => {
+    if (user) {
+      // return user.vid ? url :
+      if (user.vid) {
+        return url;
+      } else {
+        console.log(user);
+
+        return "/login";
+      }
+    }
+  };
   return (
     <>
       <div className="navBar">
@@ -42,8 +57,24 @@ const NavBar = () => {
               {data.map((item) => (
                 <a
                   key={item.id}
-                  className={`text-decoration-none c-black fs-5 px-3 py-2 hover-bg-secondary rounded-pill`}
-                  href={item.src}
+                  className={`cursor-pointer text-decoration-none c-black fs-5 px-3 py-2 hover-bg-secondary rounded-pill`}
+                  onClick={() => {
+                    if (item.id === 4) {
+                      if (user) {
+                        if (user.uid) {
+                          alert("請先登入攤主帳號");
+                          navigate("/login")
+                        } else {
+                          navigate(item.src);
+                        }
+                      }else{
+                        alert("請先登入攤主帳號");
+                        navigate("/login")
+                      }
+                    } else {
+                      navigate(item.src);
+                    }
+                  }}
                 >
                   {item.text}
                 </a>

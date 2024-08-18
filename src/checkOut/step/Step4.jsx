@@ -4,19 +4,26 @@ import NavBarShop from "../../components/NavBarShop";
 import Arrow from "../../components/Arrow";
 import Footer from "../../components/Footer";
 import ChatBtn from "../../components/ChatBtn";
+import queryString from "query-string";
 
 const Step4 = () => {
   const [paymentStatus, setPaymentStatus] = useState("processing");
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [orderId, setOrderId] = useState(null);
   const cartVisible = false;
   const detail = JSON.parse(localStorage.getItem("detail"));
   const send_data = JSON.parse(localStorage.getItem("send_data"));
   console.log("打包成功!", detail, send_data);
 
   useEffect(() => {
-    // 從 URL 讀取狀態參數
-    const urlParams = new URLSearchParams(window.location.search);
-    const status = urlParams.get("status");
+    const parsed = queryString.parse(window.location.search);
+    const status = parsed.status;
+    const extractedOrderId = parsed.orderId;
+
+    // 設置 orderId
+    if (extractedOrderId) {
+      setOrderId(extractedOrderId);
+    }
 
     if (status === "success" || status === "failed") {
       setPaymentStatus(status);
@@ -60,6 +67,7 @@ const Step4 = () => {
             <div className="text-center">
               <img src="stickers/003.png" alt="成功圖標" />
               <h2 className="text-success ">付款成功！</h2>
+              <p>訂單編號：{orderId}</p>
               <p>感謝您的購買。您的訂單已經成功完成。</p>
               <p>我們將盡快處理您的訂單並安排發貨。</p>
             </div>

@@ -398,7 +398,22 @@ const Step2 = () => {
   const [districts, setDistricts] = useState([]);
   const navigate = useNavigate();
   const cartVisible = false;
+  const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
 
+
+  const vendorProducts = Step1Data.reduce((acc, product) => {
+    const {vinfo} = product;
+    if(!acc[vinfo]) {
+      acc[vinfo] = [];
+    }
+    acc[vinfo].push(product);
+    return  acc;
+  }, {});
+
+  console.log("使用說明: 調用vendorProducts[i]即可得到->",vendorProducts[1]);
+  console.log("vendorProducts[i][1].vinfo 即可得到vid",vendorProducts[1][1].vinfo);
+  
+  
   useEffect(() => {
     if (city) {
       setDistricts(taiwanCities[city] || []);
@@ -437,8 +452,6 @@ const Step2 = () => {
       return;
     }
 
-    const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
-
     const contactInfo = {
       fullName,
       phone,
@@ -451,6 +464,7 @@ const Step2 = () => {
 
     localStorage.setItem("Step1Data", JSON.stringify(Step1Data));
     localStorage.setItem("Step2Data", JSON.stringify(contactInfo));
+    localStorage.setItem("vendorProducts", JSON.stringify(vendorProducts));
     navigate("/Step3");
   };
 

@@ -65,7 +65,7 @@ const MemberIndexNormal = () => {
       }
     };
     fetchLikedData();
-  }, [uid]);
+  }, [user.uid]);
 
   const MemberProfile = () => (
     <>
@@ -80,12 +80,12 @@ const MemberIndexNormal = () => {
 
   return (
     <>
-      <NavBarShop cartVisible={cartVisible}/>
+      <NavBarShop cartVisible={cartVisible} />
       <div className="row mw-100">
-        <div className="col-3  border-end border-3">
+        <div className="col-2  border-end border-3">
           <MemberSideBar />
         </div>
-        <div className="col-9">
+        <div className="col-10">
           <Routes>
             <Route index element={<MemberProfile />} />
             <Route
