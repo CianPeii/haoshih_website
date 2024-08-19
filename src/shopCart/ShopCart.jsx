@@ -19,7 +19,9 @@ const ShopCart = () => {
   useEffect(() => {
     const fetchProductsData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3200/carts/${user.uid}`);
+        const response = await axios.get(
+          `http://localhost:3200/carts/${user.uid}`
+        );
         setProductsData(response.data);
         // console.log("Products Data:", response.data);
       } catch (error) {
@@ -93,7 +95,7 @@ const ShopCart = () => {
           <MemberSideBar />
         </div>
         <div className="col-10">
-          <SubTitleYellow title="購物車" />
+          <SubTitleYellow className="" title="購物車" />
           <div className="container">
             {productsData && (
               <ShopCartForm

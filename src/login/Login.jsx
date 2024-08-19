@@ -11,22 +11,23 @@ const Login = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const googleLoginData = searchParams.get("googleLoginData");
-    const errorMessage = searchParams.get("error");
-
+    console.log('Login component mounted');
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log('URL search params:', urlParams.toString());
+    const googleLoginData = urlParams.get('googleLoginData');
+    console.log('Google login data from URL:', googleLoginData);
+    
     if (googleLoginData) {
       try {
         const userData = JSON.parse(decodeURIComponent(googleLoginData));
-        handleLoginSuccess(userData);
+        console.log('Google login data:', userData);
+        localStorage.setItem('user', JSON.stringify(userData));
+        navigate('/shop');
       } catch (error) {
-        console.error("解析 Google 登入數據時出錯:", error);
-        setError("登入過程中發生錯誤");
+        console.error('Google login data錯誤:', error);
       }
-    } else if (errorMessage) {
-      setError(decodeURIComponent(errorMessage));
     }
-  }, [location]);
+  }, []);
 
   const doMemberClick = () => {
     setLoginType("member");
@@ -85,6 +86,7 @@ const Login = () => {
   // console.log('Login渲染');
 
   const handleLoginSuccess = (userData) => {
+    console.log('Handling login success with data:', userData);
     // 根據用戶類型導到相應頁面
     if (userData === "member") {
       navigate(`/member/${userData.uid}`);
