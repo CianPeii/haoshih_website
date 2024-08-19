@@ -156,7 +156,7 @@ const MarketFloorPlan = ({fetchData, setVendorNumber}) => {
             size="sm" 
               className={`bg-lake border-0 ${styles.iconButton}`}
               onClick={find_trash}>
-            <img src="images/icon/Trash.png" alt="" />
+            <img src="images/icon/Trash.png" alt=""/>
           </Button>
         </Col>
       </Row>

@@ -53,9 +53,14 @@ const { StationName, WeatherElement, ObsTime } = weatherData;
 
 return (
   <div 
-    className={`weather-card ${isExpanded ? 'expanded' : ''} ${className}`}
+    className={`weather-card ${isExpanded ? 'expanded' : ''} `}
     onMouseEnter={() => setIsExpanded(true)}
     onMouseLeave={() => setIsExpanded(false)}
+    style={{
+      position: "fixed",
+      bottom: "48px",
+      right: "48px",
+      zindex: 1020}}
   >
     <div className="weather-brief">
       <h2 className="city-name">{StationName}</h2>
