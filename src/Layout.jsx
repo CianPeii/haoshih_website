@@ -9,8 +9,6 @@ import Map from "./map/Map";
 import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
 import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
 import Login from "./login/Login";
-import LoginNormal from "./loginNormal/LoginNormal";
-import LoginVendor from "./loginVendor/LoginVendor";
 import ShopCart from "./shopCart/ShopCart";
 import Normal from "./SignUp/Normal";
 import SetStalls from "./setStalls/SetStalls";
