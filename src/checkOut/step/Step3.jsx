@@ -64,11 +64,7 @@ const Step3 = () => {
           "http://localhost:3200/carts/postData",
           {
             uid: user.uid,
-<<<<<<< HEAD
-            vid: vendorProducts[1][1].vinfo,
-=======
             vid: vendorProducts[1][0].vinfo,
->>>>>>> 510231002189237126322fd72745e56e45e1dd9e
             detail: detail, // Use the state here
             send_data: send_data,
             status: 1,
