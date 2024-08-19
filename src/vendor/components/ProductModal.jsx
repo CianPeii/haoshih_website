@@ -162,7 +162,7 @@ const ProductModal = ({ show, onHide, product}) => {
           </div>
           <div style={{ flex: "1", marginLeft: "100px" }}>
             <ProductTitle>{product.name}</ProductTitle>
-            <ProductPrice>NT$ {turnPrice(product.price)}</ProductPrice>
+            <ProductPrice>NT{turnPrice(product.price)}</ProductPrice>
             <QuantitySelector>
               <Button
                 variant="outline-secondary"
