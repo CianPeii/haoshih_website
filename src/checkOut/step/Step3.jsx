@@ -35,7 +35,6 @@ const Step3 = () => {
   const vendorProducts = JSON.parse(localStorage.getItem("vendorProducts"));
   const user = JSON.parse(localStorage.getItem("user"));
   const total = JSON.parse(localStorage.getItem("total"));
-  
 
   const cartVisible = false;
 
@@ -61,21 +60,22 @@ const Step3 = () => {
           console.error("Detail is not available");
           return;
         }
-        const response = await axios.post("http://localhost:3200/carts/postData", {
-          uid: user.uid,
-          vid: vendorProducts[1][0].vinfo,
-          detail: detail,  // Use the state here
-          send_data: send_data,
-          status: 1,
-          pay: 1,
-        }
+        const response = await axios.post(
+          "http://localhost:3200/carts/postData",
+          {
+            uid: user.uid,
+            vid: vendorProducts[1][0].vinfo,
+            detail: detail, // Use the state here
+            send_data: send_data,
+            status: 1,
+            pay: 1,
+          }
         );
         alert("訂單已送出");
         // console.log(response);
       } catch (error) {
         console.error("Error fetching Products Data:", error);
       }
-
     } else {
       // ...
     }
@@ -116,7 +116,7 @@ const Step3 = () => {
       payment: paymentId,
     };
 
-    setDetail(newDetail);  // Update the state
+    setDetail(newDetail); // Update the state
     localStorage.setItem("detail", JSON.stringify(newDetail));
     localStorage.setItem("send_data", JSON.stringify(send_data));
   }, []); // 添加依賴項，確保所有依賴都能觸發更新
@@ -128,7 +128,6 @@ const Step3 = () => {
   const handleCouponChange = (e) => {
     setCouponCode(e.target.value);
   };
-
 
   // const handleNext = async () => {
   //   try {
