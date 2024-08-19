@@ -64,7 +64,11 @@ const Step3 = () => {
           "http://localhost:3200/carts/postData",
           {
             uid: user.uid,
+<<<<<<< HEAD
             vid: vendorProducts[1][1].vinfo,
+=======
+            vid: vendorProducts[1][0].vinfo,
+>>>>>>> 510231002189237126322fd72745e56e45e1dd9e
             detail: detail, // Use the state here
             send_data: send_data,
             status: 1,
@@ -119,7 +123,7 @@ const Step3 = () => {
     setDetail(newDetail); // Update the state
     localStorage.setItem("detail", JSON.stringify(newDetail));
     localStorage.setItem("send_data", JSON.stringify(send_data));
-  }, [selectedPayment, total, products, send_data]); // 添加依賴項，確保所有依賴都能觸發更新
+  }, []); // 添加依賴項，確保所有依賴都能觸發更新
 
   const handlePaymentChange = (id) => {
     setSelectedPayment(id);
