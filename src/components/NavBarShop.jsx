@@ -8,6 +8,7 @@ const NavBarShop = ({ cartVisible }) => {
   const [productsData, setProductsData] = useState({});
   // console.log("cartVisible",cartVisible);
   const [showLogin, setShowLogin] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     // 檢查 localStorage 是否存在指定的 key
