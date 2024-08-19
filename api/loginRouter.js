@@ -11,6 +11,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const cors = require('cors');
 var config = require("./databaseConfig.js")
 var conn = config.connection
+require('dotenv').config();
 
 
 // change: 
@@ -412,6 +413,7 @@ passport.use(new GoogleStrategy({
 
         const userType = req.session.googleAuthUserType || 'member';
         const table = userType === 'member' ? 'member' : 'vendor';
+        const idField = userType === 'member' ? 'uid' : 'vid';
 
         conn.query(`SELECT * FROM ${table} WHERE email = ?`, [email], (err, results) => {
             if (err) return cb(err);
@@ -419,7 +421,7 @@ passport.use(new GoogleStrategy({
             if (results.length > 0) {
                 // 用戶已存在，更新資訊
                 const existingUser = results[0];
-                return cb(null, { ...existingUser, userType });
+                return cb(null, { ...existingUser, userType, id: existingUser[idField] });
             } else {
                 // 創建新用戶
                 const newUser = {
@@ -427,18 +429,49 @@ passport.use(new GoogleStrategy({
                     email: email,
                     first_name: profile.name.givenName || '',
                     last_name: profile.name.familyName || '',
-                    password: '12345678',
+                    password: '12345678', // 考慮使用更安全的方法來設置初始密碼
                 };
 
                 conn.query(`INSERT INTO ${table} SET ?`, newUser, (err, result) => {
                     if (err) return cb(err);
-                    newUser.id = result.insertId;
+                    newUser[idField] = result.insertId;
                     newUser.userType = userType;
+                    newUser.id = result.insertId;
                     return cb(null, newUser);
                 });
             }
         });
     }));
+
+passport.serializeUser((user, done) => {
+        console.log('Serializing user:', user);
+        if (user && user.id) {
+            done(null, { id: user.id, userType: user.userType });
+        } else {
+            console.error('User object does not contain id:', user);
+            done(new Error('User object is invalid'));
+        }
+    });
+
+passport.deserializeUser((serializedUser, done) => {
+    console.log('Deserializing user:', serializedUser);
+    const { id, userType } = serializedUser;
+    const table = userType === 'member' ? 'member' : 'vendor';
+    const idField = userType === 'member' ? 'uid' : 'vid';
+
+    conn.query(`SELECT * FROM ${table} WHERE ${idField} = ?`, [id], (err, results) => {
+        if (err) {
+            console.error('Error deserializing user:', err);
+            return done(err);
+        }
+        if (results.length === 0) {
+            console.error('User not found:', id);
+            return done(null, false);
+        }
+        console.log('Deserialized user:', results[0]);
+        done(null, results[0]);
+    });
+});
 
 // 初始化 Passport
 loginRouter.use(passport.initialize());
@@ -452,10 +485,13 @@ loginRouter.get('/auth/google', (req, res, next) => {
     passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account' }));
 
 loginRouter.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }),
+    passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login?error=google_auth_failed' }),
     function (req, res) {
-        console.log('Google用戶數據:', req.user)
+        console.log('123');
+        console.log('User data:', req.user);
+
         if (!req.user) {
+            console.log('沒有任何資料');
             return res.redirect('http://localhost:3000/login?error=登入失敗');
         }
 
@@ -463,12 +499,14 @@ loginRouter.get('/auth/google/callback',
         const userData = {
             success: true,
             userType: userType,
-            userName: req.user.account,
+            nickname: req.user.first_name,
             uid: req.user.id,
             email: req.user.email,
             firstName: req.user.first_name,
             lastName: req.user.last_name
         };
+
+        console.log('UserData:', userData);
 
         req.session.loggedin = true;
         req.session.userName = req.user.account;
