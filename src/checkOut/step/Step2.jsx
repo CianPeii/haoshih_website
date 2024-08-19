@@ -401,6 +401,7 @@ const Step2 = () => {
   const Step1Data = JSON.parse(localStorage.getItem("Step1Data"));
 
 
+
   const vendorProducts = Step1Data.reduce((acc, product) => {
     const {vinfo} = product;
     if(!acc[vinfo]) {
@@ -409,10 +410,26 @@ const Step2 = () => {
     acc[vinfo].push(product);
     return  acc;
   }, {});
-  console.log("Step1Data",Step1Data);
+
+  const newVendorProducts = Object.fromEntries(
+    Object.entries(vendorProducts).map(([key, products]) => [
+      key,
+      products.map(({ pid, amount, price, vinfo }) => ({
+        pid,
+        amount,
+        price,
+        vinfo,
+        vtotal: amount * price
+      }))
+    ])
+  );
   
-  console.log("使用說明: 調用vendorProducts[i]即可得到->",vendorProducts[1]);
-  console.log("vendorProducts[i][1].vinfo 即可得到vid",vendorProducts[1][0].vinfo);
+  console.log("Transformed Vendor Products:", newVendorProducts);
+
+  
+  // console.log("使用說明: 調用vendorProducts[i]即可得到->",vendorProducts);
+  // console.log("使用說明: 調用vendorProducts[i]即可得到->",vendorProducts[1]);
+  // console.log("vendorProducts[i][1].vinfo 即可得到vid",vendorProducts[1][0].vinfo);
   
   
   useEffect(() => {
@@ -466,6 +483,7 @@ const Step2 = () => {
     localStorage.setItem("Step1Data", JSON.stringify(Step1Data));
     localStorage.setItem("Step2Data", JSON.stringify(contactInfo));
     localStorage.setItem("vendorProducts", JSON.stringify(vendorProducts));
+    localStorage.setItem("newVendorProducts", JSON.stringify(newVendorProducts));
     navigate("/Step3");
   };
 

@@ -33,6 +33,7 @@
     const cartData = JSON.parse(localStorage.getItem("Step1Data"));
     const addressData = JSON.parse(localStorage.getItem("Step2Data"));
     const vendorProducts = JSON.parse(localStorage.getItem("vendorProducts"));
+    const newVendorProducts = JSON.parse(localStorage.getItem("newVendorProducts"));
     const user = JSON.parse(localStorage.getItem("user"));
     const total = JSON.parse(localStorage.getItem("total"));
 
@@ -53,12 +54,12 @@
     cartData.map(({pid}) =>
       pidData.push({pid})
     );
-      
-    console.log(pidData);
+
+    console.log("newVendorProducts 第一個陣列是攤販，從1開始，指的是第幾個攤販 ， 第二個陣列是第幾個商品，從0開始",newVendorProducts);
 
     const [selectedPayment, setSelectedPayment] = useState(paymentMethods[0].id); // 默認值設置為 "cod"
     const [couponCode, setCouponCode] = useState("");
-    const [detail, setDetail] = useState(null); // Added this line to fix the issue
+    const [detail, setDetail] = useState(null); 
 
     useEffect(() => {
       let paymentId;
@@ -74,17 +75,31 @@
           break;
       }
 
-      const newDetail = {
-        item:newProducts,
-        ...total,
-        payment: paymentId,
-      };
+      // const newDetail = {
+      //   item:newProducts,
+      //   ...total,
+      //   payment: paymentId,
+      // };
+
+      // 將不同攤販的資訊，重新包裝
+      const newDetail = Object.entries(newVendorProducts).map(([index, data]) => {
+        // 計算當前供應商的所有商品的 vtotal 總和
+        const totalAmount = data.reduce((sum, item) => sum + item.vtotal, 0);
+      
+        return {
+          item: data,
+          total: totalAmount,
+          payment: paymentId,
+        };
+      });
       
 
-      setDetail(newDetail); // Update the state
+      setDetail(newDetail); 
       localStorage.setItem("detail", JSON.stringify(newDetail));
       localStorage.setItem("send_data", JSON.stringify(send_data));
     }, [selectedPayment]); // 添加依賴項，確保所有依賴都能觸發更新
+
+    // console.log("newDetail",detail[1]);
 
 
     const send_data = {
@@ -113,17 +128,19 @@
             console.error("Detail is not available");
             return;
           }
+          for(let i = 0; i < detail.length; i++){
           const response = await axios.post(
             "http://localhost:3200/carts/postData",
             {
               uid: user.uid,
-              vid: vendorProducts[1][0].vinfo,
-              detail: detail, // Use the state here
+              vid: detail[i].item[0].vinfo,
+              detail: detail[i], // Use the state here
               send_data: send_data,
               status: 1,
               pay: 1,
             }
           );
+        }
           alert("訂單已送出");
           // console.log(response);
         } catch (error) {
