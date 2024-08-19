@@ -165,20 +165,49 @@ cartRouter.post('/postData', async (req, res) => {
     }
 });
 
+// 更新資料庫庫存
+// cartRouter.put('/putData', function (req, res) {
+//     conn.query("SELECT * FROM product WHERE pid = ?", [req.body.pid], function (err,result) {console.log(result)});
+//     const quantity = result[0].quantity - req.body.amount;
+//     conn.query("UPDATE product SET quantity = ? WHERE pid = ?;",
+//         [quantity, req.body.pid],
+//         function(err, result) {
+//             if (err) {
+//                 return res.status(500).send('Update error');
+//             }
+//             res.send('Update OK!');
+//         }
+//     );
+// })
 
+// 更新資料庫庫存-高級寫法..
 cartRouter.put('/putData', function (req, res) {
-    conn.query("SELECT * FROM product WHERE pid = ?", [req.body.pid], function (err,result) {console.log(result)});
-    const quantity = result[0].quantity - req.body.amount;
-    conn.query("UPDATE product SET quantity = ? WHERE pid = ?;",
-        [quantity, req.body.pid],
-        function(err, result) {
-            if (err) {
-                return res.status(500).send('Update error');
-            }
-            res.send('Update OK!');
-        }
-    );
-})
+    const updatePromises = req.body.items.map(item => {
+        return new Promise((resolve, reject) => {
+            conn.query("SELECT quantity FROM product WHERE pid = ?", [item.pid], function (err, result) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                const newQuantity = result[0].quantity - item.amount;
+                conn.query("UPDATE product SET quantity = ? WHERE pid = ?",
+                    [newQuantity, item.pid],
+                    function(err, result) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(result);
+                        }
+                    }
+                );
+            });
+        });
+    });
+
+    Promise.all(updatePromises)
+        .then(() => res.send('All updates completed successfully'))
+        .catch(err => res.status(500).send('Update error: ' + err.message));
+});
 
 
 module.exports = cartRouter

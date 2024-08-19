@@ -141,14 +141,22 @@
             });
             const result = await response.text();
             console.log('Delete Success:', result);
-            alert("刪除成功");
+            alert("訂單已送出，庫存已更新，購物車已清空");
     
           } catch (error) {
             console.error('Delete Error:', error);
+            alert("處理訂單時發生錯誤，請稍後再試");
           }
         }
 
 
+          // 更新商品庫存
+          const updateStockResponse = await axios.put(
+            "http://localhost:3200/carts/putData",
+            {
+              items: newProducts // 這裡使用 newProducts，它包含了 pid 和 amount
+            }
+          );        
 
       }
     };
@@ -160,16 +168,6 @@
     const handleCouponChange = (e) => {
       setCouponCode(e.target.value);
     };
-
-
-
-
-    const update = async () => {
-      console.log("test",pidData[0].pid);
-      
-    };
-
-
 
     return (
       <>
@@ -252,13 +250,6 @@
               onClick={handleNextStep}
             >
               下一步
-            </Button>
-            <Button
-              className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
-              type="button"
-              onClick={update}
-            >
-              測試下一步
             </Button>
           </Col>
         </Container>
