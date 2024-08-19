@@ -65,11 +65,11 @@ return (
     <div className="weather-brief">
       <h2 className="city-name">{StationName}</h2>
       <div className="weather-info">
-        <p className="weather-description">{WeatherElement.Weather}</p>
+        <p className="weather-description">雨</p>
       </div>
       <div className="temperature-container">
         <p className="temperature">{Math.round(WeatherElement.AirTemperature)}°</p>
-        <img className="weather-icon" src={getWeatherIcon(WeatherElement.Weather)} alt="" />
+        <img className="weather-icon" src="../images/icon/rainy.svg" alt="" />
       </div>
     </div>
     {isExpanded && (
