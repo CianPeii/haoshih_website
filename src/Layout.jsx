@@ -9,8 +9,6 @@ import Map from "./map/Map";
 import MemberIndexNormal from "./memberIndexNormal/MemberIndexNormal";
 import MemberIndexVendor from "./memberIndexVendor/MemberIndexVendor";
 import Login from "./login/Login";
-import LoginNormal from "./loginNormal/LoginNormal";
-import LoginVendor from "./loginVendor/LoginVendor";
 import ShopCart from "./shopCart/ShopCart";
 import Normal from "./SignUp/Normal";
 import SetStalls from "./setStalls/SetStalls";
@@ -42,17 +40,11 @@ const Layout = () => {
             <Route path="/shop/:vid/*" element={<Vendor />} />
             <Route path="/type" element={<Type />} />
             <Route path="/map" element={<Map />} />
-            <Route path="/login" element={<Login />} />
             <Route path="/register/member" element={<Normal />} />
-            <Route path="/register/vendor" element={<VendorSignUp />} />
             <Route path="/SetStalls" element={<SetStalls />} />
             {/* TODO: default route  =- 已經在 default/Default.jsx */}
             <Route path="/member/:uid/*" element={<MemberIndexNormal />} />
             <Route path="/vendor/:vid/*" element={<MemberIndexVendor />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/login" element={<Login />} />
-            {/* ======= */}
             <Route path="/Step1" element={<Step1 />} />
             <Route path="/Step2" element={<Step2 />} />
             <Route path="/Step3" element={<Step3 />} />
@@ -62,9 +54,10 @@ const Layout = () => {
           </Routes>
         </div>
       </div>
-      {/* <Login /> */}
-      {/* <LoginNormal /> */}
-      {/* <LoginVendor /> */}
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register/vendor" element={<VendorSignUp />} />
+      </Routes>
     </div>
   );
 };

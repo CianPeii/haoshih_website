@@ -25,20 +25,56 @@ const MarketFloorPlan = ({fetchData, setVendorNumber}) => {
 
   const find_toilet = () => {
     var toilets = document.querySelectorAll('.toilet');
+    var bench = document.querySelectorAll('.bench');
+    var trash = document.querySelectorAll('.trash');
     toilets.forEach((toilet) => {
       toilet.classList.toggle(`${styles.toiletOnClick}`);
     })
+    bench.forEach((bench) => {
+      if(bench.classList.contains(styles.benchOnClick)) {
+        bench.classList.remove(styles.benchOnClick);
+      }
+    })
+    trash.forEach((trash) => {
+      if(trash.classList.contains(styles.trashOnClick)) {
+        trash.classList.toggle(styles.trashOnClick);
+      }
+    })
   }
   const find_bench = () => {
-    var toilets = document.querySelectorAll('.bench');
-    toilets.forEach((bench) => {
+    var toilets = document.querySelectorAll('.toilet');
+    var bench = document.querySelectorAll('.bench');
+    var trash = document.querySelectorAll('.trash');
+    bench.forEach((bench) => {
       bench.classList.toggle(`${styles.benchOnClick}`);
+    })
+    toilets.forEach((toilet) => {
+      if(toilet.classList.contains(styles.toiletOnClick)) {
+        toilet.classList.remove(styles.toiletOnClick);
+      }
+    })
+    trash.forEach((trash) => {
+      if(trash.classList.contains(styles.trashOnClick)) {
+        trash.classList.remove(styles.trashOnClick);
+      }
     })
   }
   const find_trash = () => {
-    var toilets = document.querySelectorAll('.trash');
-    toilets.forEach((trash) => {
+    var toilets = document.querySelectorAll('.toilet');
+    var bench = document.querySelectorAll('.bench');
+    var trash = document.querySelectorAll('.trash');
+    trash.forEach((trash) => {
       trash.classList.toggle(`${styles.trashOnClick}`);
+    })
+    toilets.forEach((toilet) => {
+      if(toilet.classList.contains(styles.toiletOnClick)) {
+        toilet.classList.remove(styles.toiletOnClick);
+      }
+    })
+    bench.forEach((bench) => {
+      if(bench.classList.contains(styles.benchOnClick)) {
+        bench.classList.remove(styles.benchOnClick);
+      }
     })
   }
   return (

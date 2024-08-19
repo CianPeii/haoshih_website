@@ -250,17 +250,17 @@ const Vendor = () => {
           aria-labelledby="dropdownMenuButton1"
         >
           <li>
-            <span className="dropdown-item" onClick={()=>setSortType(0)}>
+            <span className="dropdown-item cursor-pointer hover-bg-primary c-black" onClick={()=>setSortType(0)}>
               最新上架
             </span>
           </li>
           <li>
-            <span className="dropdown-item" onClick={()=>setSortType(1)}>
+            <span className="dropdown-item cursor-pointer hover-bg-primary c-black" onClick={()=>setSortType(1)}>
               價格高 → 低
             </span>
           </li>
           <li>
-            <span className="dropdown-item" onClick={()=>setSortType(2)}>
+            <span className="dropdown-item cursor-pointer hover-bg-primary c-black" onClick={()=>setSortType(2)}>
               價格低 → 高
             </span>
           </li>
