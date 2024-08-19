@@ -40,8 +40,8 @@ const Step3 = () => {
 
   const products = [];
 
-  cartData.map(({ name, amount, price }) =>
-    products.push({ name, amount: amount, price })
+  cartData.map(({ pid, amount, price }) =>
+    products.push({ pid, amount: amount, price })
   );
   // console.log("cartData",cartData,products);
   // console.log("vendorProducts",vendorProducts);
@@ -84,12 +84,14 @@ const Step3 = () => {
   const send_data = {
     fullName: addressData.fullName,
     phone: addressData.phone,
-    address: [
-      { postNum: addressData.postNum },
-      { city: addressData.city },
-      { district: addressData.district },
-      { address: addressData.address },
-    ],
+    address:
+    {
+      postNum: addressData.postNum,
+      city: addressData.city,
+      district: addressData.district,
+      address: addressData.address
+    }
+
   };
 
   const [selectedPayment, setSelectedPayment] = useState(paymentMethods[0].id); // 默認值設置為 "cod"
