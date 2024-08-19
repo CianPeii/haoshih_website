@@ -136,6 +136,7 @@ cartRouter.get('/products/:pid/:uid', function(req, res) {
 
 // 將結帳後的商品存入資料庫裡的orderlist
 cartRouter.post('/postData', async (req, res) => {
+    console.log( req.body.uid, req.body.vid, JSON.stringify(req.body.detail), JSON.stringify(req.body.send_data), req.body.status, req.body.pay);
     try {
         // 使用 Promise 來包裝資料庫查詢
         const query = (sql, params) => {
@@ -158,6 +159,8 @@ cartRouter.post('/postData', async (req, res) => {
             [oid, req.body.uid, req.body.vid, JSON.stringify(req.body.detail), JSON.stringify(req.body.send_data), req.body.status, currentTimestamp, req.body.pay]);
         
         console.log('INSERT INTO!');
+        console.log(req.body);
+        
         res.send('Insert OK!');
     } catch (err) {
         console.log('Error:', err);

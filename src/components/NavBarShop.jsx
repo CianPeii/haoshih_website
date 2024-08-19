@@ -78,7 +78,7 @@ const NavBarShop = ({ cartVisible }) => {
               >
                 <div
                   id="123"
-                  style={{ display: cartVisible ? "visible" : "none" }}
+                  style={{ display: user.userType === "member" ? "visible" : "none" }}
                 // style={{ display: "none" }}
                 >
                   <a
