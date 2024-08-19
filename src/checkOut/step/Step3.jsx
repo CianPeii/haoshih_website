@@ -40,10 +40,10 @@ const Step3 = () => {
 
   const products = [];
 
-  cartData.map(({ pid, amount, price }) =>
-    products.push({ pid, amount: amount, price })
+  cartData.map(({ name, amount, price }) =>
+    products.push({ name, amount, price })
   );
-  // console.log("cartData",cartData,products);
+  console.log("cartData",vendorProducts);
   // console.log("vendorProducts",vendorProducts);
   const handleNextStep = async () => {
     if (selectedPayment === paymentMethods[1].id) {
@@ -84,20 +84,26 @@ const Step3 = () => {
   const send_data = {
     fullName: addressData.fullName,
     phone: addressData.phone,
-    address:
-    {
+    address:{
       postNum: addressData.postNum,
       city: addressData.city,
       district: addressData.district,
       address: addressData.address
     }
 
+
   };
 
   const [selectedPayment, setSelectedPayment] = useState(paymentMethods[0].id); // 默認值設置為 "cod"
   const [couponCode, setCouponCode] = useState("");
   const [detail, setDetail] = useState(null); // Added this line to fix the issue
+  // const newVendorProducts = vendorProducts[0].map(({ pid, amount, price }) => ({ pid, amount, price }));
+  // console.log(newVendorProducts,"newVendorProducts");
+  
 
+  
+  console.log(vendorProducts,"123");
+  
   useEffect(() => {
     let paymentId;
     switch (selectedPayment) {
@@ -113,7 +119,7 @@ const Step3 = () => {
     }
 
     const newDetail = {
-      item: products,
+      item:vendorProducts[1],
       ...total,
       payment: paymentId,
     };
@@ -130,6 +136,10 @@ const Step3 = () => {
   const handleCouponChange = (e) => {
     setCouponCode(e.target.value);
   };
+  console.log(vendorProducts[1]);
+  
+  console.log("123",detail);
+  
 
   // const handleNext = async () => {
   //   try {
