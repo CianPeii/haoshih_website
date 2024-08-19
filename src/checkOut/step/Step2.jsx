@@ -411,7 +411,7 @@ const Step2 = () => {
   }, {});
 
   console.log("使用說明: 調用vendorProducts[i]即可得到->",vendorProducts[1]);
-  console.log("vendorProducts[i][1].vinfo 即可得到vid",vendorProducts[1][1].vinfo);
+  console.log("vendorProducts[i][1].vinfo 即可得到vid",vendorProducts[1][0].vinfo);
   
   
   useEffect(() => {
