@@ -487,8 +487,8 @@ loginRouter.get('/auth/google', (req, res, next) => {
 loginRouter.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login?error=google_auth_failed' }),
     function (req, res) {
-        console.log('123');
-        console.log('User data:', req.user);
+        // console.log('123');
+        // console.log('User data:', req.user);
 
         if (!req.user) {
             console.log('沒有任何資料');
