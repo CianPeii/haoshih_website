@@ -40,6 +40,7 @@
 
     const products = [];
     const newProducts = [];
+    const pidData = [];
 
     cartData.map(({ pid, amount, price }) =>
       newProducts.push({ pid, amount, price })
@@ -48,6 +49,12 @@
     cartData.map(({ name, amount, price }) =>
       products.push({ name, quantity:amount, price })
     );
+
+    cartData.map(({pid}) =>
+      pidData.push({pid})
+    );
+      
+    console.log(pidData);
 
     const [selectedPayment, setSelectedPayment] = useState(paymentMethods[0].id); // 默認值設置為 "cod"
     const [couponCode, setCouponCode] = useState("");
@@ -72,8 +79,6 @@
         ...total,
         payment: paymentId,
       };
-
-      console.log(newDetail);
       
 
       setDetail(newDetail); // Update the state
@@ -124,6 +129,27 @@
         } catch (error) {
           console.error("Error fetching Products Data:", error);
         }
+
+        // 刪除購物車裡的商品 By Leo
+        for(let i = 0; i < pidData.length; i++){
+          try {
+            const response = await fetch(`http://localhost:3200/carts/${user.uid}/${pidData[i].pid}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const result = await response.text();
+            console.log('Delete Success:', result);
+            alert("刪除成功");
+    
+          } catch (error) {
+            console.error('Delete Error:', error);
+          }
+        }
+
+
+
       }
     };
 
@@ -134,6 +160,16 @@
     const handleCouponChange = (e) => {
       setCouponCode(e.target.value);
     };
+
+
+
+
+    const update = async () => {
+      console.log("test",pidData[0].pid);
+      
+    };
+
+
 
     return (
       <>
@@ -216,6 +252,13 @@
               onClick={handleNextStep}
             >
               下一步
+            </Button>
+            <Button
+              className="rounded-pill px-4 py-2 bg-secondary c-black border border-2"
+              type="button"
+              onClick={update}
+            >
+              測試下一步
             </Button>
           </Col>
         </Container>
