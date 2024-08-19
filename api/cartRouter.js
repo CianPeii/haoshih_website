@@ -150,7 +150,6 @@ cartRouter.post('/postData', async (req, res) => {
 
         // 生成當前時間戳
         const currentTimestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
         // 生成唯一的訂單ID（這裡使用時間戳+隨機數，您可能需要更複雜的邏輯）
         const oid = Date.now() + Math.floor(Math.random() * 1000);
 
@@ -159,8 +158,6 @@ cartRouter.post('/postData', async (req, res) => {
             [oid, req.body.uid, req.body.vid, JSON.stringify(req.body.detail), JSON.stringify(req.body.send_data), req.body.status, currentTimestamp, req.body.pay]);
         
         console.log('INSERT INTO!');
-        console.log(req.body);
-        
         res.send('Insert OK!');
     } catch (err) {
         console.log('Error:', err);

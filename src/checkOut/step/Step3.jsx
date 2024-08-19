@@ -39,22 +39,20 @@
     const cartVisible = false;
 
     const products = [];
+    const newProducts = [];
 
-    cartData.map(({ pid,name, amount, price }) =>
-      products.push({ pid,name, amount, price })
+    cartData.map(({ pid, amount, price }) =>
+      newProducts.push({ pid, amount, price })
     );
 
+    cartData.map(({ name, amount, price }) =>
+      products.push({ name, quantity:amount, price })
+    );
 
     const [selectedPayment, setSelectedPayment] = useState(paymentMethods[0].id); // 默認值設置為 "cod"
     const [couponCode, setCouponCode] = useState("");
     const [detail, setDetail] = useState(null); // Added this line to fix the issue
-    
-    // const newVendorProducts = for(i=1 ; i < product; i++) {
-    //   vendorProducts.map(() => ({ pid, amount, price }));
-    // }
 
-    console.log(vendorProducts,"newVendorProduct");
-    
     useEffect(() => {
       let paymentId;
       switch (selectedPayment) {
@@ -70,15 +68,18 @@
       }
 
       const newDetail = {
-        item:vendorProducts[1],
+        item:newProducts,
         ...total,
         payment: paymentId,
       };
 
+      console.log(newDetail);
+      
+
       setDetail(newDetail); // Update the state
       localStorage.setItem("detail", JSON.stringify(newDetail));
       localStorage.setItem("send_data", JSON.stringify(send_data));
-    }, []); // 添加依賴項，確保所有依賴都能觸發更新
+    }, [selectedPayment]); // 添加依賴項，確保所有依賴都能觸發更新
 
 
     const send_data = {
@@ -91,8 +92,6 @@
         address: addressData.address
       }
     };
-
-
 
     const handleNextStep = async () => {
       if (selectedPayment === paymentMethods[1].id) {
@@ -125,17 +124,8 @@
         } catch (error) {
           console.error("Error fetching Products Data:", error);
         }
-      } else {
-        // ...
       }
     };
-    console.log("TestNow", detail);
-
-
-
-
-
-
 
     const handlePaymentChange = (id) => {
       setSelectedPayment(id);
@@ -144,32 +134,6 @@
     const handleCouponChange = (e) => {
       setCouponCode(e.target.value);
     };
-    // console.log(vendorProducts[1]);
-    
-    console.log("123",detail);
-    
-
-    // const handleNext = async () => {
-    //   try {
-    //     if (!detail) {
-    //       console.error("Detail is not available");
-    //       return;
-    //     }
-    //     const response = await axios.post("http://localhost:3200/carts/postData", {
-    //       uid: user.uid,
-    //       vid: vendorProducts[1][1].vinfo,
-    //       detail: detail,  // Use the state here
-    //       send_data: send_data,
-    //       status: 1,
-    //       pay: 1,
-    //     }
-    //     );
-    //     alert("訂單已送出");
-    //     // console.log(response);
-    //   } catch (error) {
-    //     console.error("Error fetching Products Data:", error);
-    //   }
-    // };
 
     return (
       <>

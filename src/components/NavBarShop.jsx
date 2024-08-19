@@ -37,7 +37,7 @@ const NavBarShop = ({ cartVisible }) => {
       };
       fetchProductsData();
     }
-  }, []);
+  }, [user]);
 
   const doLogout = async () => {
     try {
