@@ -92,7 +92,7 @@ const SetStalls = () => {
         總計金額： ${(vendorsPrice[selectedVendors] ? vendorsPrice[selectedVendors] * rentDays : 0).toLocaleString() || ""} 元
       </div>
     </div>
-    <div id="screenshot-container" style="margin-top: 20px;"></div> <!-- 這裡是用來顯示截圖的區域 -->
+    <div id="screenshot-container" style="margin-top: 20px; padding: 10px;"></div> <!-- 這裡是用來顯示截圖的區域 -->
         `,
       confirmButtonText: '確定',
       showDenyButton: true,  // 顯示另一個按鈕
