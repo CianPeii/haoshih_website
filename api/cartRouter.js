@@ -5,6 +5,10 @@ cartRouter.use(express.json());
 var config = require("./databaseConfig.js")
 var conn = config.connection
 
+// 添加uuid  記得npm i uuid
+// 資料庫的orderlist的oid欄位，本來是CHAR(10)要改成CHAR(36)
+const { v4: uuidv4 } = require('uuid');
+
 // --------測試路由用----------
 // cartRouter.get('/', function(req,res){res.send('OK')})
 
@@ -133,37 +137,42 @@ cartRouter.get('/products/:pid/:uid', function(req, res) {
     )
 })
 
-
 // 將結帳後的商品存入資料庫裡的orderlist
 cartRouter.post('/postData', async (req, res) => {
-    console.log( req.body.uid, req.body.vid, JSON.stringify(req.body.detail), JSON.stringify(req.body.send_data), req.body.status, req.body.pay);
+    console.log(
+      req.body.uid,
+      req.body.vid,
+      JSON.stringify(req.body.detail),
+      JSON.stringify(req.body.send_data),
+      req.body.status,
+      req.body.pay
+    );
     try {
-        // 使用 Promise 來包裝資料庫查詢
-        const query = (sql, params) => {
-            return new Promise((resolve, reject) => {
-                conn.query(sql, params, (err, results) => {
-                    if (err) return reject(err);
-                    resolve(results);
-                });
-            });
-        };
-
-        // 生成當前時間戳
-        const currentTimestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        // 生成唯一的訂單ID（這裡使用時間戳+隨機數，您可能需要更複雜的邏輯）
-        const oid = Date.now() + Math.floor(Math.random() * 1000);
-
-        // post進去資料
-        await query("INSERT INTO `orderlist` (`oid`, `uid`, `vid`, `detail`, `send_data`, `status`, `order_time`, `pay`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
-            [oid, req.body.uid, req.body.vid, JSON.stringify(req.body.detail), JSON.stringify(req.body.send_data), req.body.status, currentTimestamp, req.body.pay]);
-        
-        console.log('INSERT INTO!');
-        res.send('Insert OK!');
+      // 使用 Promise 來包裝資料庫查詢
+      const query = (sql, params) => {
+        return new Promise((resolve, reject) => {
+          conn.query(sql, params, (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+          });
+        });
+      };
+  
+      // 生成 UUID 作為訂單 ID
+      const oid = uuidv4();
+  
+      // post 進去資料
+      await query(
+        "INSERT INTO `orderlist` (`oid`, `uid`, `vid`, `detail`, `send_data`, `status`, `order_time`, `pay`) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?);",
+        [oid, req.body.uid, req.body.vid, JSON.stringify(req.body.detail), JSON.stringify(req.body.send_data), req.body.status, req.body.pay]
+      );
+      console.log('INSERT INTO!');
+      res.send('Insert OK!');
     } catch (err) {
-        console.log('Error:', err);
-        res.status(500).send('Server error');
+      console.log('Error:', err);
+      res.status(500).send('Server error');
     }
-});
+  });
 
 // 更新資料庫庫存
 // cartRouter.put('/putData', function (req, res) {

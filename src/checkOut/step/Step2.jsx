@@ -424,7 +424,7 @@ const Step2 = () => {
     ])
   );
   
-  console.log("Transformed Vendor Products:", newVendorProducts);
+  // console.log("Transformed Vendor Products:", newVendorProducts);
 
   
   // console.log("使用說明: 調用vendorProducts[i]即可得到->",vendorProducts);

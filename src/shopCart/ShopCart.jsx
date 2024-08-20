@@ -107,6 +107,7 @@ const ShopCart = () => {
               />
             )}
             <div className="f-end-end mt-5 gap-3 sticky-bottom ">
+              
               <h4 className="">總金額：NT{turnPrice(totalPrice)}</h4>
 
               <Button
