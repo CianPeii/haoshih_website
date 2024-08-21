@@ -428,7 +428,7 @@ const EditStallProfile = (props) => {
           <Form.Label column sm="2" className="text-end">
             品牌視覺照
           </Form.Label>
-          <Col sm="10">
+          <Col sm="9">
             <div className="d-flex flex-wrap gap-3">
               {renderImageUpload("brand_img01")}
               {renderImageUpload("brand_img02")}

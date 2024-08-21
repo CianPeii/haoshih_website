@@ -403,7 +403,7 @@ function MemberForm(props) {
               type="submit"
               onClick={async () => {
                 await refetch(); // 先執行 refetch
-                navigate(`/member/2`); // 然後導航
+                navigate(`/member/${props.profile.uid}`); // 然後導航
               }}
             >
               儲存變更
