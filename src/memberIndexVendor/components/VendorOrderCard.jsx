@@ -14,7 +14,7 @@ const VendorOrderCard = (props) => {
         <Card.Header className="bg-white">
           <Row>
             <Col className="f-start">
-              <h4 className="mb-0 d-inline-block">訂單編號：{orderData.oid}</h4>
+              <h6 className="mb-0 d-inline-block">訂單編號：{orderData.oid}</h6>
               <p className="c-gray ms-auto me-3 mb-0">
                 訂購日期：{orderData.formatted_order_time}
               </p>
