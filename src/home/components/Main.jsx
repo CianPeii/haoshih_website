@@ -4,7 +4,7 @@ import styles from "./Main.module.scss";
 const Main = () => {
   const [text, setText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
-  const fullText = "在好事集\n 探索生活中的美好事物";
+  const fullText = "在好市集\n 探索生活中的美好事物";
 
   useEffect(() => {
     let timer;
