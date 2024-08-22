@@ -97,6 +97,16 @@ const SetStalls = () => {
       confirmButtonText: '確定',
       showDenyButton: true,  // 顯示另一個按鈕
       denyButtonText: '點選下載明細截圖',
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          const confirmButtonClick = Swal.getConfirmButton();
+          confirmButtonClick.addEventListener('click', () => {
+            console.log('Confirm button click');
+            //確認按鈕點擊後 resolve promise 關閉對話框
+            resolve();
+          }, {once: true});
+        })
+      },
       didOpen: async () => {
         // 確保視窗打開後進行截圖
         const printScreen = document.getElementById('rent-details');
@@ -105,19 +115,17 @@ const SetStalls = () => {
           try {
             const canvas = await html2canvas(printScreen);
             const imgData = canvas.toDataURL('image/png');
-
             // 檢查生成的圖片數據 URL
             console.log('Generated Image Data URL:', imgData);
             // 設定下載按鈕的 click 事件
             const downloadButton = Swal.getDenyButton();
             if (downloadButton) {
               downloadButton.addEventListener('click', (event) => {
-                event.preventDefault();  // 保持 SweetAlert2 視窗開啟
+                event.preventDefault();  //避免DenyButton防止自斷關閉對話框
                 const link = document.createElement('a');
                 link.href = imgData;
                 link.download = '租用明細截圖.png';  // 設定下載檔名
                 link.click();
-                //重新載入畫面
                 window.location.reload();
               });
             }

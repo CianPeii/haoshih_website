@@ -22,7 +22,7 @@ const MarketFloorPlan = ({fetchData, setVendorNumber}) => {
   };
   const position = ["A", "B", "C", "D"];
   const vendor_unmber = ["01", "02", "03", "04", "05"];
-
+  //每個設施點擊切換的同時須關閉其餘設施
   const find_toilet = () => {
     var toilets = document.querySelectorAll('.toilet');
     var bench = document.querySelectorAll('.bench');
