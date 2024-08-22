@@ -79,6 +79,23 @@ const MarketFloorPlan = ({fetchData, season_data, selectedPeriod}) => {
   },[selectedPeriod])
   return (
     <Container fluid className={styles.containerSize}>
+              <div className="d-flex justify-content-evenly">
+                <div className="d-flex align-items-center">
+                  <div
+                    className="bg-lightBlue me-2"
+                    style={{ width: "20px", height: "20px" }}
+                  ></div>
+                  <span>已選攤位</span>
+                </div>
+                <div className="d-flex align-items-center">
+                  <div
+                    className="bg-gray me-2"
+                    style={{ width: "20px", height: "20px" }}
+                  ></div>
+                  <span>已出租</span>
+                </div>
+              </div>
+      <hr />        
       <Row className={styles.floorPlanRow}>
         <Col>
           <div className={styles.floorPlan}>

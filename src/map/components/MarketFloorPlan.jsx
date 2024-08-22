@@ -10,7 +10,8 @@ const MarketFloorPlan = ({fetchData, setVendorNumber}) => {
       'B': 2,
       'C': 3,
       'D': 4
-    };  //定義攤位區域碼文字對應數字
+    };  
+    //定義攤位區域碼文字對應數字
     const number_to_vinfo = event.target.innerText 
     const letter = number_to_vinfo.charAt(0);  //取得文字部分
     const number = parseInt(number_to_vinfo.slice(1));  //取得數字部分，從索引1開始
@@ -23,7 +24,7 @@ const MarketFloorPlan = ({fetchData, setVendorNumber}) => {
   const position = ["A", "B", "C", "D"];
   const vendor_unmber = ["01", "02", "03", "04", "05"];
   //每個設施點擊切換的同時須關閉其餘設施
-  const find_toilet = () => {
+  const find_toilet = () => {  
     var toilets = document.querySelectorAll('.toilet');
     var bench = document.querySelectorAll('.bench');
     var trash = document.querySelectorAll('.trash');
@@ -155,7 +156,7 @@ const MarketFloorPlan = ({fetchData, setVendorNumber}) => {
           <Button 
             size="sm" 
               className={`bg-lake border-0 ${styles.iconButton}`}
-              onClick={find_trash}>
+              onClick={find_trash}> 
             <img src="images/icon/Trash.png" alt=""/>
           </Button>
         </Col>

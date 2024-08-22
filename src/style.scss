@@ -14,7 +14,7 @@ $colors: (
   "primary": #84afc9,
   "secondary": #f7ea57,
   "lake": #96dbc9,
-  "lightBlue": rgb(166, 206, 230),
+  "lightBlue": #a6cee6,
   "gray": #9e9e9e,
   "blueGray": #546975,
   "white": #fff,
@@ -175,7 +175,7 @@ $layouts: (
 
 @for $i from 1 through 1000 {
   .fw-#{$i} {
-    @include fw($i);
+    @include fw($i);  
   }
 }
 //forVendorDetail

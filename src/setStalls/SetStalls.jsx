@@ -95,18 +95,10 @@ const SetStalls = () => {
     <div id="screenshot-container" style="margin-top: 20px; padding: 10px;"></div> <!-- 這裡是用來顯示截圖的區域 -->
         `,
       confirmButtonText: '確定',
+      confirmButtonColor: '#96dbc9',
       showDenyButton: true,  // 顯示另一個按鈕
+      denyButtonColor: '#a6cee6',
       denyButtonText: '點選下載明細截圖',
-      preConfirm: () => {
-        return new Promise((resolve) => {
-          const confirmButtonClick = Swal.getConfirmButton();
-          confirmButtonClick.addEventListener('click', () => {
-            console.log('Confirm button click');
-            //確認按鈕點擊後 resolve promise 關閉對話框
-            resolve();
-          }, {once: true});
-        })
-      },
       didOpen: async () => {
         // 確保視窗打開後進行截圖
         const printScreen = document.getElementById('rent-details');
@@ -205,7 +197,7 @@ const SetStalls = () => {
           <Col md={6} className="d-flex flex-1">
             <div className="border p-5" style={{ width: "100%" }}>
               <ThirdTitle title="攤位租金" />
-              <div className="d-flex justify-content-between mt-3">
+              <div className="d-flex justify-content-evenly mt-3">
                 <div className="d-flex align-items-center">
                   <div
                     className="bg-red me-2"
@@ -219,20 +211,6 @@ const SetStalls = () => {
                     style={{ width: "20px", height: "20px" }}
                   ></div>
                   <span>600元/天</span>
-                </div>
-                <div className="d-flex align-items-center">
-                  <div
-                    className="bg-lightBlue me-2"
-                    style={{ width: "20px", height: "20px" }}
-                  ></div>
-                  <span>已選攤位</span>
-                </div>
-                <div className="d-flex align-items-center">
-                  <div
-                    className="bg-gray me-2"
-                    style={{ width: "20px", height: "20px" }}
-                  ></div>
-                  <span>已出租</span>
                 </div>
               </div>
               <hr />
