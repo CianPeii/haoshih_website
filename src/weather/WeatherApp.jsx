@@ -6,6 +6,12 @@ const WeatherApp = ({ className, onRainStatusChange }) => {
   const [weatherData, setWeatherData] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
+
+//  想要顯示下雨 三步驟
+// 1. 前往35行，把true註解出來，並將原本的return註解掉
+// 2. 前往75行註解掉，把77行註解出來
+// 3. 前往81行註解掉，把83行註解出來
+
   const getWeatherIcon = (weatherDescription) => {
     if (weatherDescription.includes("晴")) {
         return "../images/icon/sunny.svg";
@@ -25,8 +31,9 @@ const WeatherApp = ({ className, onRainStatusChange }) => {
 };
 
 const checkIfRaining = (data) => {
-  console.log(data.WeatherElement.Weather.includes('雨'));
   return data.WeatherElement.Weather.includes('雨');
+  // 改為true 即可下雨
+  // return true
 };
 
 useEffect(() => {
@@ -66,10 +73,14 @@ return (
       <h2 className="city-name">{StationName}</h2>
       <div className="weather-info">
         <p className="weather-description">{WeatherElement.Weather}</p>
+        {/* 註解掉即可顯示雨 */}
+        {/* <p className="weather-description">雨</p> */}
       </div>
       <div className="temperature-container">
         <p className="temperature">{Math.round(WeatherElement.AirTemperature)}°</p>
         <img className="weather-icon" src={getWeatherIcon(WeatherElement.Weather)} alt="" />
+        {/* 註解掉即可顯示雨圖片 */}
+        {/* <img className="weather-icon" src="../images/icon/rainy.svg" alt="" /> */}
       </div>
     </div>
     {isExpanded && (

@@ -11,20 +11,20 @@ const Login = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.log('Login component mounted');
+    console.log("Login component mounted");
     const urlParams = new URLSearchParams(window.location.search);
-    console.log('URL search params:', urlParams.toString());
-    const googleLoginData = urlParams.get('googleLoginData');
-    console.log('Google login data from URL:', googleLoginData);
-    
+    console.log("URL search params:", urlParams.toString());
+    const googleLoginData = urlParams.get("googleLoginData");
+    console.log("Google login data from URL:", googleLoginData);
+
     if (googleLoginData) {
       try {
         const userData = JSON.parse(decodeURIComponent(googleLoginData));
-        console.log('Google login data:', userData);
-        localStorage.setItem('user', JSON.stringify(userData));
-        navigate('/shop');
+        console.log("Google login data:", userData);
+        localStorage.setItem("user", JSON.stringify(userData));
+        navigate("/shop");
       } catch (error) {
-        console.error('Google login data錯誤:', error);
+        console.error("Google login data錯誤:", error);
       }
     }
   }, []);
@@ -86,7 +86,7 @@ const Login = () => {
   // console.log('Login渲染');
 
   const handleLoginSuccess = (userData) => {
-    console.log('Handling login success with data:', userData);
+    console.log("Handling login success with data:", userData);
     // 根據用戶類型導到相應頁面
     if (userData === "member") {
       navigate(`/member/${userData.uid}`);
@@ -100,6 +100,11 @@ const Login = () => {
         className="p-5 "
         style={loginType ? { display: "none" } : { display: "block" }}
       >
+        <div className="f-center mb-3">
+          <a href="/">
+            <img src="images/img/logo.png" alt="" />
+          </a>
+        </div>
         <div className=" d-flex rounded-5 overflow-hidden font-special">
           {/* 一般用戶 */}
           <div className="bg-primary w-50 f-col-center p-5 ">

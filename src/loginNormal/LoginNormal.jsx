@@ -52,6 +52,11 @@ const LoginNormal = (props) => {
   return (
     <>
       <div className="p-5 ">
+        <div className="f-center mb-3">
+          <a href="/">
+            <img src="images/img/logo.png" alt="" />
+          </a>
+        </div>
         <div className=" d-flex rounded-5 overflow-hidden ">
           {/* 一般用戶 */}
           <div className="bg-primary w-50 f-col-around p-5 gap-3">
