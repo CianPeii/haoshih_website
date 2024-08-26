@@ -95,7 +95,9 @@ const SetStalls = () => {
     <div id="screenshot-container" style="margin-top: 20px; padding: 10px;"></div> <!-- 這裡是用來顯示截圖的區域 -->
         `,
       confirmButtonText: '確定',
+      confirmButtonColor: '#96dbc9',
       showDenyButton: true,  // 顯示另一個按鈕
+      denyButtonColor: '#a6cee6',
       denyButtonText: '點選下載明細截圖',
       didOpen: async () => {
         // 確保視窗打開後進行截圖
@@ -105,19 +107,17 @@ const SetStalls = () => {
           try {
             const canvas = await html2canvas(printScreen);
             const imgData = canvas.toDataURL('image/png');
-
             // 檢查生成的圖片數據 URL
             console.log('Generated Image Data URL:', imgData);
             // 設定下載按鈕的 click 事件
             const downloadButton = Swal.getDenyButton();
             if (downloadButton) {
               downloadButton.addEventListener('click', (event) => {
-                event.preventDefault();  // 保持 SweetAlert2 視窗開啟
+                event.preventDefault();  //避免DenyButton防止自斷關閉對話框
                 const link = document.createElement('a');
                 link.href = imgData;
                 link.download = '租用明細截圖.png';  // 設定下載檔名
                 link.click();
-                //重新載入畫面
                 window.location.reload();
               });
             }
@@ -197,7 +197,7 @@ const SetStalls = () => {
           <Col md={6} className="d-flex flex-1">
             <div className="border p-5" style={{ width: "100%" }}>
               <ThirdTitle title="攤位租金" />
-              <div className="d-flex justify-content-between mt-3">
+              <div className="d-flex justify-content-evenly mt-3">
                 <div className="d-flex align-items-center">
                   <div
                     className="bg-red me-2"
@@ -211,20 +211,6 @@ const SetStalls = () => {
                     style={{ width: "20px", height: "20px" }}
                   ></div>
                   <span>600元/天</span>
-                </div>
-                <div className="d-flex align-items-center">
-                  <div
-                    className="bg-lightBlue me-2"
-                    style={{ width: "20px", height: "20px" }}
-                  ></div>
-                  <span>已選攤位</span>
-                </div>
-                <div className="d-flex align-items-center">
-                  <div
-                    className="bg-gray me-2"
-                    style={{ width: "20px", height: "20px" }}
-                  ></div>
-                  <span>已出租</span>
                 </div>
               </div>
               <hr />
