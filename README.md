@@ -13,4 +13,6 @@
 徐政新、
 陳冠穎、
 蔡承峻
-# haoshih
+
+###### 簡報：https://reurl.cc/lyvQYA 
+###### 企劃書：https://reurl.cc/Revqke
