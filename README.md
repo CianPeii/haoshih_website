@@ -16,3 +16,4 @@
 
 ###### 簡報：https://reurl.cc/lyvQYA 
 ###### 企劃書：https://reurl.cc/Revqke
+###### Figma 設計稿：https://reurl.cc/26k4VE
